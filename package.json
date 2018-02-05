@@ -1,7 +1,7 @@
 {
-  "name": "vernam",
+  "name": "Vernam",
   "version": "1.0.0",
-  "description": "Messenger App",
+  "description": "Perfect Secrecy Messenger",
   "author": "Daniel Geymayer <dag0310@gmail.com>",
   "private": true,
   "scripts": {
@@ -100,8 +100,8 @@
       "cordova-plugin-whitelist": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }
