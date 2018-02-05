@@ -2,44 +2,33 @@
   <v-ons-page>
     <v-ons-toolbar class="home-toolbar">
       <div class="left">
-        <v-ons-toolbar-button @click="$store.commit('splitter/toggle')">
-          <v-ons-icon icon="ion-navicon, material:md-menu"></v-ons-icon>
+        <v-ons-toolbar-button @click="">
+          <v-ons-icon icon="ion-ios-gear, material:md-settings"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
-      <div class="center">{{ msg }}</div>
+      <div class="center">{{ title }}</div>
+      <div class="right">
+        <v-ons-toolbar-button @click="">
+          <v-ons-icon icon="ion-ios-compose-outline"></v-ons-icon>
+        </v-ons-toolbar-button>
+      </div>
     </v-ons-toolbar>
 
-    <div class="header">
-      <img src="../assets/logo.png">
-    </div>
-
-    <v-ons-list-title>Vue.js Essential Links</v-ons-list-title>
+    <p>
+      <v-ons-search-input class="center" placeholder="Search" v-model="searchText"></v-ons-search-input>
+    </p>
+    
     <v-ons-list>
-      <v-ons-list-item v-for="item in essentialLinks" @click="goTo(item.link)" :key="item.link">
-        <div class="left"><v-ons-icon fixed-width :icon="item.icon"></v-ons-icon></div>
-        <div class="center">{{ item.label }}</div>
-        <div class="right"><v-ons-icon icon="fa-external-link"></v-ons-icon></div>
+      <v-ons-list-item v-for="item in filteredConversations" modifier="chevron" tappable @tap="" :key="item.id">
+        <div class="center">
+          <span class="list-item__title ellipsis">{{ item.name }}</span>
+          <span class="list-item__subtitle ellipsis">{{ item.lastMessage }}</span>
+        </div>
+        <div class="right chevron-text">
+          {{ humanReadableTimestamp(item.lastTimestamp) }}
+        </div>
       </v-ons-list-item>
     </v-ons-list>
-
-    <v-ons-list-title>Vue.js Ecosystem</v-ons-list-title>
-    <v-ons-row>
-      <v-ons-col>
-        <v-ons-card @click="goTo('http://router.vuejs.org/')">vue-router</v-ons-card>
-      </v-ons-col>
-      <v-ons-col>
-        <v-ons-card @click="goTo('http://vuex.vuejs.org/')">vuex</v-ons-card>
-      </v-ons-col>
-    </v-ons-row>
-    <v-ons-row>
-      <v-ons-col>
-        <v-ons-card @click="goTo('http://vue-loader.vuejs.org/')">vue-loader</v-ons-card>
-      </v-ons-col>
-      <v-ons-col>
-        <v-ons-card @click="goTo('https://github.com/vuejs/awesome-vue')">awesome-vue</v-ons-card>
-      </v-ons-col>
-    </v-ons-row>
-
   </v-ons-page>
 </template>
 
@@ -48,39 +37,63 @@ export default {
   name: 'home',
   data () {
     return {
-      msg: 'Welcome you lovely person! :)',
-      essentialLinks: [
+      title: 'Conversations',
+      searchText: '',
+      conversations: [
         {
-          label: 'Core Docs',
-          link: 'https://vuejs.org',
-          icon: 'fa-book'
+          id: 1,
+          name: 'John Doe',
+          lastMessage: 'Wir können gsd bis vor die whg fahren mit dem auto, das wird super!',
+          lastTimestamp: 1517757771000
         },
         {
-          label: 'Community Chat',
-          link: 'https://chat.vuejs.org',
-          icon: 'fa-commenting'
+          id: 2,
+          name: 'Aaron A. Aaronson',
+          lastMessage: 'Wenn du meinst, aber ich bin mir nicht sicher :/',
+          lastTimestamp: 1517864396599
         },
         {
-          label: 'Forum',
-          link: 'https://forum.vuejs.org',
-          icon: 'ion-chatboxes'
-        },
-        {
-          label: 'Twitter',
-          link: 'https://twitter.com/vuejs',
-          icon: 'fa-twitter'
-        },
-        {
-          label: 'Docs for this template',
-          link: 'http://vuejs-templates.github.io/webpack/',
-          icon: 'fa-file-text'
+          id: 3,
+          name: 'Max Musterman',
+          lastMessage: 'Ok 😊',
+          lastTimestamp: 1517324400000
         }
       ]
     }
   },
+  computed: {
+    filteredConversations () {
+      return this.conversations
+        .filter(item => item.name.toUpperCase().includes(this.searchText.toUpperCase()))
+        .sort((a, b) => b.lastTimestamp - a.lastTimestamp)
+    }
+  },
   methods: {
-    goTo (url) {
-      window.open(url, '_blank')
+    weekDay (index) {
+      let weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+      return weekDays[index]
+    },
+    humanReadableTimestamp (timestamp) {
+      let timestampDate = new Date(timestamp)
+      let now = new Date()
+      let todayAtMidnightTimestamp = (new Date(now.getFullYear(), now.getMonth(), now.getDate())).getTime()
+      let dayInMs = 3600000 * 24
+
+      if (timestamp >= todayAtMidnightTimestamp) {
+        return ('' + (timestampDate.getHours())).padStart(2, '0') + ':' + ('' + (timestampDate.getMinutes())).padStart(2, '0')
+      }
+
+      if (timestamp >= todayAtMidnightTimestamp - dayInMs) {
+        return 'Yesterday'
+      }
+
+      if (timestamp >= todayAtMidnightTimestamp - dayInMs * 6) {
+        return this.weekDay(timestampDate.getDay())
+      }
+
+      return timestampDate.getFullYear() + '-' +
+        ('' + (timestampDate.getMonth() + 1)).padStart(2, '0') + '-' +
+        ('' + (timestampDate.getDate())).padStart(2, '0')
     }
   }
 }
@@ -88,27 +101,28 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.header {
-  text-align: center;
-}
-
-img {
-  max-width: 300px;
-}
-
-ons-list-title {
-  text-transform: none;
+ons-search-input {
+  margin: 0 15px;
+  width: calc(100% - 30px);
 }
 
 ons-list-title:not(:first-of-type) {
   margin-top: 30px;
 }
 
-ons-card {
-  text-align: center;
+.list-item__subtitle {
+  width: 150px;
 }
 
-ons-list-item, ons-card {
-  cursor: pointer;
+.chevron-text {
+  padding: 0 35px 18px 0;
+  font-size: 12px;
+  color: gray;
+}
+  
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
