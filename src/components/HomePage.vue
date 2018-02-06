@@ -13,22 +13,22 @@
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
-
-    <p>
-      <v-ons-search-input class="center" placeholder="Search" v-model="searchText"></v-ons-search-input>
-    </p>
-    
-    <v-ons-list>
-      <v-ons-list-item v-for="item in filteredConversations" modifier="chevron" tappable @tap="" :key="item.id">
-        <div class="center">
-          <span class="list-item__title ellipsis">{{ item.name }}</span>
-          <span class="list-item__subtitle ellipsis">{{ item.lastMessage }}</span>
-        </div>
-        <div class="right chevron-text">
-          {{ humanReadableTimestamp(item.lastTimestamp) }}
-        </div>
-      </v-ons-list-item>
-    </v-ons-list>
+    <div class="content">
+      <p>
+        <v-ons-search-input class="center" placeholder="Search" v-model="searchText"></v-ons-search-input>
+      </p>
+      <v-ons-list>
+        <v-ons-list-item v-for="item in filteredConversations" modifier="chevron" tappable @tap="" :key="item.id">
+          <div class="center">
+            <span class="list-item__title ellipsis">{{ item.name }}</span>
+            <span class="list-item__subtitle ellipsis">{{ item.lastMessage }}</span>
+          </div>
+          <div class="right chevron-text">
+            {{ humanReadableTimestamp(item.lastTimestamp) }}
+          </div>
+        </v-ons-list-item>
+      </v-ons-list>
+  </div>
   </v-ons-page>
 </template>
 
