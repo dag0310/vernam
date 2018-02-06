@@ -1,1 +1,1 @@
-npm run build && cordova run android
+npm run build && cordova run ios
