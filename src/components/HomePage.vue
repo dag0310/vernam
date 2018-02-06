@@ -1,6 +1,6 @@
 <template>
   <v-ons-page>
-    <v-ons-toolbar class="home-toolbar">
+    <v-ons-toolbar>
       <div class="left">
         <v-ons-toolbar-button @click="">
           <v-ons-icon icon="ion-ios-gear, material:md-settings"></v-ons-icon>
@@ -99,15 +99,10 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 ons-search-input {
   margin: 0 15px;
   width: calc(100% - 30px);
-}
-
-ons-list-title:not(:first-of-type) {
-  margin-top: 30px;
 }
 
 .list-item__subtitle {
