@@ -16,7 +16,13 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <preference name="SplashScreen" value="none" />
     <preference name="SplashScreenDelay" value="0" />
+    <preference name="FadeSplashScreenDuration" value="0" />
+    <preference name="FadeSplashScreen" value="false" />
+    <preference name="StatusBarOverlaysWebView" value="true" />
+    <preference name="StatusBarStyle" value="blacktranslucent" />
+    <preference name="StatusBarDefaultScrollToTop" value="true" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="res/icon/android/icon-36-ldpi.png" />
@@ -25,8 +31,6 @@
         <icon density="xhdpi" src="res/icon/android/icon-96-xhdpi.png" />
         <icon density="xxhdpi" src="res/icon/android/icon-144-xxhdpi.png" />
         <icon density="xxxhdpi" src="res/icon/android/icon-192-xxxhdpi.png" />
-        <preference name="FadeSplashScreenDuration" value="0" />
-        <preference name="FadeSplashScreen" value="false" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -54,6 +58,6 @@
         <icon height="50" src="res/icon/ios/Icon-Small-50x50@1x.png" width="50" />
         <icon height="100" src="res/icon/ios/Icon-Small-50x50@2x.png" width="100" />
     </platform>
-    <engine name="ios" spec="^4.5.4" />
     <engine name="android" spec="^7.0.0" />
+    <engine name="ios" spec="^4.5.4" />
 </widget>
