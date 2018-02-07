@@ -19,13 +19,14 @@
         <span class="clearSearch" @click="searchText = ''">×</span>
       </p>
       <v-ons-list v-if="filteredConversations.length > 0">
-        <v-ons-list-item v-for="item in filteredConversations" modifier="chevron" tappable @tap="" :key="item.id">
+        <v-ons-list-item v-for="item in filteredConversations" :key="item.id" tappable @tap="">
           <div class="center">
             <span class="list-item__title ellipsis">{{ item.name }}</span>
             <span class="list-item__subtitle ellipsis">{{ item.lastMessage }}</span>
           </div>
-          <div class="right chevron-text">
-            {{ humanReadableTimestamp(item.lastTimestamp) }}
+          <div class="right">
+            <span class="list-item__label">{{ humanReadableTimestamp(item.lastTimestamp) }}</span>
+            <ons-icon icon="ion-ios-arrow-forward" class="list-item__icon"></ons-icon>
           </div>
         </v-ons-list-item>
       </v-ons-list>
@@ -59,7 +60,7 @@ export default {
         {
           id: 3,
           name: 'Max Musterman',
-          lastMessage: 'Ok 😊',
+          lastMessage: 'Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊',
           lastTimestamp: 1517324400000
         }
       ]
@@ -107,10 +108,13 @@ export default {
   .list-item__subtitle {
     width: 150px;
   }
-
-  .chevron-text {
-    padding: 0 35px 18px 0;
+  .list-item__label {
     font-size: 12px;
-    color: gray;
+    overflow: visible;
+    white-space: nowrap;
+  }
+  .list-item__icon {
+    color: #c7c7cc;
+    font-size: 20px;
   }
 </style>
