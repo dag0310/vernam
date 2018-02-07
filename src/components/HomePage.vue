@@ -14,8 +14,9 @@
       </div>
     </v-ons-toolbar>
     <div class="content">
-      <p>
-        <v-ons-search-input class="center" placeholder="Search" v-model="searchText"></v-ons-search-input>
+      <p class="searchContainer">
+        <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
+        <span class="clearSearch" @click="searchText = ''">×</span>
       </p>
       <v-ons-list>
         <v-ons-list-item v-for="item in filteredConversations" modifier="chevron" tappable @tap="" :key="item.id">
@@ -100,24 +101,13 @@ export default {
 </script>
 
 <style scoped>
-ons-search-input {
-  margin: 0 15px;
-  width: calc(100% - 30px);
-}
+  .list-item__subtitle {
+    width: 150px;
+  }
 
-.list-item__subtitle {
-  width: 150px;
-}
-
-.chevron-text {
-  padding: 0 35px 18px 0;
-  font-size: 12px;
-  color: gray;
-}
-  
-.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .chevron-text {
+    padding: 0 35px 18px 0;
+    font-size: 12px;
+    color: gray;
+  }
 </style>
