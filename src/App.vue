@@ -21,9 +21,16 @@ export default {
   .searchContainer {
     position: relative;
   }
+  .marginalizedContent {
+    padding: 0 15px;
+  }
+  .infoText {
+    text-align: center;
+    font-style: italic;
+    color: gray;
+  }
   .searchContainer ons-search-input {
-    margin: 0 15px;
-    width: calc(100% - 30px);
+    width: 100%;
   }
   .searchContainer ons-search-input .search-input {
     padding-right: 30px;

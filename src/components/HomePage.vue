@@ -14,11 +14,11 @@
       </div>
     </v-ons-toolbar>
     <div class="content">
-      <p class="searchContainer">
-        <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
+      <p class="searchContainer marginalizedContent">
+        <v-ons-search-input placeholder="Search" v-model="searchText" class=""></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''">×</span>
       </p>
-      <v-ons-list>
+      <v-ons-list v-if="filteredConversations.length > 0">
         <v-ons-list-item v-for="item in filteredConversations" modifier="chevron" tappable @tap="" :key="item.id">
           <div class="center">
             <span class="list-item__title ellipsis">{{ item.name }}</span>
@@ -29,6 +29,9 @@
           </div>
         </v-ons-list-item>
       </v-ons-list>
+      <div class="marginalizedContent infoText" v-if="filteredConversations.length <= 0">
+        No conversations found
+      </div>
   </div>
   </v-ons-page>
 </template>
