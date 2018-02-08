@@ -7,7 +7,8 @@
       <div class="center ellipsis">{{ conversation.name }}</div>
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
-          ~{{ approxWordsLeftToSend }} w
+          <template v-if="keyEmpty">Refill 🔑</template>
+          <template v-else>~{{ approxWordsLeftToSend }} w</template>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
