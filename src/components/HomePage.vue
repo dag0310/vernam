@@ -27,7 +27,7 @@
             <span class="list-item__subtitle ellipsis">{{ conversation.lastMessage ? conversation.lastMessage.text : '' }}</span>
           </div>
           <div class="right">
-            <span class="list-item__label">{{ conversation.lastMessage ? humanReadableTimestamp(conversation.lastMessage.timestamp) : '' }}</span>
+            <span class="list-item__label">{{ conversation.lastMessage ? conversation.lastMessage.dateText : '' }}</span>
             <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click.stop="deleteConversation(conversation)"></ons-icon>
             <ons-icon icon="ion-ios-arrow-forward" class="list-item__icon"></ons-icon>
           </div>
@@ -55,8 +55,37 @@ export default {
   },
   computed: {
     conversationsWithLastMessage () {
+      const convertToHumanDate = timestamp => {
+        const date = new Date(timestamp)
+        const now = new Date()
+        const todayAtMidnightTimestamp = (new Date(now.getFullYear(), now.getMonth(), now.getDate())).getTime()
+        const dayInMs = 3600000 * 24
+        const timeText = ('' + (date.getHours())).padStart(2, '0') + ':' + ('' + (date.getMinutes())).padStart(2, '0')
+        let isToday, dateText
+
+        if (timestamp >= todayAtMidnightTimestamp) {
+          isToday = true
+          dateText = 'Today'
+        } else if (timestamp >= todayAtMidnightTimestamp - dayInMs) {
+          isToday = false
+          dateText = 'Yesterday'
+        } else if (timestamp >= todayAtMidnightTimestamp - dayInMs * 6) {
+          isToday = false
+          dateText = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()]
+        } else {
+          isToday = false
+          dateText = date.getFullYear() + '-' +
+            ('' + (date.getMonth() + 1)).padStart(2, '0') + '-' +
+            ('' + (date.getDate())).padStart(2, '0')
+        }
+
+        return { isToday, dateText, timeText }
+      }
+
       return this.conversations.map(conversation => {
         conversation.lastMessage = (conversation.messages.length > 0) ? conversation.messages.sort((a, b) => b.timestamp - a.timestamp)[0] : null
+        const humanDate = convertToHumanDate(conversation.lastMessage.timestamp)
+        conversation.lastMessage.dateText = humanDate.isToday ? humanDate.timeText : humanDate.dateText
         return conversation
       })
     },
@@ -84,32 +113,6 @@ export default {
     showConversationPage (conversation) {
       this.$store.state.global.currentConversation = conversation
       this.$emit('push-page', Conversation)
-    },
-    weekDay (index) {
-      let weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-      return weekDays[index]
-    },
-    humanReadableTimestamp (timestamp) {
-      let timestampDate = new Date(timestamp)
-      let now = new Date()
-      let todayAtMidnightTimestamp = (new Date(now.getFullYear(), now.getMonth(), now.getDate())).getTime()
-      let dayInMs = 3600000 * 24
-
-      if (timestamp >= todayAtMidnightTimestamp) {
-        return ('' + (timestampDate.getHours())).padStart(2, '0') + ':' + ('' + (timestampDate.getMinutes())).padStart(2, '0')
-      }
-
-      if (timestamp >= todayAtMidnightTimestamp - dayInMs) {
-        return 'Yesterday'
-      }
-
-      if (timestamp >= todayAtMidnightTimestamp - dayInMs * 6) {
-        return this.weekDay(timestampDate.getDay())
-      }
-
-      return timestampDate.getFullYear() + '-' +
-        ('' + (timestampDate.getMonth() + 1)).padStart(2, '0') + '-' +
-        ('' + (timestampDate.getDate())).padStart(2, '0')
     },
     deleteConversation (conversation) {
       this.$ons.openActionSheet({ buttons: ['Delete conversation', 'Cancel'], title: conversation.name, cancelable: true, destructive: 0 }).then(response => {
