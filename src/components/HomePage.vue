@@ -7,11 +7,13 @@
         </v-ons-toolbar-button>
       </div>
       <div class="center">{{ title }}</div>
+<!--
       <div class="right">
         <v-ons-toolbar-button @click="">
           <v-ons-icon icon="ion-ios-compose-outline"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
+-->
     </v-ons-toolbar>
     <div class="content">
       <p class="searchContainer marginalizedContent">
@@ -19,7 +21,7 @@
         <span class="clearSearch" @click="searchText = ''">×</span>
       </p>
       <v-ons-list v-if="filteredConversations.length > 0">
-        <v-ons-list-item v-for="item in filteredConversations" :key="item.id" tappable @tap="">
+        <v-ons-list-item v-for="item in filteredConversations" :key="item.id" tappable @click="showConversationPage(item)">
           <div class="center">
             <span class="list-item__title ellipsis">{{ item.name }}</span>
             <span class="list-item__subtitle ellipsis">{{ item.lastMessage }}</span>
@@ -39,6 +41,7 @@
 
 <script>
 import Settings from './Settings'
+import Conversation from './Conversation'
 
 export default {
   name: 'home',
@@ -78,6 +81,9 @@ export default {
   methods: {
     showSettingsPage () {
       this.$emit('push-page', Settings)
+    },
+    showConversationPage (conversation) {
+      this.$emit('push-page', Conversation)
     },
     weekDay (index) {
       let weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
