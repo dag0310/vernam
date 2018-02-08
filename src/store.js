@@ -83,7 +83,8 @@ export default new Vuex.Store({
                 timestamp: 1517827979000,
                 sent: true
               }
-            ]
+            ],
+            key: [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
           },
           {
             id: 2,
@@ -96,7 +97,8 @@ export default new Vuex.Store({
                 timestamp: 1517864396599,
                 sent: true
               }
-            ]
+            ],
+            key: []
           },
           {
             id: 3,
@@ -109,7 +111,8 @@ export default new Vuex.Store({
                 timestamp: 1517324400000,
                 sent: true
               }
-            ]
+            ],
+            key: [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
           }
         ],
         currentConversation: null

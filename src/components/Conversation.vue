@@ -53,8 +53,7 @@ export default {
   data () {
     return {
       conversation: this.$store.state.global.currentConversation,
-      searchText: '',
-      key: [1, 2, 3]
+      searchText: ''
     }
   },
   computed: {
@@ -67,10 +66,10 @@ export default {
       return !this.conversation.message
     },
     keyEmpty () {
-      return this.key.length === 0
+      return this.conversation.key.length === 0
     },
     approxWordsLeftToSend () {
-      return Math.round(this.key.length / approxBytesPerWord)
+      return Math.round(this.conversation.key.length / approxBytesPerWord)
     }
   },
   methods: {
