@@ -12,20 +12,55 @@ export default new Vuex.Store({
           {
             id: 1,
             name: 'John Doe',
-            lastMessage: 'Wir können gsd bis vor die whg fahren mit dem auto, das wird super!',
-            lastTimestamp: 1517757771000
+            messages: [
+              {
+                id: 1,
+                senderId: 1,
+                text: 'Hallo Daniel!',
+                timestamp: 1517757771000,
+                sent: true
+              },
+              {
+                id: 2,
+                senderId: -1,
+                text: 'Oh hi, John!',
+                timestamp: 1517757775000,
+                sent: true
+              },
+              {
+                id: 3,
+                senderId: 1,
+                text: 'Wir können gsd bis vor die whg fahren mit dem auto, das wird super!',
+                timestamp: 1517757979000,
+                sent: true
+              }
+            ]
           },
           {
             id: 2,
             name: 'Aaron A. Aaronson',
-            lastMessage: 'Wenn du meinst, aber ich bin mir nicht sicher :/',
-            lastTimestamp: 1517864396599
+            messages: [
+              {
+                id: 1,
+                senderId: 2,
+                text: 'Wenn du meinst, aber ich bin mir nicht sicher :/',
+                timestamp: 1517864396599,
+                sent: true
+              }
+            ]
           },
           {
             id: 3,
             name: 'Max Musterman',
-            lastMessage: 'Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊',
-            lastTimestamp: 1517324400000
+            messages: [
+              {
+                id: 1,
+                senderId: 3,
+                text: 'Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊',
+                timestamp: 1517324400000,
+                sent: true
+              }
+            ]
           }
         ],
         currentConversation: null

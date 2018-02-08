@@ -20,19 +20,19 @@
         <v-ons-search-input placeholder="Search" v-model="searchText" class=""></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''">×</span>
       </p>
-      <v-ons-list v-if="filteredConversations.length > 0">
-        <v-ons-list-item v-for="item in filteredConversations" :key="item.id" tappable @click="showConversationPage(item)">
+      <v-ons-list v-show="filteredConversations.length > 0">
+        <v-ons-list-item v-for="conversation in filteredConversations" :key="conversation.id" tappable @click="showConversationPage(conversation)">
           <div class="center">
-            <span class="list-item__title ellipsis">{{ item.name }}</span>
-            <span class="list-item__subtitle ellipsis">{{ item.lastMessage }}</span>
+            <span class="list-item__title ellipsis">{{ conversation.name }}</span>
+            <span class="list-item__subtitle ellipsis">{{ conversation.lastMessage ? conversation.lastMessage.text : '' }}</span>
           </div>
           <div class="right">
-            <span class="list-item__label">{{ humanReadableTimestamp(item.lastTimestamp) }}</span>
+            <span class="list-item__label">{{ conversation.lastMessage ? humanReadableTimestamp(conversation.lastMessage.timestamp) : '' }}</span>
             <ons-icon icon="ion-ios-arrow-forward" class="list-item__icon"></ons-icon>
           </div>
         </v-ons-list-item>
       </v-ons-list>
-      <div class="marginalizedContent infoText" v-if="filteredConversations.length <= 0">
+      <div class="marginalizedContent infoText" v-show="filteredConversations.length <= 0">
         No conversations found
       </div>
     </div>
@@ -53,10 +53,27 @@ export default {
     }
   },
   computed: {
+    conversationsWithLastMessage () {
+      return this.conversations.map(conversation => {
+        conversation.lastMessage = (conversation.messages.length > 0) ? conversation.messages.sort((a, b) => b.timestamp - a.timestamp)[0] : null
+        return conversation
+      })
+    },
     filteredConversations () {
-      return this.conversations
-        .filter(item => item.name.toUpperCase().includes(this.searchText.toUpperCase()))
-        .sort((a, b) => b.lastTimestamp - a.lastTimestamp)
+      return this.conversationsWithLastMessage
+        .filter(conversation => conversation.name.toUpperCase().includes(this.searchText.toUpperCase()))
+        .sort((a, b) => {
+          if (!a.lastMessage && !b.lastMessage) {
+            return 0
+          }
+          if (!a.lastMessage) {
+            return 1
+          }
+          if (!b.lastMessage) {
+            return -1
+          }
+          return b.lastMessage.timestamp - a.lastMessage.timestamp
+        })
     }
   },
   methods: {
