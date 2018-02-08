@@ -104,7 +104,7 @@ export default {
       this.conversation.message = undefined
     },
     refillKey () {
-      this.$ons.notification.alert('TODO: Refill key')
+      this.$ons.notification.toast('TODO: Refill key', { timeout: 1000 })
     }
   }
 }
