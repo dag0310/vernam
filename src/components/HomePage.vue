@@ -28,6 +28,7 @@
           </div>
           <div class="right">
             <span class="list-item__label">{{ conversation.lastMessage ? humanReadableTimestamp(conversation.lastMessage.timestamp) : '' }}</span>
+            <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click.stop="deleteConversation(conversation)"></ons-icon>
             <ons-icon icon="ion-ios-arrow-forward" class="list-item__icon"></ons-icon>
           </div>
         </v-ons-list-item>
@@ -109,6 +110,13 @@ export default {
       return timestampDate.getFullYear() + '-' +
         ('' + (timestampDate.getMonth() + 1)).padStart(2, '0') + '-' +
         ('' + (timestampDate.getDate())).padStart(2, '0')
+    },
+    deleteConversation (conversation) {
+      this.$ons.openActionSheet({ buttons: ['Delete conversation', 'Cancel'], title: conversation.name, cancelable: true, destructive: 0 }).then(response => {
+        if (response === 0) {
+          this.conversations.splice(this.conversations.findIndex(c => c === conversation), 1)
+        }
+      })
     }
   }
 }
@@ -123,7 +131,7 @@ export default {
     overflow: visible;
     white-space: nowrap;
   }
-  .list-item__icon {
+  .list-item__icon.ion-ios-arrow-forward {
     color: #c7c7cc;
     font-size: 20px;
   }
