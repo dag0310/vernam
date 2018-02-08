@@ -83,6 +83,7 @@ export default {
       this.$emit('push-page', Settings)
     },
     showConversationPage (conversation) {
+      this.$store.state.global.currentConversation = conversation
       this.$emit('push-page', Conversation)
     },
     weekDay (index) {
