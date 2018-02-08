@@ -80,7 +80,8 @@ export default {
 
 <style scoped>
   .list-item__subtitle {
-    max-width: 300px;
+    max-width: 180px;
+    word-wrap: break-word;
   }
   .list-item__label {
     font-size: 10px;
