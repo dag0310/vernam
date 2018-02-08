@@ -29,7 +29,8 @@
       <div class="buffer"></div>
     </div>
     <v-ons-bottom-toolbar>
-      <textarea class="textarea" v-model="conversation.message"></textarea><v-ons-button modifier="quiet" class="sendButton" @click="sendMessage">Send</v-ons-button>
+      <textarea class="textarea" v-model="conversation.message"></textarea>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!conversation.message">Send</v-ons-button>
     </v-ons-bottom-toolbar>
   </v-ons-page>
 </template>
@@ -103,5 +104,6 @@ export default {
   }
   ons-bottom-toolbar {
     padding: 5px;
+    font-size: 0;
   }
 </style>
