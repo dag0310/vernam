@@ -16,7 +16,7 @@ export default new Vuex.Store({
               {
                 id: 1,
                 senderId: 1,
-                text: 'Hallo Daniel!',
+                text: 'Hi Daniel!',
                 timestamp: 1517757771000,
                 sent: true
               },
@@ -30,7 +30,7 @@ export default new Vuex.Store({
               {
                 id: 3,
                 senderId: 1,
-                text: 'Wir können gsd bis vor die whg fahren mit dem auto, das wird super!',
+                text: 'We can drive right up to the flat, this is going to be amazing! :)',
                 timestamp: 1517757979000,
                 sent: true
               }
@@ -43,7 +43,7 @@ export default new Vuex.Store({
               {
                 id: 1,
                 senderId: 2,
-                text: 'Wenn du meinst, aber ich bin mir nicht sicher :/',
+                text: 'if you say so, i am not so sure though :/',
                 timestamp: 1517864396599,
                 sent: true
               }
