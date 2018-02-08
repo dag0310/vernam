@@ -8,8 +8,8 @@
     </v-ons-toolbar>
     <div class="content">
       <p class="searchContainer marginalizedContent">
-        <v-ons-search-input placeholder="Search" v-model="searchText" class=""></v-ons-search-input>
-        <span class="clearSearch" @click="searchText = ''">×</span>
+        <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
+        <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
       </p>
       <v-ons-list v-show="filteredMessages.length > 0">
         <v-ons-list-item v-for="message in filteredMessages" :key="message.id">
