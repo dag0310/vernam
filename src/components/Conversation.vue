@@ -24,7 +24,10 @@
             <span class="list-item__subtitle">{{ message.text }}</span>
           </div>
           <div class="right">
-            <span class="list-item__label" v-html="formattedDateTime(message.timestamp)"></span>
+            <span class="list-item__label">
+              {{ message.dateText }}<br>
+              {{ message.timeText }}
+            </span>
             <ons-icon icon="ion-ios-checkmark-empty" class="list-item__icon" :style="{color: message.sent ? 'green' : 'transparent'}"></ons-icon>
             <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click="deleteMessage(message)"></ons-icon>
           </div>
@@ -60,6 +63,12 @@ export default {
   computed: {
     filteredMessages () {
       return this.conversation.messages
+        .map(message => {
+          const humanDate = this.humanDate(message.timestamp)
+          message.dateText = humanDate.dateText
+          message.timeText = humanDate.timeText
+          return message
+        })
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((a, b) => a.timestamp - b.timestamp)
     },
@@ -76,14 +85,6 @@ export default {
   methods: {
     nameOfSender (senderId) {
       return (senderId === -1) ? 'You' : 'They'
-    },
-    formattedDateTime (timestamp) {
-      let timestampDate = new Date(timestamp)
-      const dateStr = timestampDate.getFullYear() + '-' +
-        ('' + (timestampDate.getMonth() + 1)).padStart(2, '0') + '-' +
-        ('' + (timestampDate.getDate())).padStart(2, '0')
-      const timeStr = ('' + (timestampDate.getHours())).padStart(2, '0') + ':' + ('' + (timestampDate.getMinutes())).padStart(2, '0')
-      return [dateStr, timeStr].join('<br>')
     },
     deleteMessage (message) {
       this.$ons.openActionSheet({ buttons: ['Delete message', 'Cancel'], title: message.text, cancelable: true, destructive: 0 }).then(response => {

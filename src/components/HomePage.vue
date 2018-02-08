@@ -55,36 +55,9 @@ export default {
   },
   computed: {
     conversationsWithLastMessage () {
-      const convertToHumanDate = timestamp => {
-        const date = new Date(timestamp)
-        const now = new Date()
-        const todayAtMidnightTimestamp = (new Date(now.getFullYear(), now.getMonth(), now.getDate())).getTime()
-        const dayInMs = 3600000 * 24
-        const timeText = ('' + (date.getHours())).padStart(2, '0') + ':' + ('' + (date.getMinutes())).padStart(2, '0')
-        let isToday, dateText
-
-        if (timestamp >= todayAtMidnightTimestamp) {
-          isToday = true
-          dateText = 'Today'
-        } else if (timestamp >= todayAtMidnightTimestamp - dayInMs) {
-          isToday = false
-          dateText = 'Yesterday'
-        } else if (timestamp >= todayAtMidnightTimestamp - dayInMs * 6) {
-          isToday = false
-          dateText = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()]
-        } else {
-          isToday = false
-          dateText = date.getFullYear() + '-' +
-            ('' + (date.getMonth() + 1)).padStart(2, '0') + '-' +
-            ('' + (date.getDate())).padStart(2, '0')
-        }
-
-        return { isToday, dateText, timeText }
-      }
-
       return this.conversations.map(conversation => {
         conversation.lastMessage = (conversation.messages.length > 0) ? conversation.messages.sort((a, b) => b.timestamp - a.timestamp)[0] : null
-        const humanDate = convertToHumanDate(conversation.lastMessage.timestamp)
+        const humanDate = this.humanDate(conversation.lastMessage.timestamp)
         conversation.lastMessage.dateText = humanDate.isToday ? humanDate.timeText : humanDate.dateText
         return conversation
       })
