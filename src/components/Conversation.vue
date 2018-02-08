@@ -20,6 +20,7 @@
           <div class="right">
             <span class="list-item__label" v-html="formattedDateTime(message.timestamp)"></span>
             <ons-icon icon="ion-ios-checkmark-empty" class="list-item__icon" :style="{color: message.sent ? 'green' : 'transparent'}"></ons-icon>
+            <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click="deleteMessage(message)"></ons-icon>
           </div>
         </v-ons-list-item>
       </v-ons-list>
@@ -62,6 +63,13 @@ export default {
         ('' + (timestampDate.getDate())).padStart(2, '0')
       const timeStr = ('' + (timestampDate.getHours())).padStart(2, '0') + ':' + ('' + (timestampDate.getMinutes())).padStart(2, '0')
       return [dateStr, timeStr].join('<br>')
+    },
+    deleteMessage (message) {
+      this.$ons.openActionSheet({ buttons: ['Delete message', 'Cancel'], title: message.text, cancelable: true, destructive: 0 }).then(response => {
+        if (response === 0) {
+          this.conversation.messages.splice(this.conversation.messages.findIndex(m => m === message), 1)
+        }
+      })
     },
     sendMessage () {
       // TODO: Implement send message feature
