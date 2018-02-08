@@ -20,7 +20,7 @@
       <v-ons-list v-show="filteredMessages.length > 0">
         <v-ons-list-item v-for="message in filteredMessages" :key="message.id">
           <div class="center">
-            <span class="list-item__title ellipsis">{{ nameOfSender(message.senderId) }}:</span>
+            <span class="list-item__title ellipsis">{{ message.author }}:</span>
             <span class="list-item__subtitle">{{ message.text }}</span>
           </div>
           <div class="right">
@@ -67,6 +67,7 @@ export default {
           const humanDate = this.humanDate(message.timestamp)
           message.dateText = humanDate.dateText
           message.timeText = humanDate.timeText
+          message.author = (message.senderId === -1) ? 'You' : 'They'
           return message
         })
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
@@ -83,9 +84,6 @@ export default {
     }
   },
   methods: {
-    nameOfSender (senderId) {
-      return (senderId === -1) ? 'You' : 'They'
-    },
     deleteMessage (message) {
       this.$ons.openActionSheet({ buttons: ['Delete message', 'Cancel'], title: message.text, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
