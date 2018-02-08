@@ -5,6 +5,11 @@
         <v-ons-back-button>Back</v-ons-back-button>
       </div>
       <div class="center ellipsis">{{ conversation.name }}</div>
+      <div class="right">
+        <v-ons-toolbar-button @click="refillKey">
+          ~{{ approxWordsLeftToSend }} w
+        </v-ons-toolbar-button>
+      </div>
     </v-ons-toolbar>
     <div class="content" v-chat-scroll>
       <p class="searchContainer marginalizedContent">
@@ -29,7 +34,7 @@
       </div>
       <div class="marginalizedContent keyEmpty" v-if="keyEmpty">
         <div class="infoText">Your key is empty &ndash;<br>Please refill it to send more messages.</div>
-        <v-ons-button modifier="large">Refill 🔑</v-ons-button>
+        <v-ons-button modifier="large" @click="refillKey">Refill 🔑</v-ons-button>
       </div>
       <div class="buffer"></div>
     </div>
@@ -41,6 +46,8 @@
 </template>
 
 <script>
+const approxBytesPerWord = 5
+
 export default {
   name: 'conversation',
   data () {
@@ -61,6 +68,9 @@ export default {
     },
     keyEmpty () {
       return this.key.length === 0
+    },
+    approxWordsLeftToSend () {
+      return Math.round(this.key.length / approxBytesPerWord)
     }
   },
   methods: {
@@ -92,6 +102,9 @@ export default {
         sent: false
       })
       this.conversation.message = undefined
+    },
+    refillKey () {
+      this.$ons.notification.alert('TODO: Refill key')
     }
   }
 }
