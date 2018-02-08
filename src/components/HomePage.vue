@@ -2,7 +2,7 @@
   <v-ons-page>
     <v-ons-toolbar>
       <div class="left">
-        <v-ons-toolbar-button @click="">
+        <v-ons-toolbar-button @click="showSettingsPage">
           <v-ons-icon icon="ion-ios-gear, material:md-settings"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
@@ -33,11 +33,13 @@
       <div class="marginalizedContent infoText" v-if="filteredConversations.length <= 0">
         No conversations found
       </div>
-  </div>
+    </div>
   </v-ons-page>
 </template>
 
 <script>
+import Settings from './Settings'
+
 export default {
   name: 'home',
   data () {
@@ -74,6 +76,9 @@ export default {
     }
   },
   methods: {
+    showSettingsPage () {
+      this.$emit('push-page', Settings)
+    },
     weekDay (index) {
       let weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       return weekDays[index]
