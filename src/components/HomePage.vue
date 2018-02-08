@@ -49,26 +49,7 @@ export default {
     return {
       title: 'Conversations',
       searchText: '',
-      conversations: [
-        {
-          id: 1,
-          name: 'John Doe',
-          lastMessage: 'Wir können gsd bis vor die whg fahren mit dem auto, das wird super!',
-          lastTimestamp: 1517757771000
-        },
-        {
-          id: 2,
-          name: 'Aaron A. Aaronson',
-          lastMessage: 'Wenn du meinst, aber ich bin mir nicht sicher :/',
-          lastTimestamp: 1517864396599
-        },
-        {
-          id: 3,
-          name: 'Max Musterman',
-          lastMessage: 'Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊',
-          lastTimestamp: 1517324400000
-        }
-      ]
+      conversations: this.$store.state.global.conversations
     }
   },
   computed: {
