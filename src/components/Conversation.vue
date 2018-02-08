@@ -27,11 +27,15 @@
       <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">
         No messages found
       </div>
+      <div class="marginalizedContent keyEmpty" v-if="keyEmpty">
+        <div class="infoText">Your key is empty &ndash;<br>Please refill it to send more messages.</div>
+        <v-ons-button modifier="large">Refill 🔑</v-ons-button>
+      </div>
       <div class="buffer"></div>
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="conversation.message"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!conversation.message">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || keyEmpty">Send</v-ons-button>
     </v-ons-bottom-toolbar>
   </v-ons-page>
 </template>
@@ -42,7 +46,8 @@ export default {
   data () {
     return {
       conversation: this.$store.state.global.currentConversation,
-      searchText: ''
+      searchText: '',
+      key: [1, 2, 3]
     }
   },
   computed: {
@@ -50,6 +55,12 @@ export default {
       return this.conversation.messages
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((a, b) => a.timestamp - b.timestamp)
+    },
+    messageEmpty () {
+      return !this.conversation.message
+    },
+    keyEmpty () {
+      return this.key.length === 0
     }
   },
   methods: {
@@ -114,5 +125,12 @@ export default {
   ons-bottom-toolbar {
     padding: 5px;
     font-size: 0;
+  }
+  .keyEmpty {
+    text-align: center;
+    margin: 25px 0 15px;
+  }
+  .keyEmpty .infoText {
+    margin-bottom: 5px;
   }
 </style>
