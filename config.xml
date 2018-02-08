@@ -58,6 +58,6 @@
         <icon height="50" src="res/icon/ios/Icon-Small-50x50@1x.png" width="50" />
         <icon height="100" src="res/icon/ios/Icon-Small-50x50@2x.png" width="100" />
     </platform>
-    <engine name="android" spec="^7.0.0" />
     <engine name="ios" spec="^4.5.4" />
+    <engine name="android" spec="^7.0.0" />
 </widget>
