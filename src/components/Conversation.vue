@@ -26,7 +26,11 @@
       <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">
         No messages found
       </div>
+      <div class="buffer"></div>
     </div>
+    <v-ons-bottom-toolbar>
+      <textarea class="textarea" v-model="conversation.message"></textarea><v-ons-button modifier="quiet" class="sendButton" @click="sendMessage">Send</v-ons-button>
+    </v-ons-bottom-toolbar>
   </v-ons-page>
 </template>
 
@@ -57,6 +61,17 @@ export default {
         ('' + (timestampDate.getDate())).padStart(2, '0')
       const timeStr = ('' + (timestampDate.getHours())).padStart(2, '0') + ':' + ('' + (timestampDate.getMinutes())).padStart(2, '0')
       return [dateStr, timeStr].join('<br>')
+    },
+    sendMessage () {
+      // TODO: Implement send message feature
+      this.conversation.messages.push({
+        id: null,
+        senderId: -1,
+        text: this.conversation.message || '',
+        timestamp: Date.now(),
+        sent: false
+      })
+      this.conversation.message = undefined
     }
   }
 }
@@ -74,5 +89,22 @@ export default {
   }
   .list-item__icon {
     color: green;
+  }
+  .textarea {
+    width: 75%;
+    height: 100%;
+  }
+  .sendButton {
+    width: 25%;
+    height: 100%;
+    text-align: right;
+    padding: 0 8px 0 0;
+  }
+  .buffer {
+    width: 100%;
+    height: 15px;
+  }
+  ons-bottom-toolbar {
+    padding: 5px;
   }
 </style>
