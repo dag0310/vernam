@@ -33,6 +33,55 @@ export default new Vuex.Store({
                 text: 'We can drive right up to the flat, this is going to be amazing! :)',
                 timestamp: 1517757979000,
                 sent: true
+              },
+              {
+                id: 4,
+                senderId: 1,
+                text: 'Always blue! Always blue!',
+                timestamp: 1517767979000,
+                sent: true
+              },
+              {
+                id: 5,
+                senderId: 1,
+                text: 'Always blue! Always blue!',
+                timestamp: 1517777979000,
+                sent: true
+              },
+              {
+                id: 6,
+                senderId: 1,
+                text: 'Always blue! Always blue!',
+                timestamp: 1517787979000,
+                sent: true
+              },
+              {
+                id: 7,
+                senderId: 1,
+                text: 'Always blue! Always blue!',
+                timestamp: 1517797979000,
+                sent: true
+              },
+              {
+                id: 8,
+                senderId: 1,
+                text: 'Always blue! Always blue!',
+                timestamp: 1517807979000,
+                sent: true
+              },
+              {
+                id: 9,
+                senderId: 1,
+                text: 'Always blue! Always blue!',
+                timestamp: 1517817979000,
+                sent: true
+              },
+              {
+                id: 10,
+                senderId: -1,
+                text: 'Last!',
+                timestamp: 1517827979000,
+                sent: true
               }
             ]
           },
