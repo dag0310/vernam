@@ -19,7 +19,7 @@
           </div>
           <div class="right">
             <span class="list-item__label" v-html="formattedDateTime(message.timestamp)"></span>
-            <ons-icon icon="ion-ios-checkmark-empty" class="list-item__icon" v-if="message.sent"></ons-icon>
+            <ons-icon icon="ion-ios-checkmark-empty" class="list-item__icon" :style="{color: message.sent ? 'green' : 'transparent'}"></ons-icon>
           </div>
         </v-ons-list-item>
       </v-ons-list>
@@ -86,9 +86,6 @@ export default {
     text-align: right;
     overflow: visible;
     white-space: nowrap;
-  }
-  .list-item__icon {
-    color: green;
   }
   .textarea {
     width: 75%;
