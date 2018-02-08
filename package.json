@@ -19,6 +19,7 @@
     "cordova-plugin-whitelist": "^1.3.3",
     "onsenui": "~2.7.2",
     "vue": "^2.5.0",
+    "vue-chat-scroll": "^1.2.1",
     "vue-onsenui": "~2.3.0",
     "vuex": "^3.0.0"
   },

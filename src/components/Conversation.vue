@@ -6,7 +6,7 @@
       </div>
       <div class="center ellipsis">{{ conversation.name }}</div>
     </v-ons-toolbar>
-    <div class="content">
+    <div class="content" v-chat-scroll>
       <p class="searchContainer marginalizedContent">
         <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
