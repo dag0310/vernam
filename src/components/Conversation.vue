@@ -67,7 +67,7 @@ export default {
           const humanDate = this.humanDate(message.timestamp)
           message.dateText = humanDate.dateText
           message.timeText = humanDate.timeText
-          message.author = (message.senderId === -1) ? 'You' : 'They'
+          message.author = message.own ? 'You' : 'They'
           return message
         })
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
@@ -77,10 +77,10 @@ export default {
       return !this.conversation.message
     },
     keyEmpty () {
-      return this.conversation.key.length === 0
+      return this.conversation.ownKey.length === 0
     },
     approxWordsLeftToSend () {
-      return Math.round(this.conversation.key.length / approxBytesPerWord)
+      return Math.round(this.conversation.ownKey.length / approxBytesPerWord)
     }
   },
   methods: {
@@ -95,7 +95,7 @@ export default {
       // TODO: Implement send message feature
       this.conversation.messages.push({
         id: null,
-        senderId: -1,
+        own: true,
         text: this.conversation.message || '',
         timestamp: Date.now(),
         sent: false
