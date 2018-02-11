@@ -55,7 +55,7 @@ export default {
   name: 'conversation',
   data () {
     return {
-      conversation: this.$store.state.global.currentConversation,
+      conversation: this.$store.state.conversations.find(conversation => conversation.id === this.$store.state.currentConversationId),
       searchText: ''
     }
   },

@@ -50,7 +50,7 @@ export default {
     return {
       title: 'Conversations',
       searchText: '',
-      conversations: this.$store.state.global.conversations
+      conversations: this.$store.state.conversations
     }
   },
   computed: {
@@ -84,7 +84,7 @@ export default {
       this.$emit('push-page', Settings)
     },
     showConversationPage (conversation) {
-      this.$store.state.global.currentConversation = conversation
+      this.$store.state.currentConversationId = conversation.id
       this.$emit('push-page', Conversation)
     },
     deleteConversation (conversation) {

@@ -48,7 +48,7 @@ Vue.mixin({
 })
 
 Vue.http.options.root = 'http://localhost:5000'
-Vue.http.headers.common['Authorization'] = 'Basic ' + btoa(store.state.global.id + ':' + store.state.global.authToken)
+Vue.http.headers.common['Authorization'] = 'Basic ' + btoa(store.state.id + ':' + store.state.authToken)
 
 /* eslint-disable no-new */
 new Vue({
