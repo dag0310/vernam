@@ -6,6 +6,7 @@ import 'onsenui/css/onsen-css-components.css'
 import Vue from 'vue'
 import VueOnsen from 'vue-onsenui'
 import VueChatScroll from 'vue-chat-scroll'
+import VueResource from 'vue-resource'
 import store from './store'
 import App from './App'
 
@@ -13,6 +14,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueOnsen)
 Vue.use(VueChatScroll)
+Vue.use(VueResource)
 
 Vue.mixin({
   methods: {
@@ -44,6 +46,9 @@ Vue.mixin({
     }
   }
 })
+
+Vue.http.options.root = 'http://localhost:5000'
+Vue.http.headers.common['Authorization'] = 'Basic ' + btoa(store.state.global.id + ':' + store.state.global.authToken)
 
 /* eslint-disable no-new */
 new Vue({
