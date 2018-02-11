@@ -50,4 +50,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .clearfix {
+    clear: both;
+  }
 </style>

@@ -17,22 +17,21 @@
         <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
       </p>
-      <v-ons-list v-show="filteredMessages.length > 0">
-        <v-ons-list-item v-for="message in filteredMessages" :key="message.id">
-          <div class="center">
-            <span class="list-item__title ellipsis">{{ message.author }}:</span>
-            <span class="list-item__subtitle">{{ message.text }}</span>
-          </div>
-          <div class="right">
-            <span class="list-item__label">
-              {{ message.dateText }}<br>
-              {{ message.timeText }}
+      <div v-for="message in filteredMessages" :key="message.id">
+        <div class="card" :class="{ownMessage: message.own}">
+          <div class="card__content">
+            <span class="messageText">{{ message.text }}</span>
+            <br>
+            <span class="messageInfo">
+              <span class="messageInfoDate">{{ message.dateText }}, {{ message.timeText }}</span>
+              <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click="deleteMessage(message)"></ons-icon>
+              <ons-icon icon="ion-ios-checkmark-empty" class="list-item__icon" :style="{color: message.sent ? 'green' : 'transparent'}"></ons-icon>
             </span>
-            <ons-icon icon="ion-ios-checkmark-empty" class="list-item__icon" :style="{color: message.sent ? 'green' : 'transparent'}"></ons-icon>
-            <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click="deleteMessage(message)"></ons-icon>
+            <div class="clearfix"></div>
           </div>
-        </v-ons-list-item>
-      </v-ons-list>
+        </div>
+        <div class="clearfix"></div>
+      </div>
       <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">
         No messages found
       </div>
@@ -67,7 +66,6 @@ export default {
           const humanDate = this.humanDate(message.timestamp)
           message.dateText = humanDate.dateText
           message.timeText = humanDate.timeText
-          message.author = message.own ? 'You' : 'They'
           return message
         })
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
@@ -110,15 +108,19 @@ export default {
 </script>
 
 <style scoped>
-  .list-item__subtitle {
-    max-width: 180px;
+  .card {
+    max-width: 230px;
+    padding: 5px 10px;
     word-wrap: break-word;
   }
-  .list-item__label {
+  .ownMessage {
+    float: right;
+    background-color: rgba(54, 102, 205, 0.2);
+  }
+  .messageInfo {
     font-size: 10px;
-    text-align: right;
-    overflow: visible;
-    white-space: nowrap;
+    float: right;
+    color: rgba(0, 0, 0, 0.5);
   }
   .textarea {
     width: 75%;
