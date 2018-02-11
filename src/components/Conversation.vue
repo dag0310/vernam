@@ -90,15 +90,20 @@ export default {
       })
     },
     sendMessage () {
-      // TODO: Implement send message feature
-      this.conversation.messages.push({
-        id: null,
-        own: true,
-        text: this.conversation.message || '',
-        timestamp: Date.now(),
-        sent: false
+      const payload = this.conversation.message
+
+      this.$http.post('messages', {receiver: this.conversation.id, payload}).then(response => {
+        this.conversation.messages.push({
+          id: response.body.id,
+          own: true,
+          text: response.body.payload,
+          timestamp: response.body.timestamp,
+          sent: true
+        })
+        this.conversation.message = undefined
+      }, response => {
+        this.$ons.notification.alert('Message could not be sent!')
       })
-      this.conversation.message = undefined
     },
     refillKey () {
       this.$ons.notification.toast('TODO: Refill key', { timeout: 1000 })
