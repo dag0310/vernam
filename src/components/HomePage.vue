@@ -48,11 +48,13 @@ export default {
   name: 'home',
   data () {
     return {
-      searchText: '',
-      conversations: this.$store.state.conversations
+      searchText: ''
     }
   },
   computed: {
+    conversations () {
+      return this.$store.state.conversations
+    },
     conversationsWithLastMessage () {
       return this.conversations.map(conversation => {
         conversation.lastMessage = (conversation.messages.length > 0) ? conversation.messages.sort((a, b) => b.timestamp - a.timestamp)[0] : null
@@ -83,13 +85,13 @@ export default {
       this.$emit('push-page', Settings)
     },
     showConversationPage (conversation) {
-      this.$store.state.currentConversationId = conversation.id
+      this.$store.commit('setCurrentConversationId', conversation.id)
       this.$emit('push-page', Conversation)
     },
     deleteConversation (conversation) {
       this.$ons.openActionSheet({ buttons: ['Delete conversation', 'Cancel'], title: conversation.name, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
-          this.conversations.splice(this.conversations.findIndex(c => c === conversation), 1)
+          this.$store.commit('deleteConversation', conversation.id)
         }
       })
     }

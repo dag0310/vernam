@@ -42,7 +42,7 @@
       <div class="buffer"></div>
     </div>
     <v-ons-bottom-toolbar>
-      <textarea class="textarea" v-model="conversation.message"></textarea>
+      <textarea class="textarea" v-model="message"></textarea>
       <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || keyEmpty">Send</v-ons-button>
     </v-ons-bottom-toolbar>
   </v-ons-page>
@@ -55,11 +55,21 @@ export default {
   name: 'conversation',
   data () {
     return {
-      conversation: this.$store.state.conversations.find(conversation => conversation.id === this.$store.state.currentConversationId),
       searchText: ''
     }
   },
   computed: {
+    conversation () {
+      return this.$store.getters.currentConversation
+    },
+    message: {
+      get () {
+        return this.$store.getters.currentConversation.message
+      },
+      set (value) {
+        this.$store.commit('updateMessage', value)
+      }
+    },
     filteredMessages () {
       return this.conversation.messages
         .map(message => {
@@ -72,7 +82,7 @@ export default {
         .sort((a, b) => a.timestamp - b.timestamp)
     },
     messageEmpty () {
-      return !this.conversation.message
+      return !this.message
     },
     keyEmpty () {
       return this.conversation.ownKey.length === 0
@@ -85,12 +95,12 @@ export default {
     deleteMessage (message) {
       this.$ons.openActionSheet({ buttons: ['Delete message', 'Cancel'], title: message.text, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
-          this.conversation.messages.splice(this.conversation.messages.findIndex(m => m === message), 1)
+          this.$store.commit('deleteMessage', message.id)
         }
       })
     },
     sendMessage () {
-      const payload = this.conversation.message
+      const payload = this.message
 
       this.$http.post('messages', {receiver: this.conversation.id, payload}).then(response => {
         this.conversation.messages.push({
@@ -100,7 +110,7 @@ export default {
           timestamp: response.body.timestamp,
           sent: true
         })
-        this.conversation.message = undefined
+        this.message = ''
       }, response => {
         this.$ons.notification.alert('Message could not be sent!')
       })
