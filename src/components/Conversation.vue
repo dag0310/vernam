@@ -50,6 +50,7 @@
 
 <script>
 const approxBytesPerWord = 5
+const encoder = new TextEncoder('utf8')
 
 export default {
   name: 'conversation',
@@ -84,11 +85,17 @@ export default {
     messageEmpty () {
       return !this.message
     },
+    ownKey () {
+      return encoder.encode(atob(this.conversation.ownKey))
+    },
+    otherKey () {
+      return encoder.encode(atob(this.conversation.otherKey))
+    },
     keyEmpty () {
-      return this.conversation.ownKey.length === 0
+      return this.ownKey.length === 0
     },
     approxWordsLeftToSend () {
-      return Math.round(this.conversation.ownKey.length / approxBytesPerWord)
+      return Math.round(this.ownKey.length / approxBytesPerWord)
     }
   },
   methods: {
