@@ -4,7 +4,7 @@
       <div class="left">
         <v-ons-back-button>Back</v-ons-back-button>
       </div>
-      <div class="center">{{ title }}</div>
+      <div class="center">Settings</div>
     </v-ons-toolbar>
     <div class="content">
       <v-ons-list>
@@ -20,11 +20,6 @@
 
 <script>
 export default {
-  name: 'settings',
-  data () {
-    return {
-      title: 'Settings'
-    }
-  }
+  name: 'settings'
 }
 </script>

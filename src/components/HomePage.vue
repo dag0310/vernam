@@ -6,7 +6,7 @@
           <v-ons-icon icon="ion-ios-gear, material:md-settings"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
-      <div class="center">{{ title }}</div>
+      <div class="center">Conversations</div>
 <!--
       <div class="right">
         <v-ons-toolbar-button @click="">
@@ -48,7 +48,6 @@ export default {
   name: 'home',
   data () {
     return {
-      title: 'Conversations',
       searchText: '',
       conversations: this.$store.state.conversations
     }
