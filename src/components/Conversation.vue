@@ -35,21 +35,25 @@
       <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">
         No messages found
       </div>
-      <div class="marginalizedContent keyEmpty" v-if="keyEmpty">
-        <div class="infoText">Your key is empty &ndash;<br>Please refill it to send more messages.</div>
+      <div class="marginalizedContent keyRefillInfoBox" v-if="keyAlmostEmpty">
+        <div class="infoText">Your key is <span v-if="!keyEmpty">almost</span> empty &ndash;<br>Please refill it to send more messages.</div>
         <v-ons-button modifier="large" @click="refillKey">Refill 🔑</v-ons-button>
       </div>
       <div class="buffer"></div>
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || keyEmpty">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || keyEmpty || ownKeyLength <= 0">Send</v-ons-button>
     </v-ons-bottom-toolbar>
   </v-ons-page>
 </template>
 
 <script>
+import otpCrypto from 'otp-crypto'
+
 const approxBytesPerWord = 5
+const keyAlmostEmptyThreshold = 100
+const keyEmptyThreshold = 5
 const encoder = new TextEncoder('utf8')
 
 export default {
@@ -91,11 +95,23 @@ export default {
     otherKey () {
       return encoder.encode(atob(this.conversation.otherKey))
     },
+    keyAlmostEmpty () {
+      return this.ownKey.length < keyAlmostEmptyThreshold
+    },
     keyEmpty () {
-      return this.ownKey.length === 0
+      return this.ownKey.length < keyEmptyThreshold
+    },
+    otpCryptoResult () {
+      return otpCrypto.OtpCrypto.encrypt(this.message, this.ownKey)
+    },
+    ownKeyLength () {
+      if (this.otpCryptoResult === null) {
+        return 0
+      }
+      return this.otpCryptoResult.remainingKey.length
     },
     approxWordsLeftToSend () {
-      return Math.round(this.ownKey.length / approxBytesPerWord)
+      return Math.round(this.ownKeyLength / approxBytesPerWord)
     }
   },
   methods: {
@@ -107,19 +123,24 @@ export default {
       })
     },
     sendMessage () {
-      const payload = this.message
-
-      this.$http.post('messages', {receiver: this.conversation.id, payload}).then(response => {
+      if (this.otpCryptoResult === null) {
+        return
+      }
+      this.$http.post('messages', {
+        receiver: this.conversation.id,
+        payload: this.otpCryptoResult.base64Encrypted
+      }).then(response => {
         this.conversation.messages.push({
           id: response.body.id,
           own: true,
-          text: response.body.payload,
+          text: this.message,
           timestamp: response.body.timestamp,
           sent: true
         })
+        this.$store.commit('updateOwnKey', this.otpCryptoResult.remainingKey)
         this.message = ''
       }, response => {
-        this.$ons.notification.alert('Message could not be sent!')
+        this.$ons.notification.alert('Message could not be sent.')
       })
     },
     refillKey () {
@@ -162,11 +183,11 @@ export default {
     padding: 5px;
     font-size: 0;
   }
-  .keyEmpty {
+  .keyRefillInfoBox {
     text-align: center;
     margin: 25px 0 15px;
   }
-  .keyEmpty .infoText {
+  .keyRefillInfoBox .infoText {
     margin-bottom: 5px;
   }
 </style>

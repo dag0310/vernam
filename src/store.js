@@ -22,6 +22,12 @@ export default new Vuex.Store({
     },
     updateMessage (state, newValue) {
       this.getters.currentConversation.message = newValue
+    },
+    updateOwnKey (state, newValue) {
+      this.getters.currentConversation.ownKey = btoa(decoder.decode(newValue))
+    },
+    updateOtherKey (state, newValue) {
+      this.getters.currentConversation.otherKey = btoa(decoder.decode(newValue))
     }
   },
   getters: {
