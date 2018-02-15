@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
-const decoder = new TextDecoder('utf8')
+const decoder = new TextDecoder()
 
 Vue.use(Vuex)
 

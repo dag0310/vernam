@@ -54,7 +54,7 @@ import otpCrypto from 'otp-crypto'
 const approxBytesPerWord = 5
 const keyAlmostEmptyThreshold = 100
 const keyEmptyThreshold = 5
-const encoder = new TextEncoder('utf8')
+const encoder = new TextEncoder()
 
 export default {
   name: 'conversation',
