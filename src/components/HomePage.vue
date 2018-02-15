@@ -58,8 +58,11 @@ export default {
     conversationsWithLastMessage () {
       return this.conversations.map(conversation => {
         conversation.lastMessage = (conversation.messages.length > 0) ? conversation.messages.sort((a, b) => b.timestamp - a.timestamp)[0] : null
-        const humanDate = this.humanDate(conversation.lastMessage.timestamp)
-        conversation.lastMessage.dateText = humanDate.isToday ? humanDate.timeText : humanDate.dateText
+        if (conversation.lastMessage !== null) {
+          const humanDate = this.humanDate(conversation.lastMessage.timestamp)
+          conversation.lastMessage.dateText = humanDate.isToday ? humanDate.timeText : humanDate.dateText
+        }
+        
         return conversation
       })
     },
