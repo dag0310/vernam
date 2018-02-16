@@ -130,17 +130,18 @@ export default {
         receiver: this.conversation.id,
         payload: this.otpCryptoResult.base64Encrypted
       }).then(response => {
+        const message = response.body
         this.conversation.messages.push({
-          id: response.body.id,
+          id: message.id,
           own: true,
           text: this.message,
-          timestamp: response.body.timestamp,
+          timestamp: message.timestamp,
           sent: true
         })
         this.$store.commit('updateOwnKey', this.otpCryptoResult.remainingKey)
         this.message = ''
       }, response => {
-        this.$ons.notification.alert('Message could not be sent.')
+        this.$ons.notification.toast('Message could not be sent.')
       })
     },
     refillKey () {
