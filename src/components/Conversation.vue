@@ -17,7 +17,7 @@
         <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
       </p>
-      <div v-for="message in filteredMessages" :key="message.id">
+      <div v-for="message in filteredMessages" :key="(message.own ? 'own' : 'other') + '-' + message.id">
         <div class="card" :class="{ownMessage: message.own}">
           <div class="card__content">
             <span class="messageText">{{ message.text }}</span>
