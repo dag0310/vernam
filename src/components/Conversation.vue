@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import otpCrypto from 'otp-crypto'
+import OtpCrypto from 'otp-crypto'
 
 const approxBytesPerWord = 5
 const keyAlmostEmptyThreshold = 100
@@ -102,7 +102,7 @@ export default {
       return this.ownKey.length < keyEmptyThreshold
     },
     otpCryptoResult () {
-      return otpCrypto.OtpCrypto.encrypt(this.message, this.ownKey)
+      return OtpCrypto.encrypt(this.message, this.ownKey)
     },
     ownKeyLength () {
       if (this.otpCryptoResult === null) {
