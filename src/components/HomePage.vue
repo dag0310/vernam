@@ -62,7 +62,7 @@ export default {
           const humanDate = this.humanDate(conversation.lastMessage.timestamp)
           conversation.lastMessage.dateText = humanDate.isToday ? humanDate.timeText : humanDate.dateText
         }
-        
+
         return conversation
       })
     },
