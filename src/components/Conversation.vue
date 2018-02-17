@@ -141,7 +141,7 @@ export default {
         this.$store.commit('updateOwnKey', this.otpCryptoResult.remainingKey)
         this.message = ''
       }, response => {
-        this.$ons.notification.toast('Message could not be sent.')
+        this.$ons.notification.toast('Message could not be sent.', { timeout: 1000 })
       })
     },
     refillKey () {
