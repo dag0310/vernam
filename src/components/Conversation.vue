@@ -25,7 +25,6 @@
             <span class="messageInfo">
               <span class="messageInfoDate">{{ message.dateText }}, {{ message.timeText }}</span>
               <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click="deleteMessage(message)"></ons-icon>
-              <ons-icon icon="ion-ios-checkmark-empty" class="list-item__icon" :style="{color: message.sent ? 'green' : 'transparent'}"></ons-icon>
             </span>
             <div class="clearfix"></div>
           </div>
@@ -132,8 +131,7 @@ export default {
           id: message.id,
           own: true,
           text: this.message,
-          timestamp: message.timestamp,
-          sent: true
+          timestamp: message.timestamp
         })
         this.$store.commit('updateOwnKey', this.otpCryptoResult.remainingKey)
         this.message = ''

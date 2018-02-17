@@ -63,71 +63,61 @@ export default new Vuex.Store({
             id: 1,
             own: false,
             text: 'Hi Daniel!',
-            timestamp: 1517757771000,
-            sent: true
+            timestamp: 1517757771000
           },
           {
             id: 2,
             own: true,
             text: 'Oh hi, John!',
-            timestamp: 1517757775000,
-            sent: true
+            timestamp: 1517757775000
           },
           {
             id: 3,
             own: false,
             text: 'We can drive right up to the flat, this is going to be amazing! :)',
-            timestamp: 1517757979000,
-            sent: true
+            timestamp: 1517757979000
           },
           {
             id: 4,
             own: false,
             text: 'Always blue! Always blue!',
-            timestamp: 1517767979000,
-            sent: true
+            timestamp: 1517767979000
           },
           {
             id: 5,
             own: false,
             text: 'Always blue! Always blue!',
-            timestamp: 1517777979000,
-            sent: true
+            timestamp: 1517777979000
           },
           {
             id: 6,
             own: false,
             text: 'Always blue! Always blue!',
-            timestamp: 1517787979000,
-            sent: true
+            timestamp: 1517787979000
           },
           {
             id: 7,
             own: false,
             text: 'Always blue! Always blue!',
-            timestamp: 1517797979000,
-            sent: true
+            timestamp: 1517797979000
           },
           {
             id: 8,
             own: false,
             text: 'Always blue! Always blue!',
-            timestamp: 1517807979000,
-            sent: true
+            timestamp: 1517807979000
           },
           {
             id: 9,
             own: false,
             text: 'Always blue! Always blue!',
-            timestamp: 1517817979000,
-            sent: true
+            timestamp: 1517817979000
           },
           {
             id: 10,
             own: true,
             text: 'Last!',
-            timestamp: 1517827979000,
-            sent: true
+            timestamp: 1517827979000
           }
         ],
         message: '',
@@ -143,8 +133,7 @@ export default new Vuex.Store({
             id: 1,
             own: false,
             text: 'Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊 Ok 😊',
-            timestamp: 1517324400000,
-            sent: true
+            timestamp: 1517324400000
           }
         ],
         message: '',
@@ -160,8 +149,7 @@ export default new Vuex.Store({
             id: 1,
             own: false,
             text: 'if you say so, i am not so sure though :/',
-            timestamp: 1517864396599,
-            sent: true
+            timestamp: 1517864396599
           }
         ],
         message: '',

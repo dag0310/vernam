@@ -34,8 +34,7 @@ export default {
                 id: message.id,
                 own: false,
                 text: otpCryptoResult.plaintextDecrypted,
-                timestamp: message.timestamp,
-                sent: true
+                timestamp: message.timestamp
               })
               this.$store.commit('updateOtherKey', {
                 id: conversation.id,
