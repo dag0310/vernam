@@ -47,7 +47,7 @@ Vue.mixin({
   }
 })
 
-Vue.http.options.root = 'http://localhost:5000'
+Vue.http.options.root = 'https://vernam.herokuapp.com'
 Vue.http.headers.common['Authorization'] = 'Basic ' + btoa(store.state.id + ':' + store.state.authToken)
 
 /* eslint-disable no-new */
