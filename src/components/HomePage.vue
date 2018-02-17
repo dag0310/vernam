@@ -1,5 +1,5 @@
 <template>
-  <v-ons-page>
+  <v-ons-page id="home">
     <v-ons-toolbar>
       <div class="left">
         <v-ons-toolbar-button @click="showSettingsPage">
@@ -52,6 +52,14 @@ export default {
     return {
       searchText: ''
     }
+  },
+  created () {
+    const self = this
+    document.addEventListener('show', function (event) {
+      if (event.target.matches('#home')) {
+        self.$store.commit('setCurrentConversationId', null)
+      }
+    }, false)
   },
   computed: {
     conversations () {
