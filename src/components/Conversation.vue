@@ -92,9 +92,6 @@ export default {
     ownKey () {
       return encoder.encode(atob(this.conversation.ownKey))
     },
-    otherKey () {
-      return encoder.encode(atob(this.conversation.otherKey))
-    },
     keyAlmostEmpty () {
       return this.ownKey.length < keyAlmostEmptyThreshold
     },

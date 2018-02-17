@@ -7,12 +7,67 @@
 
 <script>
 import HomePage from './components/HomePage'
+import OtpCrypto from 'otp-crypto'
+
+const pollMessagesIntervalInMs = 1000
+const encoder = new TextEncoder()
 
 export default {
   name: 'app',
+  created () {
+    const pollMessages = () => {
+      this.$http.get('messages').then(response => {
+        let newMessages = false
+
+        this.conversations.forEach(conversation => {
+          const messages = response.body
+          messages
+            .filter(message => message.sender === conversation.id)
+            .forEach(message => {
+              this.$http.delete('messages/' + message.id)
+
+              if (conversation.messages.some(m => m.id === message.id)) {
+                return
+              }
+
+              newMessages = true
+              const otpCryptoResult = OtpCrypto.decrypt(message.payload, this.otherKey(conversation))
+              conversation.messages.push({
+                id: message.id,
+                own: false,
+                text: otpCryptoResult.plaintextDecrypted,
+                timestamp: message.timestamp,
+                sent: true
+              })
+              this.$store.commit('updateOtherKey', {
+                id: conversation.id,
+                otherKey: otpCryptoResult.remainingKey
+              })
+            })
+        })
+
+        if (newMessages) {
+          this.$ons.notification.toast('New messages!', { timeout: 1000 })
+        }
+      }).then(() => {
+        setTimeout(pollMessages, pollMessagesIntervalInMs)
+      })
+    }
+    pollMessages()
+  },
   data () {
     return {
       pageStack: [HomePage]
+    }
+  },
+  computed: {
+    conversations () {
+      return this.$store.state.conversations
+    }
+  },
+  methods: {
+    otherKey (conversation) {
+      return encoder.encode(atob(conversation.otherKey))
     }
   }
 }

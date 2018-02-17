@@ -27,7 +27,8 @@ export default new Vuex.Store({
       this.getters.currentConversation.ownKey = btoa(decoder.decode(newValue))
     },
     updateOtherKey (state, newValue) {
-      this.getters.currentConversation.otherKey = btoa(decoder.decode(newValue))
+      const idx = state.conversations.findIndex(conversation => conversation.id === newValue.id)
+      state.conversations[idx].otherKey = btoa(decoder.decode(newValue.otherKey))
     }
   },
   getters: {
