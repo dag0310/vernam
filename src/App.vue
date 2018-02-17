@@ -28,7 +28,9 @@ export default {
                 return
               }
 
-              this.$store.commit('setNewMessagesTrue', conversation.id)
+              if (conversation.id !== this.$store.state.currentConversationId) {
+                this.$store.commit('setNewMessagesTrue', conversation.id)
+              }
               const otpCryptoResult = OtpCrypto.decrypt(message.payload, this.otherKey(conversation))
               conversation.messages.push({
                 id: message.id,
