@@ -10,7 +10,12 @@
       <v-ons-list>
         <v-ons-list-item>
           <div class="center">
-            (c) 2018 Vernam, Daniel Geymayer
+            © 2018 Vernam, Daniel Geymayer
+          </div>
+        </v-ons-list-item>
+        <v-ons-list-item>
+          <div class="center">
+            <v-ons-button modifier="large" @click="resetAppData()">Reset app data</v-ons-button>
           </div>
         </v-ons-list-item>
       </v-ons-list>
@@ -20,6 +25,16 @@
 
 <script>
 export default {
-  name: 'settings'
+  name: 'settings',
+  methods: {
+    resetAppData () {
+      this.$ons.openActionSheet({ buttons: ['Reset app data', 'Cancel'], title: 'This will also delete all your keys.', cancelable: true, destructive: 0 }).then(response => {
+        if (response === 0) {
+          window.localStorage.clear()
+          window.location.reload()
+        }
+      })
+    }
+  }
 }
 </script>
