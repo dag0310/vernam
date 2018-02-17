@@ -23,8 +23,10 @@
       <v-ons-list v-show="filteredConversations.length > 0">
         <v-ons-list-item v-for="conversation in filteredConversations" :key="conversation.id" tappable @click="showConversationPage(conversation)">
           <div class="center">
-            <span class="list-item__title ellipsis">{{ conversation.name }}</span>
-            <span class="list-item__subtitle ellipsis">{{ conversation.lastMessage ? conversation.lastMessage.text : '' }}</span>
+            <span class="list-item__title ellipsis" :class="{bold: conversation.newMessages}">{{ conversation.name }}</span>
+            <span class="list-item__subtitle ellipsis" :class="{bold: conversation.newMessages}">
+              {{ conversation.lastMessage ? conversation.lastMessage.text : '' }}
+            </span>
           </div>
           <div class="right">
             <span class="list-item__label">{{ conversation.lastMessage ? conversation.lastMessage.dateText : '' }}</span>
@@ -88,6 +90,7 @@ export default {
       this.$emit('push-page', Settings)
     },
     showConversationPage (conversation) {
+      this.$store.commit('setNewMessagesFalse', conversation.id)
       this.$store.commit('setCurrentConversationId', conversation.id)
       this.$emit('push-page', Conversation)
     },

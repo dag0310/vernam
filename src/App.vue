@@ -17,8 +17,6 @@ export default {
   created () {
     const pollMessages = () => {
       this.$http.get('messages').then(response => {
-        let newMessages = false
-
         this.conversations.forEach(conversation => {
           const messages = response.body
           messages
@@ -30,7 +28,7 @@ export default {
                 return
               }
 
-              newMessages = true
+              this.$store.commit('setNewMessagesTrue', conversation.id)
               const otpCryptoResult = OtpCrypto.decrypt(message.payload, this.otherKey(conversation))
               conversation.messages.push({
                 id: message.id,
@@ -45,10 +43,6 @@ export default {
               })
             })
         })
-
-        if (newMessages) {
-          this.$ons.notification.toast('New messages!', { timeout: 1000 })
-        }
       }).then(() => {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
       })
@@ -104,6 +98,9 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .bold {
+    font-weight: bold;
   }
   .clearfix {
     clear: both;

@@ -29,6 +29,14 @@ export default new Vuex.Store({
     updateOtherKey (state, newValue) {
       const idx = state.conversations.findIndex(conversation => conversation.id === newValue.id)
       state.conversations[idx].otherKey = btoa(decoder.decode(newValue.otherKey))
+    },
+    setNewMessagesTrue (state, id) {
+      const idx = state.conversations.findIndex(conversation => conversation.id === id)
+      state.conversations[idx].newMessages = true
+    },
+    setNewMessagesFalse (state, id) {
+      const idx = state.conversations.findIndex(conversation => conversation.id === id)
+      state.conversations[idx].newMessages = false
     }
   },
   getters: {
@@ -43,6 +51,7 @@ export default new Vuex.Store({
         name: 'Daniel Geymayer',
         messages: [],
         message: '',
+        newMessages: false,
         ownKey: btoa(decoder.decode(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]))),
         otherKey: btoa(decoder.decode(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5])))
       },
@@ -122,6 +131,7 @@ export default new Vuex.Store({
           }
         ],
         message: '',
+        newMessages: false,
         ownKey: btoa(decoder.decode(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]))),
         otherKey: btoa(decoder.decode(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1])))
       },
@@ -138,6 +148,7 @@ export default new Vuex.Store({
           }
         ],
         message: '',
+        newMessages: false,
         ownKey: btoa(decoder.decode(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1]))),
         otherKey: btoa(decoder.decode(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5])))
       },
@@ -154,6 +165,7 @@ export default new Vuex.Store({
           }
         ],
         message: '',
+        newMessages: false,
         ownKey: btoa(decoder.decode(Uint8Array.from([]))),
         otherKey: btoa(decoder.decode(Uint8Array.from([])))
       }
