@@ -7,13 +7,11 @@
         </v-ons-toolbar-button>
       </div>
       <div class="center">Conversations</div>
-<!--
       <div class="right">
         <v-ons-toolbar-button @click="">
-          <v-ons-icon icon="ion-ios-compose-outline"></v-ons-icon>
+          <v-ons-icon icon="ion-ios-compose-outline" @click="showNewConversationPage"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
--->
     </v-ons-toolbar>
     <div class="content">
       <p class="searchContainer marginalizedContent">
@@ -45,6 +43,7 @@
 <script>
 import Settings from './Settings'
 import Conversation from './Conversation'
+import NewConversation from './NewConversation'
 
 export default {
   name: 'home',
@@ -105,6 +104,9 @@ export default {
     },
     showSettingsPage () {
       this.$emit('push-page', Settings)
+    },
+    showNewConversationPage () {
+      this.$emit('push-page', NewConversation)
     },
     showConversationPage (conversation) {
       this.$store.commit('setNewMessagesFalse', conversation.id)

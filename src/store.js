@@ -43,6 +43,9 @@ export default new Vuex.Store({
     setNewMessagesFalse (state, id) {
       const idx = state.conversations.findIndex(conversation => conversation.id === id)
       state.conversations[idx].newMessages = false
+    },
+    createConversation (state, conversation) {
+      state.conversations.push(conversation)
     }
   },
   getters: {
