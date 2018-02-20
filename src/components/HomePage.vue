@@ -25,11 +25,11 @@
           <div class="center">
             <span class="list-item__title ellipsis" :class="{bold: conversation.newMessages}">{{ conversation.name }}</span>
             <span class="list-item__subtitle ellipsis" :class="{bold: conversation.newMessages}">
-              {{ conversation.lastMessage ? conversation.lastMessage.text : '' }}
+              {{ lastMessageText(conversation) }}
             </span>
           </div>
           <div class="right">
-            <span class="list-item__label">{{ conversation.lastMessage ? conversation.lastMessage.dateText : '' }}</span>
+            <span class="list-item__label">{{ lastMessageDateText(conversation) }}</span>
             <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click.stop="deleteConversation(conversation)"></ons-icon>
             <ons-icon icon="ion-ios-arrow-forward" class="list-item__icon"></ons-icon>
           </div>
@@ -65,35 +65,44 @@ export default {
     conversations () {
       return this.$store.state.conversations
     },
-    conversationsWithLastMessage () {
-      return this.conversations.map(conversation => {
-        conversation.lastMessage = (conversation.messages.length > 0) ? conversation.messages.sort((a, b) => b.timestamp - a.timestamp)[0] : null
-        if (conversation.lastMessage !== null) {
-          const humanDate = this.humanDate(conversation.lastMessage.timestamp)
-          conversation.lastMessage.dateText = humanDate.isToday ? humanDate.timeText : humanDate.dateText
-        }
-
-        return conversation
-      })
-    },
     filteredConversations () {
-      return this.conversationsWithLastMessage
+      return this.conversations
         .filter(conversation => conversation.name.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((a, b) => {
-          if (!a.lastMessage && !b.lastMessage) {
+          const lastMessageA = this.lastMessage(a)
+          const lastMessageB = this.lastMessage(b)
+
+          if (!lastMessageA && !lastMessageB) {
             return 0
           }
-          if (!a.lastMessage) {
+          if (!lastMessageA) {
             return 1
           }
-          if (!b.lastMessage) {
+          if (!lastMessageB) {
             return -1
           }
-          return b.lastMessage.timestamp - a.lastMessage.timestamp
+
+          return lastMessageB.timestamp - lastMessageA.timestamp
         })
     }
   },
   methods: {
+    lastMessage (conversation) {
+      const messages = JSON.parse(JSON.stringify(conversation.messages)) // Avoids infinite loop in render function
+      return (messages.length > 0) ? messages.sort((a, b) => b.timestamp - a.timestamp)[0] : null
+    },
+    lastMessageText (conversation) {
+      const lastMessage = this.lastMessage(conversation)
+      return lastMessage ? lastMessage.text : ''
+    },
+    lastMessageDateText (conversation) {
+      const lastMessage = this.lastMessage(conversation)
+      if (lastMessage !== null) {
+        const humanDate = this.humanDate(lastMessage.timestamp)
+        return humanDate.isToday ? humanDate.timeText : humanDate.dateText
+      }
+      return ''
+    },
     showSettingsPage () {
       this.$emit('push-page', Settings)
     },
