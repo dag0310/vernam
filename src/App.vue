@@ -18,13 +18,13 @@ export default {
   created () {
     const pollMessages = () => {
       this.$http.get('messages').then(response => {
+        const messages = response.body
         this.conversations.forEach(conversation => {
-          const messages = response.body
           messages
             .filter(message => message.sender === conversation.id)
             .forEach(message => {
               this.$http.delete('messages/' + message.id)
-
+            
               if (conversation.messages.some(m => m.id === message.id)) {
                 return
               }

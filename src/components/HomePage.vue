@@ -9,7 +9,7 @@
       <div class="center">Conversations</div>
       <div class="right">
         <v-ons-toolbar-button @click="">
-          <v-ons-icon icon="ion-ios-compose-outline" @click="showNewConversationPage"></v-ons-icon>
+          <v-ons-icon icon="ion-ios-compose-outline" @click="showContactPicker"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
@@ -43,7 +43,6 @@
 <script>
 import Settings from './Settings'
 import Conversation from './Conversation'
-import NewConversation from './NewConversation'
 
 export default {
   name: 'home',
@@ -105,9 +104,6 @@ export default {
     showSettingsPage () {
       this.$emit('push-page', Settings)
     },
-    showNewConversationPage () {
-      this.$emit('push-page', NewConversation)
-    },
     showConversationPage (conversation) {
       this.$store.commit('setNewMessagesFalse', conversation.id)
       this.$store.commit('setCurrentConversationId', conversation.id)
@@ -119,6 +115,52 @@ export default {
           this.$store.commit('deleteConversation', conversation.id)
         }
       })
+    },
+    normalizeNumber (rawNumber) {
+      // TODO: Implement this
+      return rawNumber
+    },
+    showContactPicker () {
+      if (!navigator.contacts) {
+        this.$ons.notification.toast('No contacts can be queried.', { timeout: 1000 })
+        return
+      }
+      navigator.contacts.pickContact(contact => {
+        if (contact.phoneNumbers.length <= 0) {
+          this.showContactPicker()
+          return
+        }
+        if (contact.phoneNumbers.length === 1) {
+          this.createConversation(contact.displayName, contact.phoneNumbers[0].value)
+          return
+        }
+        const buttons = contact.phoneNumbers.map(phoneNumber => phoneNumber.type.replace(/(^|\s)\S/g, l => l.toUpperCase()) + ' (' + this.normalizeNumber(phoneNumber.value) + ')')
+        buttons.push('Cancel')
+        this.$ons.openActionSheet({ buttons, title: 'Choose a number', cancelable: true }).then(numberIdx => {
+          if (numberIdx === buttons.length) {
+            return
+          }
+          this.createConversation(contact.displayName, contact.phoneNumbers[numberIdx].value)
+        })
+      }, err => {
+        console.error('ERROR: ' + err)
+      })
+    },
+    createConversation (name, rawNumber) {
+      const normalizedNumber = this.normalizeNumber(rawNumber)
+      if (this.$store.state.conversations.every(conversation => conversation.id !== normalizedNumber)) {
+        this.$store.commit('createConversation', {
+          id: normalizedNumber,
+          name: name,
+          messages: [],
+          message: '',
+          newMessages: false,
+          ownKey: '',
+          otherKey: ''
+        })
+      }
+      this.$store.commit('setCurrentConversationId', normalizedNumber)
+      this.$emit('push-page', Conversation)
     }
   }
 }
