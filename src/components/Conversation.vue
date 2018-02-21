@@ -53,7 +53,6 @@ import OtpCrypto from 'otp-crypto'
 const approxBytesPerWord = 5
 const keyAlmostEmptyThreshold = 100
 const keyEmptyThreshold = 5
-const encoder = new TextEncoder()
 
 export default {
   name: 'conversation',
@@ -89,7 +88,7 @@ export default {
       return !this.message
     },
     ownKey () {
-      return encoder.encode(atob(this.conversation.ownKey))
+      return this.base64ToBytes(this.conversation.ownKey)
     },
     keyAlmostEmpty () {
       return this.ownKey.length < keyAlmostEmptyThreshold
@@ -133,7 +132,7 @@ export default {
           text: this.message,
           timestamp: message.timestamp
         })
-        this.$store.commit('updateOwnKey', this.otpCryptoResult.remainingKey)
+        this.$store.commit('updateOwnKey', this.bytesToBase64(this.otpCryptoResult.remainingKey))
         this.message = ''
       }, response => {
         this.$ons.notification.toast('Message could not be sent.', { timeout: 1000 })

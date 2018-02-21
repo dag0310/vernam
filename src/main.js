@@ -16,6 +16,9 @@ Vue.use(VueOnsen)
 Vue.use(VueChatScroll)
 Vue.use(VueResource)
 
+const encoder = new TextEncoder()
+const decoder = new TextDecoder()
+
 Vue.mixin({
   methods: {
     humanDate (timestamp) {
@@ -41,6 +44,12 @@ Vue.mixin({
       }
 
       return { isToday, dateText, timeText }
+    },
+    base64ToBytes (base64) {
+      return encoder.encode(atob(base64))
+    },
+    bytesToBase64 (bytes) {
+      return btoa(decoder.decode(bytes))
     }
   }
 })

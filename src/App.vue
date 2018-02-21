@@ -11,7 +11,6 @@ import HomePage from './components/HomePage'
 import OtpCrypto from 'otp-crypto'
 
 const pollMessagesIntervalInMs = 1000
-const encoder = new TextEncoder()
 
 export default {
   name: 'app',
@@ -24,12 +23,12 @@ export default {
             .filter(message => message.sender === conversation.id)
             .forEach(message => {
               this.$http.delete('messages/' + message.id)
-            
+
               if (conversation.messages.some(m => m.id === message.id)) {
                 return
               }
 
-              const otpCryptoResult = OtpCrypto.decrypt(message.payload, this.otherKey(conversation))
+              const otpCryptoResult = OtpCrypto.decrypt(message.payload, this.base64ToBytes(conversation.otherKey))
               if (otpCryptoResult === null) {
                 return
               }
@@ -46,7 +45,7 @@ export default {
               })
               this.$store.commit('updateOtherKey', {
                 id: conversation.id,
-                otherKey: otpCryptoResult.remainingKey
+                otherKey: this.bytesToBase64(otpCryptoResult.remainingKey)
               })
             })
         })
@@ -64,11 +63,6 @@ export default {
   computed: {
     conversations () {
       return this.$store.state.conversations
-    }
-  },
-  methods: {
-    otherKey (conversation) {
-      return encoder.encode(atob(conversation.otherKey))
     }
   }
 }
