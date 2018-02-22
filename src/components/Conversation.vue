@@ -100,7 +100,7 @@ export default {
       return OtpCrypto.encrypt(this.message, this.ownKey)
     },
     ownKeyLength () {
-      if (this.otpCryptoResult === null) {
+      if (!this.otpCryptoResult.isKeyLongEnough) {
         return 0
       }
       return this.otpCryptoResult.remainingKey.length
@@ -118,7 +118,7 @@ export default {
       })
     },
     sendMessage () {
-      if (this.otpCryptoResult === null) {
+      if (!this.otpCryptoResult.isKeyLongEnough) {
         return
       }
       this.$http.post('messages', {

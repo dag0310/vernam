@@ -29,7 +29,7 @@ export default {
               }
 
               const otpCryptoResult = OtpCrypto.decrypt(message.payload, this.base64ToBytes(conversation.otherKey))
-              if (otpCryptoResult === null) {
+              if (!otpCryptoResult.isKeyLongEnough) {
                 return
               }
 
