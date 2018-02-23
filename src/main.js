@@ -16,10 +16,12 @@ Vue.use(VueOnsen)
 Vue.use(VueChatScroll)
 Vue.use(VueResource)
 
-const encoder = new TextEncoder()
-const decoder = new TextDecoder()
-
 Vue.mixin({
+  data () {
+    return {
+      AUTH_SECRET: 'VERNAM'
+    }
+  },
   methods: {
     humanDate (timestamp) {
       const date = new Date(timestamp)
@@ -44,18 +46,11 @@ Vue.mixin({
       }
 
       return { isToday, dateText, timeText }
-    },
-    base64ToBytes (base64) {
-      return encoder.encode(atob(base64))
-    },
-    bytesToBase64 (bytes) {
-      return btoa(decoder.decode(bytes))
     }
   }
 })
 
 Vue.http.options.root = 'https://vernam.herokuapp.com'
-Vue.http.headers.common['Authorization'] = 'Basic ' + btoa(store.state.id + ':' + store.state.authToken)
 
 /* eslint-disable no-new */
 new Vue({

@@ -88,7 +88,7 @@ export default {
       return !this.message
     },
     ownKey () {
-      return this.base64ToBytes(this.conversation.ownKey)
+      return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.ownKey)
     },
     keyAlmostEmpty () {
       return this.ownKey.length < keyAlmostEmptyThreshold
@@ -97,7 +97,7 @@ export default {
       return this.ownKey.length < keyEmptyThreshold
     },
     otpCryptoResult () {
-      return OtpCrypto.encrypt(this.message, this.ownKey)
+      return OtpCrypto.encrypt(this.AUTH_SECRET + this.message, this.ownKey)
     },
     ownKeyLength () {
       if (!this.otpCryptoResult.isKeyLongEnough) {
@@ -122,17 +122,18 @@ export default {
         return
       }
       this.$http.post('messages', {
+        sender: this.$store.state.id,
         receiver: this.conversation.id,
         payload: this.otpCryptoResult.base64Encrypted
       }).then(response => {
         const message = response.body
         this.conversation.messages.push({
-          id: message.id,
+          id: message.sender + message.timestamp,
           own: true,
           text: this.message,
           timestamp: message.timestamp
         })
-        this.$store.commit('updateOwnKey', this.bytesToBase64(this.otpCryptoResult.remainingKey))
+        this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(this.otpCryptoResult.remainingKey))
         this.message = ''
       }, response => {
         this.$ons.notification.toast('Message could not be sent.', { timeout: 1000 })

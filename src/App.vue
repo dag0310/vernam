@@ -15,37 +15,41 @@ const pollMessagesIntervalInMs = 1000
 export default {
   name: 'app',
   created () {
+    const authSecretLength = this.AUTH_SECRET.length
     const pollMessages = () => {
-      this.$http.get('messages').then(response => {
+      this.$http.get('messages/' + this.$store.state.id).then(response => {
         const messages = response.body
         this.conversations.forEach(conversation => {
           messages
             .filter(message => message.sender === conversation.id)
             .forEach(message => {
-              this.$http.delete('messages/' + message.id)
+              const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(conversation.otherKey)
+              const base64KeyUriEncoded = encodeURIComponent(OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytes.slice(0, authSecretLength)))
+              const polledMessageId = message.sender + message.timestamp
 
-              if (conversation.messages.some(m => m.id === message.id)) {
+              this.$http.delete('messages/' + message.sender + '/' + message.timestamp + '/' + base64KeyUriEncoded)
+
+              if (conversation.messages.some(message => message.id === polledMessageId)) {
                 return
               }
 
-              const otpCryptoResult = OtpCrypto.decrypt(message.payload, this.base64ToBytes(conversation.otherKey))
-              if (!otpCryptoResult.isKeyLongEnough) {
+              const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
+              if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.slice(0, authSecretLength) !== this.AUTH_SECRET) {
                 return
               }
 
               if (conversation.id !== this.$store.state.currentConversationId) {
                 this.$store.commit('setNewMessagesTrue', conversation.id)
               }
-
               conversation.messages.push({
-                id: message.id,
+                id: polledMessageId,
                 own: false,
-                text: otpCryptoResult.plaintextDecrypted,
+                text: otpCryptoResult.plaintextDecrypted.slice(authSecretLength),
                 timestamp: message.timestamp
               })
               this.$store.commit('updateOtherKey', {
                 id: conversation.id,
-                otherKey: this.bytesToBase64(otpCryptoResult.remainingKey)
+                otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
               })
             })
         })
