@@ -30,13 +30,18 @@ export default {
 
               this.$http.delete('messages/' + message.sender + '/' + message.timestamp + '/' + base64KeyUriEncoded)
 
-              if (conversation.messages.some(message => message.id === polledMessageId)) {
-                return
-              }
-
               const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
               if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.slice(0, authSecretLength) !== this.AUTH_SECRET) {
                 messageIdsToDismiss[polledMessageId] = true
+                return
+              }
+
+              this.$store.commit('updateOtherKey', {
+                id: conversation.id,
+                otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
+              })
+
+              if (conversation.messages.some(message => message.id === polledMessageId)) {
                 return
               }
 
@@ -48,10 +53,6 @@ export default {
                 own: false,
                 text: otpCryptoResult.plaintextDecrypted.slice(authSecretLength),
                 timestamp: message.timestamp
-              })
-              this.$store.commit('updateOtherKey', {
-                id: conversation.id,
-                otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
               })
             })
         })
