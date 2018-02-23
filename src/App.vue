@@ -11,50 +11,17 @@ import HomePage from './components/HomePage'
 import OtpCrypto from 'otp-crypto'
 
 const pollMessagesIntervalInMs = 1000
+const messageIdsToDismiss = {}
 
 export default {
   name: 'app',
   created () {
-    const messageIdsToDismiss = {}
-    const authSecretLength = this.AUTH_SECRET.length
     const pollMessages = () => {
       this.$http.get('messages/' + this.$store.state.id).then(response => {
         const messages = response.body
         this.conversations.forEach(conversation => {
-          messages
-            .filter(message => message.sender === conversation.id && !messageIdsToDismiss[message.sender + message.timestamp])
-            .forEach(message => {
-              const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(conversation.otherKey)
-              const base64KeyUriEncoded = encodeURIComponent(OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytes.slice(0, authSecretLength)))
-              const polledMessageId = message.sender + message.timestamp
-
-              this.$http.delete('messages/' + message.sender + '/' + message.timestamp + '/' + base64KeyUriEncoded)
-
-              const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
-              if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.slice(0, authSecretLength) !== this.AUTH_SECRET) {
-                messageIdsToDismiss[polledMessageId] = true
-                return
-              }
-
-              this.$store.commit('updateOtherKey', {
-                id: conversation.id,
-                otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
-              })
-
-              if (conversation.messages.some(message => message.id === polledMessageId)) {
-                return
-              }
-
-              if (conversation.id !== this.$store.state.currentConversationId) {
-                this.$store.commit('setNewMessagesTrue', conversation.id)
-              }
-              conversation.messages.push({
-                id: polledMessageId,
-                own: false,
-                text: otpCryptoResult.plaintextDecrypted.slice(authSecretLength),
-                timestamp: message.timestamp
-              })
-            })
+          const conversationMessages = messages.filter(message => message.sender === conversation.id && !messageIdsToDismiss[message.sender + message.timestamp])
+          this.pollMessage(conversation, conversationMessages, 0)
         })
       }).then(() => {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
@@ -70,6 +37,47 @@ export default {
   computed: {
     conversations () {
       return this.$store.state.conversations
+    }
+  },
+  methods: {
+    pollMessage (conversation, conversationMessages, idx) {
+      if (idx >= conversationMessages.length) {
+        return
+      }
+      const message = conversationMessages[idx]
+      const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(conversation.otherKey)
+      const base64KeyUriEncoded = encodeURIComponent(OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytes.slice(0, this.AUTH_SECRET.length)))
+      const polledMessageId = message.sender + message.timestamp
+
+      this.$http.delete('messages/' + message.sender + '/' + message.timestamp + '/' + base64KeyUriEncoded).then(() => {
+        const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
+        if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.slice(0, this.AUTH_SECRET.length) !== this.AUTH_SECRET) {
+          messageIdsToDismiss[polledMessageId] = true
+          this.pollMessage(conversation, conversationMessages, idx + 1)
+          return
+        }
+
+        this.$store.commit('updateOtherKey', {
+          id: conversation.id,
+          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
+        })
+
+        if (conversation.messages.some(message => message.id === polledMessageId)) {
+          this.pollMessage(conversation, conversationMessages, idx + 1)
+          return
+        }
+
+        if (conversation.id !== this.$store.state.currentConversationId) {
+          this.$store.commit('setNewMessagesTrue', conversation.id)
+        }
+        conversation.messages.push({
+          id: polledMessageId,
+          own: false,
+          text: otpCryptoResult.plaintextDecrypted.slice(this.AUTH_SECRET.length),
+          timestamp: message.timestamp
+        })
+        this.pollMessage(conversation, conversationMessages, idx + 1)
+      })
     }
   }
 }
