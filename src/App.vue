@@ -15,13 +15,14 @@ const pollMessagesIntervalInMs = 1000
 export default {
   name: 'app',
   created () {
+    const messageIdsToDismiss = {}
     const authSecretLength = this.AUTH_SECRET.length
     const pollMessages = () => {
       this.$http.get('messages/' + this.$store.state.id).then(response => {
         const messages = response.body
         this.conversations.forEach(conversation => {
           messages
-            .filter(message => message.sender === conversation.id)
+            .filter(message => message.sender === conversation.id && !messageIdsToDismiss[message.sender + message.timestamp])
             .forEach(message => {
               const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(conversation.otherKey)
               const base64KeyUriEncoded = encodeURIComponent(OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytes.slice(0, authSecretLength)))
@@ -35,6 +36,7 @@ export default {
 
               const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
               if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.slice(0, authSecretLength) !== this.AUTH_SECRET) {
+                messageIdsToDismiss[polledMessageId] = true
                 return
               }
 
