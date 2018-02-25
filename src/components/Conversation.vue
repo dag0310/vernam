@@ -8,7 +8,7 @@
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
           <template v-if="keyEmpty">Refill 🔑</template>
-          <template v-else>🔑 {{ this.remainingKeyLength }}</template>
+          <template v-else>🔑 {{ remainingKeyLength }}</template>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
@@ -42,7 +42,7 @@
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || keyEmpty || !otpCryptoResult.isKeyLongEnough">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || !otpCryptoResult.isKeyLongEnough">Send</v-ons-button>
     </v-ons-bottom-toolbar>
   </v-ons-page>
 </template>
@@ -56,8 +56,7 @@ export default {
   name: 'conversation',
   data () {
     return {
-      searchText: '',
-      authSecretByteLength: OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_SECRET).length
+      searchText: ''
     }
   },
   computed: {
@@ -90,20 +89,16 @@ export default {
       return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.ownKey)
     },
     keyAlmostEmpty () {
-      return this.ownKey.length <= (this.authSecretByteLength + keyAlmostEmptyThreshold)
+      return OtpCrypto.encrypt(this.AUTH_SECRET + 'V'.repeat(keyAlmostEmptyThreshold), this.ownKey).remainingKey.length <= 0
     },
     keyEmpty () {
-      return this.ownKey.length <= this.authSecretByteLength
+      return OtpCrypto.encrypt(this.AUTH_SECRET, this.ownKey).remainingKey.length <= 0
     },
     otpCryptoResult () {
-      const messageToEncrypt = (this.message.length > 0) ? this.AUTH_SECRET + this.message : ''
-      return OtpCrypto.encrypt(messageToEncrypt, this.ownKey)
+      return OtpCrypto.encrypt(this.AUTH_SECRET + this.message, this.ownKey)
     },
     remainingKeyLength () {
-      if (!this.otpCryptoResult.isKeyLongEnough) {
-        return 'X'
-      }
-      return this.otpCryptoResult.remainingKey.length
+      return this.otpCryptoResult.isKeyLongEnough ? this.otpCryptoResult.remainingKey.length : 'X'
     }
   },
   methods: {
