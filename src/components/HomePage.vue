@@ -212,7 +212,7 @@ export default {
           this.createConversation(contact.displayName, normalizedPhoneNumbers[0].value)
           return
         }
-        const buttons = normalizedPhoneNumbers.map(normalizedPhoneNumber => normalizedPhoneNumber.type.replace(/(^|\s)\S/g, l => l.toUpperCase()) + ' (' + normalizedPhoneNumber + ')')
+        const buttons = normalizedPhoneNumbers.map(normalizedPhoneNumber => normalizedPhoneNumber.type.replace(/(^|\s)\S/g, l => l.toUpperCase()) + ' (' + normalizedPhoneNumber.value + ')')
         buttons.push('Cancel')
         this.$ons.openActionSheet({ buttons, title: 'Choose a number', cancelable: true }).then(numberIdx => {
           if (numberIdx === buttons.length) {
