@@ -51,7 +51,6 @@
 import OtpCrypto from 'otp-crypto'
 
 const keyAlmostEmptyThreshold = 100
-const keyEmptyThreshold = 5
 
 export default {
   name: 'conversation',
@@ -93,7 +92,7 @@ export default {
       return this.ownKey.length < (this.AUTH_SECRET.length + keyAlmostEmptyThreshold)
     },
     keyEmpty () {
-      return this.ownKey.length < (this.AUTH_SECRET.length + keyEmptyThreshold)
+      return this.ownKey.length < this.AUTH_SECRET.length
     },
     otpCryptoResult () {
       const messageToEncrypt = (this.message.length > 0) ? this.AUTH_SECRET + this.message : ''
