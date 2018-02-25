@@ -198,11 +198,10 @@ export default {
     showContactPicker () {
       navigator.contacts.pickContact(contact => {
         const normalizedPhoneNumbers = contact.phoneNumbers.map(phoneNumber => {
-          return {
-            value: this.normalizeNumber(phoneNumber.value, this.selectedCountryCode),
-            type: phoneNumber.type
-          }
-        })
+          const normalizedNumber = this.normalizeNumber(phoneNumber.value, this.selectedCountryCode)
+          return normalizedNumber ? { value: normalizedNumber, type: phoneNumber.type } : null
+        }).filter(normalizedNumber => normalizedNumber !== null)
+
         if (normalizedPhoneNumbers.length <= 0) {
           this.$ons.notification.toast('No (valid) numbers for this contact.', {timeout: 1000})
           this.showContactPicker()
