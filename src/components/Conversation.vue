@@ -8,7 +8,7 @@
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
           <template v-if="keyEmpty">Refill 🔑</template>
-          <template v-else>🔑 {{ this.ownKeyLength }}</template>
+          <template v-else>🔑 {{ this.remainingKeyLength }}</template>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
@@ -42,7 +42,7 @@
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || keyEmpty || ownKeyLength <= 0">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || keyEmpty || remainingKeyLength <= 0">Send</v-ons-button>
     </v-ons-bottom-toolbar>
   </v-ons-page>
 </template>
@@ -96,9 +96,10 @@ export default {
       return this.ownKey.length < (this.AUTH_SECRET.length + keyEmptyThreshold)
     },
     otpCryptoResult () {
-      return OtpCrypto.encrypt(this.AUTH_SECRET + this.message, this.ownKey)
+      const messageToEncrypt = (this.message.length > 0) ? this.AUTH_SECRET + this.message : ''
+      return OtpCrypto.encrypt(messageToEncrypt, this.ownKey)
     },
-    ownKeyLength () {
+    remainingKeyLength () {
       if (!this.otpCryptoResult.isKeyLongEnough) {
         return 0
       }
