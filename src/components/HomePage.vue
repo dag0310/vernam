@@ -48,7 +48,7 @@
         </option>
       </v-ons-select>
       <br><br>
-      <v-ons-input placeholder="Phone number" float v-model="phoneNumber"></v-ons-input>
+      <v-ons-input placeholder="Phone number" float v-model="phoneNumber" type="tel"></v-ons-input>
       <template slot="footer">
         <div class="alert-dialog-button" @click="setIdentity()">Finished</div>
       </template>
