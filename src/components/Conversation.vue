@@ -56,7 +56,8 @@ export default {
   name: 'conversation',
   data () {
     return {
-      searchText: ''
+      searchText: '',
+      authSecretByteLength: OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_SECRET).length
     }
   },
   computed: {
@@ -89,10 +90,10 @@ export default {
       return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.ownKey)
     },
     keyAlmostEmpty () {
-      return this.ownKey.length <= (this.AUTH_SECRET.length + keyAlmostEmptyThreshold)
+      return this.ownKey.length <= (this.authSecretByteLength + keyAlmostEmptyThreshold)
     },
     keyEmpty () {
-      return this.ownKey.length <= this.AUTH_SECRET.length
+      return this.ownKey.length <= this.authSecretByteLength
     },
     otpCryptoResult () {
       const messageToEncrypt = (this.message.length > 0) ? this.AUTH_SECRET + this.message : ''
