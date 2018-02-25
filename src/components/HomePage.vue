@@ -38,7 +38,7 @@
       </div>
     </div>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="identitySet">
-      <span slot="title">🔑 Welcome to Vernam! 🔑</span>
+      <span slot="title">Welcome to Vernam!</span>
       Please enter your country and phone number to start texting.
       <br><br>
       <v-ons-select v-model="selectedCountryCode">
@@ -48,7 +48,6 @@
         </option>
       </v-ons-select>
       <br><br>
-      <label v-show="selectedCountryCode" class="countryCodeLabel">+{{ getCallingCode(selectedCountryCode) }}</label>
       <v-ons-input placeholder="Phone number" float v-model="phoneNumber"></v-ons-input>
       <template slot="footer">
         <div class="alert-dialog-button" @click="setIdentity()">Finished</div>
@@ -141,10 +140,6 @@ export default {
     }
   },
   methods: {
-    getCallingCode (countryCode) {
-      const country = this.countries.find(country => country.countryCode === countryCode)
-      return country ? country.callingCode : ''
-    },
     setIdentity () {
       if (!this.selectedCountryCode) {
         this.$ons.notification.toast('Please select a country.', {timeout: 1000})
@@ -260,12 +255,5 @@ export default {
   .list-item__icon.ion-ios-arrow-forward {
     color: #c7c7cc;
     font-size: 20px;
-  }
-  .countryCodeLabel {
-    position: relative;
-    top: 6px;
-    margin-right: 5px;
-    font-weight: bold;
-    font-size: 14px;
   }
 </style>
