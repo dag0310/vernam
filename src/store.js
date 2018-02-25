@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import OtpCrypto from 'otp-crypto'
 
 Vue.use(Vuex)
 
@@ -53,26 +52,7 @@ export default new Vuex.Store({
     }
   },
   state: {
-    conversations: [
-      {
-        id: '+436641234567',
-        name: 'John Doe',
-        messages: [],
-        message: '',
-        newMessages: false,
-        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5])),
-        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1]))
-      },
-      {
-        id: '+436801234567',
-        name: 'Daniel Geymayer',
-        messages: [],
-        message: '',
-        newMessages: false,
-        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1])),
-        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]))
-      }
-    ],
+    conversations: [],
     currentConversationId: null,
     id: null,
     countryCode: null

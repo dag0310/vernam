@@ -8,7 +8,7 @@
       </div>
       <div class="center">Conversations</div>
       <div class="right">
-        <v-ons-toolbar-button @click="">
+        <v-ons-toolbar-button @click="" v-if="canAccessContacts">
           <v-ons-icon icon="ion-ios-compose-outline" @click="showContactPicker"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import OtpCrypto from 'otp-crypto'
 import Settings from './Settings'
 import Conversation from './Conversation'
 import { parse, format } from 'libphonenumber-js'
@@ -86,8 +87,32 @@ export default {
         this.selectedCountryCode = countryCode
       }
     })
+
+    if (!this.canAccessContacts && this.$store.state.conversations.length <= 0) {
+      this.$store.commit('createConversation', {
+        id: '+436641234567',
+        name: 'John Doe',
+        messages: [],
+        message: '',
+        newMessages: false,
+        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5])),
+        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1]))
+      })
+      this.$store.commit('createConversation', {
+        id: '+436801234567',
+        name: 'Daniel Geymayer',
+        messages: [],
+        message: '',
+        newMessages: false,
+        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1])),
+        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]))
+      })
+    }
   },
   computed: {
+    canAccessContacts () {
+      return !!navigator.contacts
+    },
     identitySet () {
       return this.$store.state.id === null
     },
@@ -171,10 +196,6 @@ export default {
       })
     },
     showContactPicker () {
-      if (!navigator.contacts) {
-        this.$ons.notification.toast('No contacts can be queried.', { timeout: 1000 })
-        return
-      }
       navigator.contacts.pickContact(contact => {
         if (contact.phoneNumbers.length <= 0) {
           this.showContactPicker()
