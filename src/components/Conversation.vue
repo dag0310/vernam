@@ -101,7 +101,7 @@ export default {
     },
     remainingKeyLength () {
       if (!this.otpCryptoResult.isKeyLongEnough) {
-        return 0
+        return 'X'
       }
       return this.otpCryptoResult.remainingKey.length
     }
