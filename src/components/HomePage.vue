@@ -154,13 +154,11 @@ export default {
         this.$ons.notification.toast('Please enter a phone number.', {timeout: 1000})
         return
       }
-      const parsedNumber = parse(this.phoneNumber, this.selectedCountryCode)
-      if (Object.keys(parsedNumber).length === 0 && parsedNumber.constructor === Object) {
+      const normalizedNumber = this.normalizeNumber(this.phoneNumber, this.selectedCountryCode)
+      if (!normalizedNumber) {
         this.$ons.notification.toast('Please enter a valid phone number.', {timeout: 1000})
         return
       }
-      const normalizedNumber = format(parsedNumber.phone, parsedNumber.country, 'E.164')
-
       this.$store.commit('setId', normalizedNumber)
       this.$store.commit('setCountryCode', this.selectedCountryCode)
     },
@@ -195,30 +193,43 @@ export default {
         }
       })
     },
+    normalizeNumber (rawNumber, countryCode) {
+      const parsedNumber = parse(rawNumber, countryCode)
+      if (Object.keys(parsedNumber).length === 0 && parsedNumber.constructor === Object) {
+        return null
+      }
+      return format(parsedNumber.phone, parsedNumber.country, 'E.164')
+    },
     showContactPicker () {
       navigator.contacts.pickContact(contact => {
-        if (contact.phoneNumbers.length <= 0) {
+        const normalizedPhoneNumbers = contact.phoneNumbers.map(phoneNumber => {
+          return {
+            value: this.normalizeNumber(phoneNumber.value, this.selectedCountryCode),
+            type: phoneNumber.type
+          }
+        })
+        if (normalizedPhoneNumbers.length <= 0) {
+          this.$ons.notification.toast('No (valid) numbers for this contact.', {timeout: 1000})
           this.showContactPicker()
           return
         }
-        if (contact.phoneNumbers.length === 1) {
-          this.createConversation(contact.displayName, contact.phoneNumbers[0].value)
+        if (normalizedPhoneNumbers.length === 1) {
+          this.createConversation(contact.displayName, normalizedPhoneNumbers[0].value)
           return
         }
-        const buttons = contact.phoneNumbers.map(phoneNumber => phoneNumber.type.replace(/(^|\s)\S/g, l => l.toUpperCase()) + ' (' + this.normalizeNumber(phoneNumber.value) + ')')
+        const buttons = normalizedPhoneNumbers.map(normalizedPhoneNumber => normalizedPhoneNumber.type.replace(/(^|\s)\S/g, l => l.toUpperCase()) + ' (' + normalizedPhoneNumber + ')')
         buttons.push('Cancel')
         this.$ons.openActionSheet({ buttons, title: 'Choose a number', cancelable: true }).then(numberIdx => {
           if (numberIdx === buttons.length) {
             return
           }
-          this.createConversation(contact.displayName, contact.phoneNumbers[numberIdx].value)
+          this.createConversation(contact.displayName, normalizedPhoneNumbers[numberIdx].value)
         })
       }, err => {
         console.error('ERROR: ' + err)
       })
     },
-    createConversation (name, rawNumber) {
-      const normalizedNumber = this.normalizeNumber(rawNumber)
+    createConversation (name, normalizedNumber) {
       if (this.$store.state.conversations.every(conversation => conversation.id !== normalizedNumber)) {
         this.$store.commit('createConversation', {
           id: normalizedNumber,
