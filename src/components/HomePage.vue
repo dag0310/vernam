@@ -79,30 +79,33 @@ export default {
         this.$store.commit('setCurrentConversationId', null)
       }
     }, false)
-    document.addEventListener('deviceready', event => {
-      if (navigator.contacts) {
-        this.canAccessContacts = true
-      } else if (this.$store.state.conversations.length <= 0) {
-        this.$store.commit('createConversation', {
-          id: '+436641234567',
-          name: 'John Doe',
-          messages: [],
-          message: '',
-          newMessages: false,
-          ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5])),
-          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1]))
-        })
-        this.$store.commit('createConversation', {
-          id: '+436801234567',
-          name: 'Daniel Geymayer',
-          messages: [],
-          message: '',
-          newMessages: false,
-          ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1])),
-          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]))
-        })
-      }
-    }, false)
+
+    if (window.cordova) {
+      document.addEventListener('deviceready', event => {
+        if (navigator.contacts) {
+          this.canAccessContacts = true
+        }
+      }, false)
+    } else if (this.$store.state.conversations.length <= 0) {
+      this.$store.commit('createConversation', {
+        id: '+436641234567',
+        name: 'John Doe',
+        messages: [],
+        message: '',
+        newMessages: false,
+        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5])),
+        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1]))
+      })
+      this.$store.commit('createConversation', {
+        id: '+436801234567',
+        name: 'Daniel Geymayer',
+        messages: [],
+        message: '',
+        newMessages: false,
+        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1])),
+        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]))
+      })
+    }
 
     this.$http.get('http://ipinfo.io').then(response => {
       const countryCode = response.body.country
