@@ -89,10 +89,10 @@ export default {
       return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.ownKey)
     },
     keyAlmostEmpty () {
-      return this.ownKey.length < (this.AUTH_SECRET.length + keyAlmostEmptyThreshold)
+      return this.ownKey.length <= (this.AUTH_SECRET.length + keyAlmostEmptyThreshold)
     },
     keyEmpty () {
-      return this.ownKey.length < this.AUTH_SECRET.length
+      return this.ownKey.length <= this.AUTH_SECRET.length
     },
     otpCryptoResult () {
       const messageToEncrypt = (this.message.length > 0) ? this.AUTH_SECRET + this.message : ''
