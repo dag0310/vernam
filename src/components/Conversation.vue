@@ -8,7 +8,7 @@
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
           <template v-if="keyEmpty">Refill 🔑</template>
-          <template v-else>~{{ approxWordsLeftToSend }} w</template>
+          <template v-else>🔑 {{ this.ownKeyLength }}</template>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
@@ -50,7 +50,6 @@
 <script>
 import OtpCrypto from 'otp-crypto'
 
-const approxBytesPerWord = 5
 const keyAlmostEmptyThreshold = 100
 const keyEmptyThreshold = 5
 
@@ -104,9 +103,6 @@ export default {
         return 0
       }
       return this.otpCryptoResult.remainingKey.length
-    },
-    approxWordsLeftToSend () {
-      return Math.round(this.ownKeyLength / approxBytesPerWord)
     }
   },
   methods: {
