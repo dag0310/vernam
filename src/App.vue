@@ -17,6 +17,10 @@ export default {
   name: 'app',
   created () {
     const pollMessages = () => {
+      if (!this.$store.state.id) {
+        setTimeout(pollMessages, pollMessagesIntervalInMs)
+        return
+      }
       this.$http.get('messages/' + this.$store.state.id).then(response => {
         const messages = response.body
         this.conversations.forEach(conversation => {

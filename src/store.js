@@ -11,6 +11,9 @@ export default new Vuex.Store({
     setId (state, id) {
       state.id = id
     },
+    setCountryCode (state, countryCode) {
+      state.countryCode = countryCode
+    },
     setCurrentConversationId (state, id) {
       state.currentConversationId = id
     },
@@ -71,6 +74,7 @@ export default new Vuex.Store({
       }
     ],
     currentConversationId: null,
-    id: '+436801234567'
+    id: null,
+    countryCode: null
   }
 })
