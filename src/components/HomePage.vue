@@ -189,7 +189,8 @@ export default {
       })
     },
     normalizeNumber (rawNumber, countryCode) {
-      const parsedNumber = parse(rawNumber, countryCode)
+      const possiblySlightlyCookedNumber = (rawNumber.substr(0, 2) === '00') ? '+' + rawNumber.substring(2) : rawNumber
+      const parsedNumber = parse(possiblySlightlyCookedNumber, countryCode)
       if (Object.keys(parsedNumber).length === 0 && parsedNumber.constructor === Object) {
         return null
       }
