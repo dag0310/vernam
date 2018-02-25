@@ -42,7 +42,7 @@
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || keyEmpty || remainingKeyLength <= 0">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || keyEmpty || !otpCryptoResult.isKeyLongEnough">Send</v-ons-button>
     </v-ons-bottom-toolbar>
   </v-ons-page>
 </template>
