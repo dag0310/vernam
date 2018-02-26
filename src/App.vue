@@ -50,7 +50,8 @@ export default {
       }
       const message = conversationMessages[idx]
       const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(conversation.otherKey)
-      const base64KeyUriEncoded = encodeURIComponent(OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytes.slice(0, this.AUTH_SECRET.length)))
+      const authSecretLengthKeyBytes = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_SECRET).length)
+      const base64KeyUriEncoded = encodeURIComponent(OtpCrypto.encryptedDataConverter.bytesToBase64(authSecretLengthKeyBytes))
       const polledMessageId = message.sender + message.timestamp
 
       this.$http.delete('messages/' + message.sender + '/' + message.timestamp + '/' + base64KeyUriEncoded).then(() => {
