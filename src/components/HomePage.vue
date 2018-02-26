@@ -37,7 +37,7 @@
         No conversations found
       </div>
     </div>
-    <v-ons-alert-dialog modifier="rowfooter" :visible.sync="identitySet">
+    <v-ons-alert-dialog modifier="rowfooter" :visible.sync="$store.state.id === null">
       <span slot="title">Welcome to Vernam!</span>
       Please enter your country and phone number to start texting.
       <br><br>
@@ -115,9 +115,6 @@ export default {
     })
   },
   computed: {
-    identitySet () {
-      return this.$store.state.id === null
-    },
     conversations () {
       return this.$store.state.conversations
     },
