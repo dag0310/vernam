@@ -42,7 +42,7 @@
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="messageEmpty || !otpCryptoResult.isKeyLongEnough">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough">Send</v-ons-button>
     </v-ons-bottom-toolbar>
   </v-ons-page>
 </template>
@@ -81,9 +81,6 @@ export default {
         })
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((a, b) => a.timestamp - b.timestamp)
-    },
-    messageEmpty () {
-      return !this.message
     },
     ownKey () {
       return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.ownKey)
