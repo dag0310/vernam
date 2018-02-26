@@ -23,7 +23,7 @@
             <span class="messageText">{{ message.text }}</span>
             <br>
             <span class="messageInfo">
-              <span class="messageInfoDate">{{ message.dateText }}, {{ message.timeText }}</span>
+              <span class="messageInfoDate">{{ dateTimeText(message.timestamp) }}</span>
               <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click="deleteMessage(message)"></ons-icon>
             </span>
             <div class="clearfix"></div>
@@ -73,12 +73,6 @@ export default {
     },
     filteredMessages () {
       return this.conversation.messages
-        .map(message => {
-          const humanDate = this.humanDate(message.timestamp)
-          message.dateText = humanDate.dateText
-          message.timeText = humanDate.timeText
-          return message
-        })
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((a, b) => a.timestamp - b.timestamp)
     },
@@ -99,6 +93,10 @@ export default {
     }
   },
   methods: {
+    dateTimeText (timestamp) {
+      const humanDate = this.humanDate(timestamp)
+      return humanDate.dateText + ', ' + humanDate.timeText
+    },
     deleteMessage (message) {
       this.$ons.openActionSheet({ buttons: ['Delete message', 'Cancel'], title: message.text, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
