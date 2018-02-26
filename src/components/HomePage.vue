@@ -8,8 +8,8 @@
       </div>
       <div class="center">Conversations</div>
       <div class="right">
-        <v-ons-toolbar-button @click="" v-if="canAccessContacts">
-          <v-ons-icon icon="ion-ios-compose-outline" @click="showContactPicker"></v-ons-icon>
+        <v-ons-toolbar-button @click="showContactPicker" v-if="canAccessContacts">
+          <v-ons-icon icon="ion-ios-compose-outline"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
