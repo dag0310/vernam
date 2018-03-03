@@ -49,6 +49,8 @@
 
 <script>
 import OtpCrypto from 'otp-crypto'
+import RefillKeyActive from './RefillKeyActive'
+import RefillKeyPassive from './RefillKeyPassive'
 
 const keyAlmostEmptyThreshold = 100
 
@@ -127,7 +129,17 @@ export default {
       })
     },
     refillKey () {
-      this.$ons.notification.toast('TODO: Refill key', { timeout: 1000 })
+      if (!window.cordova) {
+        this.$emit('push-page', RefillKeyPassive)
+        return
+      }
+      this.$ons.openActionSheet({buttons: ['I scan the QR codes (active)', 'I show the QR codes (passive)', 'Cancel'], title: 'What is your part?', cancelable: true}).then(response => {
+        if (response === 0) {
+          this.$emit('push-page', RefillKeyActive)
+        } else if (response === 1) {
+          this.$emit('push-page', RefillKeyPassive)
+        }
+      })
     }
   }
 }

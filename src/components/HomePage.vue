@@ -112,6 +112,8 @@ export default {
       if (this.countries.some(country => country.countryCode === countryCode)) {
         this.selectedCountryCode = countryCode
       }
+    }, error => {
+      console.error(error)
     })
   },
   computed: {

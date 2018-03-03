@@ -46,6 +46,13 @@ Vue.mixin({
       }
 
       return { isToday, dateText, timeText }
+    },
+    sortedBytesOfQrCodes (qrCodes) {
+      const byteArrays = qrCodes
+        .sort((a, b) => a.number - b.number)
+        .map(qrCode => qrCode.bytes)
+      const flattenedByteArrays = Uint8Array.from(byteArrays.reduce((a, b) => [...a, ...b], []))
+      return flattenedByteArrays
     }
   }
 })
