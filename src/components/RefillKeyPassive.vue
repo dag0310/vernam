@@ -79,9 +79,11 @@
         this.$ons.openActionSheet({ buttons: ['Yes, finished!', 'Cancel'], title: 'Partner finshed scanning?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             const byteArrayTotal = this.sortedBytesOfQrCodes(this.qrCodes)
+            const keyLengthHalf = byteArrayTotal.length - parseInt(byteArrayTotal.length / 2, 10)
+            this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf)))
             this.$store.commit('updateOtherKey', {
               id: this.$store.state.currentConversationId,
-              otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal)
+              otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf))
             })
             this.$emit('pop-page')
           }

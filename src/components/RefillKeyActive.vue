@@ -94,7 +94,12 @@
       },
       finishQrCodeScanning () {
         const byteArrayTotal = this.sortedBytesOfQrCodes(this.qrCodes)
-        this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal))
+        const keyLengthHalf = byteArrayTotal.length - parseInt(byteArrayTotal.length / 2, 10)
+        this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)))
+        this.$store.commit('updateOtherKey', {
+          id: this.$store.state.currentConversationId,
+          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
+        })
         this.$ons.notification.alert('Click "Finished" on the other device before sending messages.')
         this.$emit('pop-page')
       }
