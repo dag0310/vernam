@@ -127,4 +127,11 @@ export default {
   .clearfix {
     clear: both;
   }
+  ons-toolbar.toolbar {
+    padding-top: 0 !important;
+  }
+  .page[status-bar-fill]>.toolbar:not(.toolbar--cover-content)+.page__background+.page__content,
+  .page[status-bar-fill]>.toolbar:not(.toolbar--transparent)+.page__background {
+    top: 44px !important;
+  }
 </style>
