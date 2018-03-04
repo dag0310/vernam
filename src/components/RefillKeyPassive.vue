@@ -47,7 +47,7 @@
         for (let number = 1; number <= numQrCodes; number++) {
           const metaPrefix = ('' + number).padStart(2, '0') + ('' + numQrCodes).padStart(2, '0')
           const randomBytes = OtpCrypto.generateRandomBytes(bytesPerQrCode)
-          const randomText = OtpCrypto.encryptedDataConverter.bytesToStr(randomBytes)
+          const randomText = OtpCrypto.encryptedDataConverter.bytesToBase64(randomBytes)
           promises.push(QRCode.toDataURL([{ data: metaPrefix + randomText, mode: 'byte' }], {errorCorrectionLevel: 'L'}).then(dataUrl => {
             qrCodes.push({number: number, bytes: randomBytes, dataUrl: dataUrl})
           }).catch(err => {

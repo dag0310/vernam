@@ -67,7 +67,7 @@
           }
 
           const keyBase64String = result.text.substring(metaPrefixLength)
-          const keyBytes = OtpCrypto.encryptedDataConverter.strToBytes(keyBase64String)
+          const keyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(keyBase64String)
           this.qrCodes.push({number: parsedMetaPrefix.number, bytes: keyBytes})
           this.updateQrCodeNumbersLeftText(parsedMetaPrefix.numQrCodes)
 
