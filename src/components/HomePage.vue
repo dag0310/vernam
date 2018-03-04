@@ -210,8 +210,9 @@ export default {
           this.showContactPicker()
           return
         }
+        const fullName = contact.name.formatted || 'Unnamed'
         if (normalizedPhoneNumbers.length === 1) {
-          this.createConversation(contact.displayName, normalizedPhoneNumbers[0].value)
+          this.createConversation(fullName, normalizedPhoneNumbers[0].value)
           return
         }
         const buttons = normalizedPhoneNumbers.map(normalizedPhoneNumber => normalizedPhoneNumber.type.replace(/(^|\s)\S/g, l => l.toUpperCase()) + ' (' + normalizedPhoneNumber.value + ')')
@@ -220,7 +221,7 @@ export default {
           if (numberIdx === buttons.length) {
             return
           }
-          this.createConversation(contact.displayName, normalizedPhoneNumbers[numberIdx].value)
+          this.createConversation(fullName, normalizedPhoneNumbers[numberIdx].value)
         })
       }, err => {
         console.error('ERROR: ' + err)
