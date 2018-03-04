@@ -16,7 +16,7 @@
 <script>
   import OtpCrypto from 'otp-crypto'
 
-  const waitTimeAfterScanInMs = 1000
+  const waitTimeAfterScanInMs = 500
   const metaPrefixParts = 2
   const metaPrefixPartLength = 2
   const metaPrefixLength = metaPrefixParts * metaPrefixPartLength

@@ -24,7 +24,7 @@
   import OtpCrypto from 'otp-crypto'
 
   const numQrCodes = 10
-  const bytesPerQrCode = 750
+  const bytesPerQrCode = 500
 
   export default {
     name: 'refillkeypassive',
