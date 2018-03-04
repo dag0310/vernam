@@ -42,7 +42,7 @@
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled">Send</v-ons-button>
     </v-ons-bottom-toolbar>
   </v-ons-page>
 </template>
@@ -58,7 +58,8 @@ export default {
   name: 'conversation',
   data () {
     return {
-      searchText: ''
+      searchText: '',
+      sendButtonEnabled: true
     }
   },
   computed: {
@@ -110,6 +111,7 @@ export default {
       if (!this.otpCryptoResult.isKeyLongEnough) {
         return
       }
+      this.sendButtonEnabled = false
       this.$http.post('messages', {
         sender: this.$store.state.id,
         receiver: this.conversation.id,
@@ -126,6 +128,8 @@ export default {
         this.message = ''
       }, response => {
         this.$ons.notification.toast('Message could not be sent.', { timeout: 1000 })
+      }).then(() => {
+        this.sendButtonEnabled = true
       })
     },
     refillKey () {
