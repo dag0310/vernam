@@ -9,7 +9,17 @@
   "installed_plugins": {
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.geymayer.vernam"
+    },
+    "cordova-plugin-contacts": {
+      "PACKAGE_NAME": "com.geymayer.vernam"
+    },
+    "cordova-plugin-barcodescanner": {
+      "PACKAGE_NAME": "com.geymayer.vernam"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "com.geymayer.vernam"
+    }
+  }
 }
