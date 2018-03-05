@@ -7,7 +7,7 @@
     <div class="center">Refill Key</div>
   </v-ons-toolbar>
   <div class="content">
-    <h3>Codes left: <b>{{ qrCodeNumbersLeftText }}</b></h3>
+    <h3 v-if="qrCodeNumbersLeftText">Codes left: <b>{{ qrCodeNumbersLeftText }}</b></h3>
     <v-ons-button modifier="large" class="abortButton" @click="abort = true">Abort</v-ons-button>
   </div>
   </v-ons-page>
