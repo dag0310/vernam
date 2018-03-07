@@ -198,14 +198,16 @@ export default {
     },
     showContactPicker () {
       navigator.contacts.pickContact(contact => {
+        if (!contact.phoneNumbers) {
+          this.$ons.notification.alert('No numbers found for this contact.')
+          return
+        }
         const normalizedPhoneNumbers = contact.phoneNumbers.map(phoneNumber => {
           const normalizedNumber = this.normalizeNumber(phoneNumber.value, this.selectedCountryCode)
           return normalizedNumber ? { value: normalizedNumber, type: phoneNumber.type } : null
         }).filter(normalizedNumber => normalizedNumber !== null)
-
         if (normalizedPhoneNumbers.length <= 0) {
-          this.$ons.notification.toast('No (valid) numbers for this contact.', {timeout: 1000})
-          this.showContactPicker()
+          this.$ons.notification.alert('No (valid) numbers found for this contact.')
           return
         }
         const fullName = contact.name.formatted || 'Unnamed'
