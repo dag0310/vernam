@@ -137,7 +137,7 @@ export default {
         this.$emit('push-page', RefillKeyPassive)
         return
       }
-      this.$ons.openActionSheet({buttons: ['I scan the QR codes (active)', 'I show the QR codes (passive)', 'Cancel'], title: 'What is your part?', cancelable: true}).then(response => {
+      this.$ons.openActionSheet({buttons: ['I scan the QR codes', 'I show the QR codes', 'Cancel'], title: 'Refill key: What is your part?', cancelable: true}).then(response => {
         if (response === 0) {
           this.$emit('push-page', RefillKeyActive)
         } else if (response === 1) {
