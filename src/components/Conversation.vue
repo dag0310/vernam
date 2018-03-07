@@ -42,6 +42,7 @@
       <textarea class="textarea" v-model="message"></textarea>
       <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled">Send</v-ons-button>
     </v-ons-bottom-toolbar>
+    <v-ons-progress-circular indeterminate v-show="showLoadingIndicator"></v-ons-progress-circular>
   </v-ons-page>
 </template>
 
@@ -57,7 +58,8 @@ export default {
   data () {
     return {
       searchText: '',
-      sendButtonEnabled: true
+      sendButtonEnabled: true,
+      showLoadingIndicator: false
     }
   },
   computed: {
@@ -135,7 +137,9 @@ export default {
         this.$emit('push-page', RefillKeyPassive)
         return
       }
+      this.showLoadingIndicator = true
       this.$ons.openActionSheet({buttons: ['I scan the QR codes', 'I show the QR codes', 'Cancel'], title: 'Refill key: What is your part?', cancelable: true}).then(response => {
+        this.showLoadingIndicator = false
         if (response === 0) {
           this.$emit('push-page', RefillKeyActive)
         } else if (response === 1) {
@@ -186,5 +190,11 @@ export default {
   }
   .keyRefillInfoBox .infoText {
     margin-bottom: 5px;
+  }
+  ons-progress-circular {
+    position: fixed;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%);
   }
 </style>
