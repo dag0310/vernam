@@ -1,10 +1,10 @@
 <template>
 <v-ons-page>
   <v-ons-toolbar>
-    <div class="left">
-      <v-ons-back-button>Back</v-ons-back-button>
-  </div>
+    <div class="left"><v-ons-back-button>Back</v-ons-back-button></div>
     <div class="center">Refill Key</div>
+    <div class="right"><v-ons-toolbar-button @click="done" :disabled="Object.keys(seenQrCodes).length !== numQrCodes">Done</v-ons-toolbar-button>
+    </div>
   </v-ons-toolbar>
   <div class="content">
     <div class="navigationAndCounter" v-if="currentQrCode">
@@ -14,8 +14,6 @@
       <div class="clearfix"></div>
     </div>
     <img v-if="currentQrCode" :src="currentQrCode.dataUrl" class="qrCode" @click="setCurrentQrCode(+1)">
-    <br>
-    <v-ons-button modifier="large" class="finishedButton" @click="finished" v-show="qrCodes">Finished</v-ons-button>
   </div>
   </v-ons-page>
 </template>
@@ -33,7 +31,8 @@
       return {
         qrCodes: null,
         currentQrCode: null,
-        numQrCodes
+        numQrCodes,
+        seenQrCodes: {}
       }
     },
     created () {
@@ -60,7 +59,9 @@
             return
           }
           this.qrCodes = qrCodes
-          this.currentQrCode = this.qrCodes.find(qrCode => qrCode.number === 1)
+          const firstQrCodeNumber = 1
+          this.currentQrCode = this.qrCodes.find(qrCode => qrCode.number === firstQrCodeNumber)
+          this.seenQrCodes[firstQrCodeNumber] = true
         })
       },
       setCurrentQrCode (direction) {
@@ -75,9 +76,10 @@
           currentNumber = numQrCodes
         }
         this.currentQrCode = this.qrCodes.find(qrCode => qrCode.number === currentNumber)
+        this.seenQrCodes[currentNumber] = true
       },
-      finished () {
-        this.$ons.openActionSheet({ buttons: ['Yes, they finished', 'Cancel'], title: 'Did the other party finish scanning QR codes?', cancelable: true, destructive: 0 }).then(response => {
+      done () {
+        this.$ons.openActionSheet({ buttons: ['Yes, they finished', 'Cancel'], title: 'Did the other party finish scanning?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             const byteArrayTotal = this.sortedBytesOfQrCodes(this.qrCodes)
             const keyLengthHalf = byteArrayTotal.length - parseInt(byteArrayTotal.length / 2, 10)
@@ -105,11 +107,5 @@
   }
   .navigationAndCounter {
     padding: 15px 15px 10px;
-  }
-  .finishedButton {
-    display: inline-block;
-    width: 80%;
-    max-width: 300px;
-    margin-top: 10px;
   }
 </style>
