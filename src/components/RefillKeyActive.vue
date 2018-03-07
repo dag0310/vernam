@@ -15,9 +15,7 @@
   import OtpCrypto from 'otp-crypto'
 
   const waitTimeAfterScanInMs = 500
-  const metaPrefixParts = 2
-  const metaPrefixPartLength = 2
-  const metaPrefixLength = metaPrefixParts * metaPrefixPartLength
+  const metaPrefixLength = 7
 
   export default {
     name: 'refillkeyactive',
@@ -58,6 +56,13 @@
           }
 
           const parsedMetaPrefix = this.parseMetaPrefix(result.text.substr(0, metaPrefixLength))
+          const checksum = this.generateChecksumFromPhoneNumbers(this.$store.state.id, this.$store.state.currentConversationId)
+
+          if (checksum !== parsedMetaPrefix.checksum) {
+            this.$ons.notification.alert('Your conversations\' phone numbers do not fit together.')
+            this.$emit('pop-page')
+            return
+          }
 
           if (this.qrCodesNumbers.includes(parsedMetaPrefix.number)) {
             setTimeout(this.scanBarcode, waitTimeAfterScanInMs)
@@ -81,8 +86,9 @@
       },
       parseMetaPrefix (metaPrefix) {
         return {
-          number: parseInt(metaPrefix.substr(0, metaPrefixPartLength), 10),
-          numQrCodes: parseInt(metaPrefix.substring(metaPrefixPartLength), 10)
+          number: parseInt(metaPrefix.substring(0, 2), 10),
+          numQrCodes: parseInt(metaPrefix.substring(2, 4), 10),
+          checksum: metaPrefix.substring(4, metaPrefixLength)
         }
       },
       updateQrCodeNumbersLeftText (qrCodesTotal) {

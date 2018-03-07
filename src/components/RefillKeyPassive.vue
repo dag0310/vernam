@@ -45,7 +45,8 @@
         const qrCodes = []
         const promises = []
         for (let number = 1; number <= numQrCodes; number++) {
-          const metaPrefix = ('' + number).padStart(2, '0') + ('' + numQrCodes).padStart(2, '0')
+          const checksum = this.generateChecksumFromPhoneNumbers(this.$store.state.id, this.$store.state.currentConversationId)
+          const metaPrefix = ('' + number).padStart(2, '0') + ('' + numQrCodes).padStart(2, '0') + checksum
           const randomBytes = OtpCrypto.generateRandomBytes(bytesPerQrCode)
           const randomText = OtpCrypto.encryptedDataConverter.bytesToBase64(randomBytes)
           promises.push(QRCode.toDataURL([{ data: metaPrefix + randomText, mode: 'byte' }], {errorCorrectionLevel: 'L'}).then(dataUrl => {

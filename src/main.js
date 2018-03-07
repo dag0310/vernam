@@ -53,6 +53,10 @@ Vue.mixin({
         .map(qrCode => qrCode.bytes)
       const flattenedByteArrays = Uint8Array.from(byteArrays.reduce((a, b) => [...a, ...b], []))
       return flattenedByteArrays
+    },
+    generateChecksumFromPhoneNumbers (number1, number2) {
+      const getCharSum = number => number.substring(1).split('').map(c => parseInt(c, 10)).reduce((a, b) => a + b)
+      return (getCharSum(number1) ^ getCharSum(number2)).toString().padStart(3, '0')
     }
   }
 })
