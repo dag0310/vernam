@@ -1,9 +1,7 @@
 <template>
 <v-ons-page>
   <v-ons-toolbar>
-    <div class="left">
-      <v-ons-back-button>Back</v-ons-back-button>
-  </div>
+    <div class="left"><v-ons-toolbar-button @click="cancel">Cancel</v-ons-toolbar-button></div>
     <div class="center">Refill Key</div>
   </v-ons-toolbar>
   <div class="content">
@@ -101,6 +99,9 @@
           otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
         })
         this.$ons.notification.alert('Click "Finished" on the other device before sending messages.')
+        this.$emit('pop-page')
+      },
+      cancel () {
         this.$emit('pop-page')
       }
     }
