@@ -115,4 +115,7 @@
   .navigationAndCounter {
     padding: 15px 15px 10px;
   }
+  .navigationAndCounter ons-button {
+    min-width: 100px;
+  }
 </style>
