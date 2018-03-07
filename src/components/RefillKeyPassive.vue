@@ -3,8 +3,8 @@
   <v-ons-toolbar>
     <div class="left"><v-ons-toolbar-button @click="cancel">Cancel</v-ons-toolbar-button></div>
     <div class="center">Refill Key</div>
-    <div class="right"><v-ons-toolbar-button @click="done" :disabled="Object.keys(seenQrCodes).length !== numQrCodes">Done</v-ons-toolbar-button>
-    </div>
+    <div class="right"><v-ons-toolbar-button @click="done" :disabled="isDoneButtonDisabled">Done</v-ons-toolbar-button>
+  </div>
   </v-ons-toolbar>
   <div class="content">
     <div class="navigationAndCounter" v-if="currentQrCode">
@@ -12,7 +12,7 @@
       <v-ons-button modifier="outline" class="pull-right" @click="setCurrentQrCode(+1)">Next</v-ons-button>
       <h3>{{ currentQrCode.number }} / {{ numQrCodes }}</h3>
       <div class="clearfix"></div>
-    </div>
+  </div>
     <img v-if="currentQrCode" :src="currentQrCode.dataUrl" class="qrCode" @click="setCurrentQrCode(+1)">
   </div>
   </v-ons-page>
@@ -32,11 +32,15 @@
         qrCodes: null,
         currentQrCode: null,
         numQrCodes,
-        seenQrCodes: {}
+        seenQrCodes: {},
+        backupKeys: {},
+        isDoneButtonDisabled: true
       }
     },
     created () {
       this.initQrCodes()
+      this.backupKeys.own = this.$store.getters.currentConversation.ownKey
+      this.backupKeys.other = this.$store.getters.currentConversation.otherKey
     },
     methods: {
       initQrCodes () {
@@ -60,35 +64,37 @@
             return
           }
           this.qrCodes = qrCodes
-          const firstQrCodeNumber = 1
-          this.currentQrCode = this.qrCodes.find(qrCode => qrCode.number === firstQrCodeNumber)
-          this.seenQrCodes[firstQrCodeNumber] = true
+          this.setCurrentQrCode()
         })
       },
       setCurrentQrCode (direction) {
-        if (!this.currentQrCode || !this.qrCodes) {
+        if (!this.qrCodes) {
           return
         }
-        direction = (direction === undefined) ? 1 : direction
-        let currentNumber = this.currentQrCode.number + direction
-        if (currentNumber > numQrCodes) {
+
+        let currentNumber
+        if (this.currentQrCode && direction !== undefined) {
+          currentNumber = this.currentQrCode.number + direction
+          if (currentNumber > numQrCodes) {
+            currentNumber = 1
+          } else if (currentNumber < 1) {
+            currentNumber = numQrCodes
+          }
+        } else {
           currentNumber = 1
-        } else if (currentNumber < 1) {
-          currentNumber = numQrCodes
         }
+
         this.currentQrCode = this.qrCodes.find(qrCode => qrCode.number === currentNumber)
         this.seenQrCodes[currentNumber] = true
+
+        if (Object.keys(this.seenQrCodes).length === numQrCodes && this.isDoneButtonDisabled) {
+          this.saveQrCodeKeys()
+          this.isDoneButtonDisabled = false
+        }
       },
       done () {
         this.$ons.openActionSheet({ buttons: ['Yes, they finished', 'Cancel'], title: 'Did the other party finish scanning?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
-            const byteArrayTotal = this.sortedBytesOfQrCodes(this.qrCodes)
-            const keyLengthHalf = byteArrayTotal.length - parseInt(byteArrayTotal.length / 2, 10)
-            this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf)))
-            this.$store.commit('updateOtherKey', {
-              id: this.$store.state.currentConversationId,
-              otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf))
-            })
             this.$emit('pop-page')
           }
         })
@@ -96,8 +102,25 @@
       cancel () {
         this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
+            this.restoreBackupKeys()
             this.$emit('pop-page')
           }
+        })
+      },
+      saveQrCodeKeys () {
+        const byteArrayTotal = this.sortedBytesOfQrCodes(this.qrCodes)
+        const keyLengthHalf = byteArrayTotal.length - parseInt(byteArrayTotal.length / 2, 10)
+        this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf)))
+        this.$store.commit('updateOtherKey', {
+          id: this.$store.state.currentConversationId,
+          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf))
+        })
+      },
+      restoreBackupKeys () {
+        this.$store.commit('updateOwnKey', this.backupKeys.own)
+        this.$store.commit('updateOtherKey', {
+          id: this.$store.state.currentConversationId,
+          otherKey: this.backupKeys.other
         })
       }
     }

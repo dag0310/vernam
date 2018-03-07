@@ -104,7 +104,6 @@
           id: this.$store.state.currentConversationId,
           otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
         })
-        this.$ons.notification.alert('Click "Finished" on the other device before sending messages.')
         this.$emit('pop-page')
       },
       cancel () {
