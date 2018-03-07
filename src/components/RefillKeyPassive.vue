@@ -1,7 +1,7 @@
 <template>
 <v-ons-page>
   <v-ons-toolbar>
-    <div class="left"><v-ons-back-button>Back</v-ons-back-button></div>
+    <div class="left"><v-ons-toolbar-button @click="cancel">Cancel</v-ons-toolbar-button></div>
     <div class="center">Refill Key</div>
     <div class="right"><v-ons-toolbar-button @click="done" :disabled="Object.keys(seenQrCodes).length !== numQrCodes">Done</v-ons-toolbar-button>
     </div>
@@ -88,6 +88,13 @@
               id: this.$store.state.currentConversationId,
               otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf))
             })
+            this.$emit('pop-page')
+          }
+        })
+      },
+      cancel () {
+        this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
+          if (response === 0) {
             this.$emit('pop-page')
           }
         })
