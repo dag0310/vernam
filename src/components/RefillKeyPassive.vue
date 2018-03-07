@@ -77,7 +77,7 @@
         this.currentQrCode = this.qrCodes.find(qrCode => qrCode.number === currentNumber)
       },
       finished () {
-        this.$ons.openActionSheet({ buttons: ['Yes, finished!', 'Cancel'], title: 'Partner finshed scanning?', cancelable: true, destructive: 0 }).then(response => {
+        this.$ons.openActionSheet({ buttons: ['Yes, they finished', 'Cancel'], title: 'Did the other party finish scanning QR codes?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             const byteArrayTotal = this.sortedBytesOfQrCodes(this.qrCodes)
             const keyLengthHalf = byteArrayTotal.length - parseInt(byteArrayTotal.length / 2, 10)
