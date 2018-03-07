@@ -35,7 +35,7 @@
         No messages found
       </div>
       <div class="marginalizedContent keyRefillInfoBox" v-if="keyAlmostEmpty">
-        <div class="infoText">Your key is <span v-if="!keyEmpty">almost</span> empty &ndash;<br>Please refill it to send more messages.</div>
+        <div class="infoText">Your key is <span v-if="!keyEmpty">almost</span> empty &ndash;<br>Please refill it together with your contact to send messages.</div>
         <v-ons-button modifier="large" @click="refillKey">Refill 🔑</v-ons-button>
       </div>
       <div class="buffer"></div>
