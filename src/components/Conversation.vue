@@ -4,7 +4,7 @@
       <div class="left">
         <v-ons-back-button>Back</v-ons-back-button>
       </div>
-      <div class="center ellipsis">{{ conversation.name }}</div>
+      <div class="center ellipsis" @click="informationDialogVisible = true">{{ conversation.name }}</div>
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
           <template v-if="keyEmpty">Refill 🔑</template>
@@ -42,6 +42,12 @@
       <textarea class="textarea" v-model="message"></textarea>
       <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled">Send</v-ons-button>
     </v-ons-bottom-toolbar>
+    <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
+      <p>Name: <b>{{conversation.name}}</b></p>
+      <p>Phone number: <b>{{conversation.id}}</b></p>
+      <p>Other key size/checksum: <b>{{otherKey.length}} / {{generateChecksum(otherKey)}}</b></p>
+      <p>Own key size/checksum: <b>{{ownKey.length}} / {{generateChecksum(ownKey)}}</b></p>
+    </v-ons-dialog>
     <v-ons-progress-circular indeterminate v-show="showLoadingIndicator"></v-ons-progress-circular>
   </v-ons-page>
 </template>
@@ -59,7 +65,8 @@ export default {
     return {
       searchText: '',
       sendButtonEnabled: true,
-      showLoadingIndicator: false
+      showLoadingIndicator: false,
+      informationDialogVisible: false
     }
   },
   computed: {
@@ -81,6 +88,9 @@ export default {
     },
     ownKey () {
       return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.ownKey)
+    },
+    otherKey () {
+      return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.otherKey)
     },
     keyAlmostEmpty () {
       return OtpCrypto.encrypt(this.AUTH_SECRET + 'V'.repeat(keyAlmostEmptyThreshold), this.ownKey).remainingKey.length <= 0
@@ -146,6 +156,11 @@ export default {
           this.$emit('push-page', RefillKeyPassive)
         }
       })
+    },
+    generateChecksum (bytes) {
+      let checksum = 0
+      bytes.forEach(byte => { checksum ^= byte })
+      return checksum
     }
   }
 }
@@ -196,5 +211,8 @@ export default {
     top: 75%;
     left: 50%;
     transform: translate(-50%);
+  }
+  .dialog-container > * {
+    text-align: center;
   }
 </style>
