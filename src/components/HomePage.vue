@@ -33,9 +33,7 @@
           </div>
         </v-ons-list-item>
       </v-ons-list>
-      <div class="marginalizedContent infoText" v-show="filteredConversations.length <= 0">
-        No conversations found
-      </div>
+      <div class="marginalizedContent infoText" v-show="filteredConversations.length <= 0">No conversations found</div>
     </div>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="$store.state.id === null">
       <span slot="title">Welcome to Vernam!</span>

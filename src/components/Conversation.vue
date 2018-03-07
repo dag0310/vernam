@@ -31,9 +31,7 @@
         </div>
         <div class="clearfix"></div>
       </div>
-      <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">
-        No messages found
-      </div>
+      <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">No messages found</div>
       <div class="marginalizedContent keyRefillInfoBox" v-if="keyAlmostEmpty">
         <div class="infoText">Your key is <span v-if="!keyEmpty">almost</span> empty &ndash;<br>Please refill it together with your contact to send messages.</div>
         <v-ons-button modifier="large" @click="refillKey">Refill 🔑</v-ons-button>
