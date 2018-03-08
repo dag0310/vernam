@@ -5,8 +5,9 @@
     <div class="center">Refill Key</div>
   </v-ons-toolbar>
   <div class="content">
-    <h3 v-if="qrCodeNumbersLeftText">Codes left: <b>{{ qrCodeNumbersLeftText }}</b></h3>
-    <v-ons-button modifier="large" class="abortButton" @click="abort = true">Abort</v-ons-button>
+    <h3 v-if="qrCodeNumbersLeft">{{qrCodeNumbersLeft.length}} codes left to scan:<br><b>{{ qrCodeNumbersLeft.join(', ') }}</b></h3>
+    <h3 v-else>Scan QR codes of your contact.</b></h3>
+    <v-ons-button modifier="large" class="scanButton" @click="scanBarcode">Scan next QR code</v-ons-button>
   </div>
   </v-ons-page>
 </template>
@@ -14,7 +15,6 @@
 <script>
   import OtpCrypto from 'otp-crypto'
 
-  const waitTimeAfterScanInMs = 500
   const metaPrefixLength = 7
 
   export default {
@@ -22,36 +22,21 @@
     data () {
       return {
         qrCodes: [],
-        qrCodeNumbersLeftText: '',
-        abort: false
+        qrCodeNumbersLeft: null
       }
     },
     created () {
-      if (!window.cordova) {
-        console.error('QR scanning not possible on this device / No global cordova object found.')
-      }
-      document.addEventListener('deviceready', event => {
-        if (!window.cordova.plugins.barcodeScanner) {
-          console.error('Cordova plugin "barcodeScanner" not found.')
-          return
-        }
-        this.scanBarcode()
-      }, false)
+      document.addEventListener('deviceready', this.scanBarcode, false)
     },
     computed: {
-      qrCodesNumbers () {
+      qrCodeNumbers () {
         return this.qrCodes.map(qrCode => qrCode.number)
       }
     },
     methods: {
       scanBarcode () {
         window.cordova.plugins.barcodeScanner.scan(result => {
-          if (this.abort) {
-            this.$emit('pop-page')
-            return
-          }
           if (result.format !== 'QR_CODE' || result.cancelled) {
-            setTimeout(this.scanBarcode, waitTimeAfterScanInMs)
             return
           }
 
@@ -64,22 +49,21 @@
             return
           }
 
-          if (this.qrCodesNumbers.includes(parsedMetaPrefix.number)) {
-            setTimeout(this.scanBarcode, waitTimeAfterScanInMs)
+          if (this.qrCodeNumbers.includes(parsedMetaPrefix.number)) {
             return
           }
 
           const keyBase64String = result.text.substring(metaPrefixLength)
           const keyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(keyBase64String)
           this.qrCodes.push({number: parsedMetaPrefix.number, bytes: keyBytes})
-          this.updateQrCodeNumbersLeftText(parsedMetaPrefix.numQrCodes)
+          this.qrCodeNumbersLeft = Array.apply(null, {length: parsedMetaPrefix.numQrCodes})
+            .map(Number.call, Number)
+            .map(n => n + 1)
+            .filter(number => !this.qrCodeNumbers.includes(number))
 
           if (this.qrCodes.length >= parsedMetaPrefix.numQrCodes) {
             this.finishQrCodeScanning()
-            return
           }
-
-          setTimeout(this.scanBarcode, waitTimeAfterScanInMs)
         }, error => {
           console.error('Scanning failed: ' + error)
         })
@@ -90,11 +74,6 @@
           numQrCodes: parseInt(metaPrefix.substring(2, 4), 10),
           checksum: metaPrefix.substring(4, metaPrefixLength)
         }
-      },
-      updateQrCodeNumbersLeftText (qrCodesTotal) {
-        const allQrCodeNumbers = Array.apply(null, {length: qrCodesTotal}).map(Number.call, Number).map(idx => idx + 1)
-        const qrCodeNumbersLeft = allQrCodeNumbers.filter(number => !this.qrCodesNumbers.includes(number))
-        this.qrCodeNumbersLeftText = qrCodeNumbersLeft.join(', ')
       },
       finishQrCodeScanning () {
         const byteArrayTotal = this.sortedBytesOfQrCodes(this.qrCodes)
@@ -107,7 +86,11 @@
         this.$emit('pop-page')
       },
       cancel () {
-        this.$emit('pop-page')
+        this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
+          if (response === 0) {
+            this.$emit('pop-page')
+          }
+        })
       }
     }
   }
@@ -117,9 +100,11 @@
   .content {
     text-align: center;
   }
-  .abortButton {
+  .scanButton {
     display: inline-block;
     width: 80%;
+    height: 300px;
+    line-height: 300px;
     max-width: 300px;
     margin-top: 10px;
   }
