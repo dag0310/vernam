@@ -37,6 +37,7 @@
       scanBarcode () {
         window.cordova.plugins.barcodeScanner.scan(result => {
           if (result.format !== 'QR_CODE' || result.cancelled) {
+            this.$ons.notification.toast('Sorry, please try again.', {timeout: 3000})
             return
           }
 
@@ -50,6 +51,7 @@
           }
 
           if (this.qrCodeNumbers.includes(parsedMetaPrefix.number)) {
+            this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
             return
           }
 
