@@ -39,7 +39,7 @@
       <div class="buffer"></div>
     </div>
     <v-ons-bottom-toolbar>
-      <textarea class="textarea" v-model="message"></textarea>
+      <textarea class="textarea" v-model="message" autocomplete="off"></textarea>
       <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled">Send</v-ons-button>
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
