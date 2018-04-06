@@ -7,19 +7,16 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-contacts": {
+      "PACKAGE_NAME": "com.geymayer.vernam"
+    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.geymayer.vernam"
     },
-    "cordova-plugin-barcodescanner": {
-      "PACKAGE_NAME": "com.geymayer.vernam"
-    },
-    "cordova-plugin-contacts": {
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "com.geymayer.vernam"
     }
   },
-  "dependent_plugins": {
-    "cordova-plugin-compat": {
-      "PACKAGE_NAME": "com.geymayer.vernam"
-    }
-  }
+  "dependent_plugins": {}
 }
