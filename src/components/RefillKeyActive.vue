@@ -58,7 +58,7 @@
           const parsedMetaPrefix = this.parseMetaPrefix(result.text.substr(0, metaPrefixLength))
           const checksum = this.generateChecksumFromPhoneNumbers(this.$store.state.id, this.$store.state.currentConversationId)
 
-          if (checksum !== parsedMetaPrefix.checksum) {
+          if (checksum !== parsedMetaPrefix.checksum && parsedMetaPrefix.checksum !== '---') {
             this.$ons.notification.alert('Your conversations\' phone numbers do not fit together.')
             this.$emit('pop-page')
             return
