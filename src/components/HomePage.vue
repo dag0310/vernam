@@ -91,8 +91,8 @@ export default {
         messages: [],
         message: '',
         newMessages: false,
-        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5])),
-        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1]))
+        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([])),
+        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([]))
       })
       this.$store.commit('createConversation', {
         id: '+436801234567',
@@ -100,8 +100,8 @@ export default {
         messages: [],
         message: '',
         newMessages: false,
-        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1])),
-        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]))
+        ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([])),
+        otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([]))
       })
     }
 
