@@ -17,6 +17,20 @@
 
   const metaPrefixLength = 7
 
+  const scanConfig = {
+    preferFrontCamera: false,
+    showFlipCameraButton: false,
+    showTorchButton: false,
+    torchOn: false,
+    saveHistory: false,
+    prompt: 'Place a QR code inside the scan area.',
+    resultDisplayDuration: 0,
+    formats: 'QR_CODE',
+    orientation: 'portrait',
+    disableAnimations: true,
+    disableSuccessBeep: true
+  }
+
   export default {
     name: 'refillkeyactive',
     data () {
@@ -68,7 +82,7 @@
           }
         }, error => {
           console.error('Scanning failed: ' + error)
-        })
+        }, scanConfig)
       },
       parseMetaPrefix (metaPrefix) {
         return {
