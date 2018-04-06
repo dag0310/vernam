@@ -148,7 +148,7 @@ export default {
         return
       }
       this.showLoadingIndicator = true
-      this.$ons.openActionSheet({buttons: ['I scan the QR codes', 'I show the QR codes', 'Cancel'], title: 'Refill key: What is your part?', cancelable: true}).then(response => {
+      this.$ons.openActionSheet({buttons: ['I scan', 'I show [not perfect secrecy]', 'Cancel'], title: 'Refill key: What is your part?', cancelable: true}).then(response => {
         this.showLoadingIndicator = false
         if (response === 0) {
           this.$emit('push-page', RefillKeyActive)
