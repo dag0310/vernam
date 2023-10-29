@@ -4,7 +4,7 @@ Perfect Secrecy Messaging made simple.
 
 Meet up, exchange your one-time pad (OTP) keys using QR code scanning and start texting with the most secure encryption method known to humanity.
 
-![Vernam app icon](res/icon/android/icon-96-xhdpi.png)
+![Vernam app icon](favicon.png)
 
 ## Usage
 - Add your contact
