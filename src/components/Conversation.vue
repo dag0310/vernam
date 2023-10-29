@@ -143,10 +143,6 @@ export default {
       })
     },
     refillKey () {
-      if (!window.cordova) {
-        this.$emit('push-page', RefillKeyPassive)
-        return
-      }
       this.showLoadingIndicator = true
       this.$ons.openActionSheet({buttons: ['I <u>scan</u> the QR code', 'I <u>show</u> the QR code', 'Cancel'], title: 'What is your part? It doesn\'t matter who does what.', cancelable: true}).then(response => {
         this.showLoadingIndicator = false
