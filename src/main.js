@@ -61,7 +61,7 @@ Vue.mixin({
   }
 })
 
-Vue.http.options.root = 'https://vernam.herokuapp.com'
+Vue.http.options.root = 'https://vernam-backend.fly.dev'
 
 /* eslint-disable no-new */
 new Vue({
