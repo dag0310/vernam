@@ -62,6 +62,7 @@ export default {
     }
   },
   created () {
+    // eslint-disable-next-line
     if ($store.state.id === null) {
       const id = uuidv4()
       alert(id)
