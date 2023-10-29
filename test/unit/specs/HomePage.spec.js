@@ -24,4 +24,3 @@ describe('HomePage.vue', () => {
     stub.restore()
   })
 })
-
