@@ -14,14 +14,9 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
-    "cordova-android": "^7.0.0",
-    "cordova-ios": "^4.5.4",
-    "cordova-plugin-contacts": "^3.0.1",
-    "cordova-plugin-whitelist": "^1.3.3",
     "js-sha3": "^0.8.0",
     "onsenui": "~2.7.2",
     "otp-crypto": "^4.1.0",
-    "phonegap-plugin-barcodescanner": "^7.1.0",
     "qrcode": "^1.2.0",
     "uuid": "^3.3.2",
     "vue": "^2.5.0",
@@ -103,16 +98,5 @@
     "Safari >= 9",
     "Firefox ESR",
     "Opera 12.1"
-  ],
-  "cordova": {
-    "plugins": {
-      "cordova-plugin-contacts": {},
-      "phonegap-plugin-barcodescanner": {},
-      "cordova-plugin-whitelist": {}
-    },
-    "platforms": [
-      "ios",
-      "android"
-    ]
-  }
+  ]
 }
