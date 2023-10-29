@@ -6,7 +6,7 @@
   </v-ons-toolbar>
   <div class="content">
     <h3 v-if="qrCodeNumbersLeft">{{qrCodeNumbersLeft.length}} code<template v-if="qrCodeNumbersLeft.length !== 1">s</template> left to scan:<br><b>{{ qrCodeNumbersLeft.join(', ') }}</b></h3>
-    <h3 v-else>Scan QR codes of your contact.</b></h3>
+    <h3 v-else><b>Scan QR codes of your contact.</b></h3>
     <v-ons-button modifier="large" class="scanButton" @click="scanBarcode">Scan next QR code</v-ons-button>
   </div>
   </v-ons-page>
