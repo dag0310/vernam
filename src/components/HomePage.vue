@@ -139,6 +139,7 @@ export default {
       const newConversationId = uuidv4()
       this.$store.commit('createConversation', {
         id: newConversationId,
+        otherId: null,
         name: name,
         messages: [],
         message: '',

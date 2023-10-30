@@ -44,7 +44,7 @@
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
       <p>Name: <b>{{conversation.name}}</b></p>
-      <p>ID: <b>{{conversation.id}}</b></p>
+      <p>Other ID: <b>{{conversation.otherId}}</b></p>
       <p>Other key size/checksum: <b>{{otherKey.length}} / {{generateChecksum(otherKey)}}</b></p>
       <p>Own key size/checksum: <b>{{ownKey.length}} / {{generateChecksum(ownKey)}}</b></p>
     </v-ons-dialog>
@@ -124,7 +124,7 @@ export default {
       this.sendButtonEnabled = false
       this.$http.post('messages', {
         sender: this.$store.state.id,
-        receiver: this.conversation.id,
+        receiver: this.conversation.otherId,
         payload: this.otpCryptoResult.base64Encrypted
       }).then(response => {
         const message = response.body

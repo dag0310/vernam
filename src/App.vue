@@ -25,7 +25,7 @@ export default {
       this.$http.get('messages/' + this.$store.state.id).then(response => {
         const messages = response.body
         this.conversations.forEach(conversation => {
-          const conversationMessages = messages.filter(message => message.sender === conversation.id && !messageIdsToDismiss[message.sender + message.timestamp])
+          const conversationMessages = messages.filter(message => message.sender === conversation.otherId && !messageIdsToDismiss[message.sender + message.timestamp])
           this.pollMessage(conversation, conversationMessages, 0)
         })
       }).then(() => {
