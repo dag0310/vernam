@@ -58,7 +58,7 @@
         this.scanStatus = 'Preparing to scan ...'
         try {
           const { capabilities } = await promise
-          console.log(capabilities)
+          console.log({ capabilities })
           this.scanStatus = 'Ready to scan.'
         } catch (error) {
           if (error.name === 'NotAllowedError') {
