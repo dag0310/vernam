@@ -17,6 +17,7 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    "comma-dangle": 'off',
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
