@@ -7,12 +7,14 @@
   <div class="content">
     <h3 v-if="qrCodeNumbersLeft">{{qrCodeNumbersLeft.length}} code<template v-if="qrCodeNumbersLeft.length !== 1">s</template> left to scan:<br><b>{{ qrCodeNumbersLeft.join(', ') }}</b></h3>
     <h3 v-else><b>Scan QR codes of your contact.</b></h3>
-    <v-ons-button modifier="large" class="scanButton" @click="scanBarcode">Scan next QR code</v-ons-button>
+    <qrcode-stream class="qr-stream" @init="onInit" @detect="onDetect" />
+    <p><b>{{ scanStatus }}</b></p>
   </div>
   </v-ons-page>
 </template>
 
 <script>
+  import { QrcodeStream } from 'vue-qrcode-reader'
   import OtpCrypto from 'otp-crypto'
 
   const metaPrefixLength = 7
@@ -33,8 +35,12 @@
 
   export default {
     name: 'refillkeyactive',
+    components: {
+      QrcodeStream,
+    },
     data () {
       return {
+        scanStatus: '',
         qrCodes: [],
         qrCodeNumbersLeft: null
       }
@@ -48,14 +54,34 @@
       }
     },
     methods: {
-      scanBarcode () {
-        window.cordova.plugins.barcodeScanner.scan(result => {
-          if (result.format !== 'QR_CODE' || result.cancelled) {
-            this.$ons.notification.toast('Sorry, please try again.', {timeout: 3000})
-            return
+       async onInit (promise) {
+        this.scanStatus = 'Preparing to scan ...'
+        try {
+          const { capabilities } = await promise
+          console.log(capabilities)
+          this.scanStatus = 'Ready to scan.'
+        } catch (error) {
+          if (error.name === 'NotAllowedError') {
+            this.scanStatus = 'User denied camera access permisson.'
+          } else if (error.name === 'NotFoundError') {
+            this.scanStatus = 'No suitable camera device installed.'
+          } else if (error.name === 'NotSupportedError' || error.name === 'InsecureContextError') {
+            this.scanStatus = 'Page is not served over HTTPS (or localhost).'
+          } else if (error.name === 'NotReadableError') {
+            this.scanStatus = 'Maybe camera is already in use.'
+          } else if (error.name === 'OverconstrainedError') {
+            this.scanStatus = 'Did you requested the front camera although there is none?'
+          } else if (error.name === 'StreamApiNotSupportedError') {
+            this.scanStatus = 'Browser seems to be lacking features.'
+          } else {
+            this.scanStatus = 'Unknown error: "' + error.name + '"'
           }
-
-          const parsedMetaPrefix = this.parseMetaPrefix(result.text.substr(0, metaPrefixLength))
+        }
+      },
+      async onDetect (promise) {
+        try {
+          const { content } = await promise
+          const parsedMetaPrefix = this.parseMetaPrefix(content.substr(0, metaPrefixLength))
           const checksum = this.generateChecksumFromStrings(this.$store.state.id, this.$store.state.currentConversationId)
 
           if (checksum !== parsedMetaPrefix.checksum && parsedMetaPrefix.checksum !== '---') {
@@ -69,7 +95,7 @@
             return
           }
 
-          const keyBase64String = result.text.substring(metaPrefixLength)
+          const keyBase64String = content.substring(metaPrefixLength)
           const keyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(keyBase64String)
           this.qrCodes.push({number: parsedMetaPrefix.number, bytes: keyBytes})
           this.qrCodeNumbersLeft = Array.apply(null, {length: parsedMetaPrefix.numQrCodes})
@@ -80,9 +106,9 @@
           if (this.qrCodes.length >= parsedMetaPrefix.numQrCodes) {
             this.finishQrCodeScanning()
           }
-        }, error => {
-          console.error('Scanning failed: ' + error)
-        }, scanConfig)
+        } catch (error) {
+          this.scanStatus = 'Error: ' + error
+        }
       },
       parseMetaPrefix (metaPrefix) {
         return {
@@ -116,12 +142,8 @@
   .content {
     text-align: center;
   }
-  .scanButton {
-    display: inline-block;
-    width: 80%;
+  .qr-stream {
+    width: 100%;
     height: 300px;
-    line-height: 300px;
-    max-width: 300px;
-    margin-top: 10px;
   }
 </style>
