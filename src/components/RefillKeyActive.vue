@@ -82,13 +82,14 @@
         try {
           const { content } = await promise
           const parsedMetaPrefix = this.parseMetaPrefix(content.substr(0, metaPrefixLength))
-          const checksum = this.generateChecksumFromStrings(this.$store.state.id, this.$store.state.currentConversationId)
 
-          if (checksum !== parsedMetaPrefix.checksum && parsedMetaPrefix.checksum !== '---') {
-            this.$ons.notification.alert('Your conversations\' IDs do not fit together.')
-            this.$emit('pop-page')
-            return
-          }
+          // Temporarily disabled
+          // const checksum = this.generateChecksumFromStrings(this.$store.state.id, this.$store.state.currentConversationId)
+          // if (checksum !== parsedMetaPrefix.checksum && parsedMetaPrefix.checksum !== '---') {
+          //   this.$ons.notification.alert('Your conversations\' IDs do not fit together.')
+          //   this.$emit('pop-page')
+          //   return
+          // }
 
           if (this.qrCodeNumbers.includes(parsedMetaPrefix.number)) {
             this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
