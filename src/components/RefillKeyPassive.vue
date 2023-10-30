@@ -10,7 +10,7 @@
     <div class="navigationAndCounter" v-if="currentQrCode">
       <v-ons-button modifier="outline" class="pull-left" @click="setCurrentQrCode(-1)">Previous</v-ons-button>
       <v-ons-button modifier="outline" class="pull-right" @click="setCurrentQrCode(+1)">Next</v-ons-button>
-      <h3>{{ currentQrCode.number }} / {{ numQrCodes }}</h3>
+      <h3>#{{ currentQrCode.number }} / {{ numQrCodes }}</h3>
       <div class="clearfix"></div>
   </div>
     <img v-if="currentQrCode" :src="currentQrCode.dataUrl" class="qrCode" @click="setCurrentQrCode(+1)">
