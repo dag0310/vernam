@@ -150,7 +150,7 @@ export default {
       this.$store.commit('setCurrentConversationId', newConversationId)
       this.$emit('push-page', Conversation)
       this.showCreateConversationDialog = false
-      this.newConversationName = '';
+      this.newConversationName = ''
     }
   }
 }
