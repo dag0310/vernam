@@ -46,6 +46,7 @@
       }
     },
     created () {
+      this.scanAudio = new Audio('/static/scan.wav');
     },
     computed: {
       qrCodeNumbers () {
@@ -94,6 +95,8 @@
             this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
             return
           }
+
+          this.scanAudio.play();
 
           const keyBase64String = content.substring(metaPrefixLength)
           const keyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(keyBase64String)
