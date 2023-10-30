@@ -46,7 +46,6 @@
       }
     },
     created () {
-      document.addEventListener('deviceready', this.scanBarcode, false)
     },
     computed: {
       qrCodeNumbers () {
