@@ -74,29 +74,6 @@ export default {
         this.$store.commit('setCurrentConversationId', null)
       }
     }, false)
-
-    // Create dummy conversations if none exist:
-    //
-    // if (this.$store.state.conversations.length <= 0) {
-    //   this.$store.commit('createConversation', {
-    //     id: '+436641234567',
-    //     name: 'John Doe',
-    //     messages: [],
-    //     message: '',
-    //     newMessages: false,
-    //     ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([])),
-    //     otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([]))
-    //   })
-    //   this.$store.commit('createConversation', {
-    //     id: '+436801234567',
-    //     name: 'Daniel Geymayer',
-    //     messages: [],
-    //     message: '',
-    //     newMessages: false,
-    //     ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([])),
-    //     otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(Uint8Array.from([]))
-    //   })
-    // }
   },
   computed: {
     conversations () {
