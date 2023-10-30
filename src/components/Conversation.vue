@@ -44,7 +44,7 @@
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
       <p>Name: <b>{{conversation.name}}</b></p>
-      <p>Phone number: <b>{{conversation.id}}</b></p>
+      <p>ID: <b>{{conversation.id}}</b></p>
       <p>Other key size/checksum: <b>{{otherKey.length}} / {{generateChecksum(otherKey)}}</b></p>
       <p>Own key size/checksum: <b>{{ownKey.length}} / {{generateChecksum(ownKey)}}</b></p>
     </v-ons-dialog>

@@ -54,9 +54,9 @@ Vue.mixin({
       const flattenedByteArrays = Uint8Array.from(byteArrays.reduce((a, b) => [...a, ...b], []))
       return flattenedByteArrays
     },
-    generateChecksumFromPhoneNumbers (number1, number2) {
+    generateChecksumFromStrings (string1, string2) {
       const getCharSum = number => number.substring(1).split('').map(c => parseInt(c, 10)).reduce((a, b) => a + b)
-      return (getCharSum(number1) ^ getCharSum(number2)).toString().padStart(3, '0')
+      return (getCharSum(string1) ^ getCharSum(string2)).toString().padStart(3, '0')
     }
   }
 })

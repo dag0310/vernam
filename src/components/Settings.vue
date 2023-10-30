@@ -11,7 +11,7 @@
         <v-ons-list-header>Information</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
-            Phone number: {{ $store.state.id }}
+            ID: {{ $store.state.id }}
           </div>
         </v-ons-list-item>
         <v-ons-list-header>Danger zone</v-ons-list-header>
