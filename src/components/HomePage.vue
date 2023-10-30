@@ -37,11 +37,12 @@
     </div>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateConversationDialog">
       <span slot="title">New conversation</span>
-      Please enter the name of your partner:
+      Name or label of the other person:
       <br><br>
-      <v-ons-input placeholder="" float v-model="conversationName" type="text"></v-ons-input>
+      <v-ons-input placeholder="" float v-model="newConversationName" type="text"></v-ons-input>
       <template slot="footer">
-        <div class="alert-dialog-button" @click="setIdentity(conversationName)">Finished</div>
+        <div class="alert-dialog-button" @click="showCreateConversationDialog = false; newConversationName = '';">Cancel</div>
+        <div class="alert-dialog-button" @click="createConversation(newConversationName);"><b>Create</b></div>
       </template>
     </v-ons-alert-dialog>
   </v-ons-page>
@@ -58,15 +59,14 @@ export default {
   name: 'home',
   data () {
     return {
-      searchText: ''
+      searchText: '',
+      showCreateConversationDialog: false,
+      newConversationName: '',
     }
   },
   created () {
-    // eslint-disable-next-line
-    if ($store.state.id === null) {
-      const id = uuidv4()
-      alert(id)
-      this.$store.commit('setId', id)
+    if (this.$store.state.id === null) {
+      this.$store.commit('setId', uuidv4())
     }
 
     document.addEventListener('show', event => {
@@ -132,20 +132,24 @@ export default {
         }
       })
     },
-    createConversation (name, normalizedNumber) {
-      if (this.$store.state.conversations.every(conversation => conversation.id !== normalizedNumber)) {
-        this.$store.commit('createConversation', {
-          id: normalizedNumber,
-          name: name,
-          messages: [],
-          message: '',
-          newMessages: false,
-          ownKey: '',
-          otherKey: ''
-        })
+    createConversation (name) {
+      if (name.trim() === '') {
+        return
       }
-      this.$store.commit('setCurrentConversationId', normalizedNumber)
+      const newConversationId = uuidv4()
+      this.$store.commit('createConversation', {
+        id: newConversationId,
+        name: name,
+        messages: [],
+        message: '',
+        newMessages: false,
+        ownKey: '',
+        otherKey: '',
+      })
+      this.$store.commit('setCurrentConversationId', newConversationId)
       this.$emit('push-page', Conversation)
+      this.showCreateConversationDialog = false
+      this.newConversationName = '';
     }
   }
 }
