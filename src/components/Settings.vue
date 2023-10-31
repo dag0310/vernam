@@ -23,7 +23,7 @@
         <v-ons-list-header>Copyright</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
-            © 2018, 2023 Vernam, Daniel Geymayer
+            © 2018, 2023 Daniel Geymayer
           </div>
         </v-ons-list-item>
       </v-ons-list>
