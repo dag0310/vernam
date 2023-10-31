@@ -17,7 +17,7 @@
         <v-ons-list-header>Danger zone</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
-            <v-ons-button modifier="large" @click="resetAppData()">Reset app data</v-ons-button>
+            <v-ons-button modifier="large" @click="resetAppData()" style="background-color: red;">Reset app data</v-ons-button>
           </div>
         </v-ons-list-item>
         <v-ons-list-header>Copyright</v-ons-list-header>
