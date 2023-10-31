@@ -3,13 +3,13 @@
     <v-ons-toolbar>
       <div class="left">
         <v-ons-toolbar-button @click="showSettingsPage">
-          <v-ons-icon icon="ion-ios-gear, material:md-settings"></v-ons-icon>
+          <v-ons-icon icon="ion-ios-cog, material:ion-md-cog"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
       <div class="center">Conversations</div>
       <div class="right">
         <v-ons-toolbar-button @click="showCreateConversationDialog = true">
-          <v-ons-icon icon="ion-ios-compose-outline"></v-ons-icon>
+          <v-ons-icon icon="ion-ios-create, material:ion-md-create"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
