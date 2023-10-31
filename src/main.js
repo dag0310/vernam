@@ -7,7 +7,7 @@ import Vue from 'vue'
 import VueOnsen from 'vue-onsenui'
 import VueChatScroll from 'vue-chat-scroll'
 import VueResource from 'vue-resource'
-import CryptoJS from 'crypto-js'
+import sha256 from 'js-sha256'
 import store from './store'
 import App from './App'
 
@@ -56,7 +56,7 @@ Vue.mixin({
       return flattenedByteArrays
     },
     buildThreeLetterHashFromStrings (...strings) {
-      const hash = CryptoJS.SHA256(strings.sort().join('')).toString()
+      const hash = sha256(strings.sort().join('')).toString()
       return hash.substring(0, 3)
     }
   }
