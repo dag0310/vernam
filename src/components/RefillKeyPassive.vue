@@ -33,14 +33,11 @@
         currentQrCode: null,
         numQrCodes,
         seenQrCodes: {},
-        backupKeys: {},
         isDoneButtonDisabled: true
       }
     },
     created () {
       this.initQrCodes()
-      this.backupKeys.own = this.$store.getters.currentConversation.ownKey
-      this.backupKeys.other = this.$store.getters.currentConversation.otherKey
       this.refilledAudio = new Audio('/static/refilled.wav')
     },
     methods: {
@@ -90,13 +87,13 @@
         this.seenQrCodes[currentNumber] = true
 
         if (Object.keys(this.seenQrCodes).length === numQrCodes && this.isDoneButtonDisabled) {
-          this.saveQrCodeKeys()
           this.isDoneButtonDisabled = false
         }
       },
       done () {
         this.$ons.openActionSheet({ buttons: ['Yes, they finished', 'Cancel'], title: 'Did the other party finish scanning?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
+            this.saveQrCodeKeys()
             this.refilledAudio.play()
             this.$emit('pop-page')
           }
@@ -105,7 +102,6 @@
       cancel () {
         this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
-            this.restoreBackupKeys()
             this.$emit('pop-page')
           }
         })
@@ -119,13 +115,6 @@
           otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf))
         })
       },
-      restoreBackupKeys () {
-        this.$store.commit('updateOwnKey', this.backupKeys.own)
-        this.$store.commit('updateOtherKey', {
-          id: this.$store.state.currentConversationId,
-          otherKey: this.backupKeys.other
-        })
-      }
     }
   }
 </script>
