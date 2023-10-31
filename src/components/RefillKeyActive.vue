@@ -46,7 +46,8 @@
       }
     },
     created () {
-      this.scanAudio = new Audio('/static/scan.wav');
+      this.scanAudio = new Audio('/static/scan.wav')
+      this.refilledAudio = new Audio('/static/refilled.wav')
     },
     computed: {
       qrCodeNumbers () {
@@ -79,7 +80,6 @@
         }
       },
       async onDetect (promise) {
-        try {
           const { content } = await promise
           const parsedMetaPrefix = this.parseMetaPrefix(content.substr(0, metaPrefixLength))
 
@@ -96,8 +96,6 @@
             return
           }
 
-          this.scanAudio.play();
-
           const keyBase64String = content.substring(metaPrefixLength)
           const keyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(keyBase64String)
           this.qrCodes.push({number: parsedMetaPrefix.number, bytes: keyBytes})
@@ -108,9 +106,8 @@
 
           if (this.qrCodes.length >= parsedMetaPrefix.numQrCodes) {
             this.finishQrCodeScanning()
-          }
-        } catch (error) {
-          this.scanStatus = 'Error: ' + error
+        } else {
+          this.scanAudio.play()
         }
       },
       parseMetaPrefix (metaPrefix) {
@@ -128,6 +125,7 @@
           id: this.$store.state.currentConversationId,
           otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
         })
+        this.refilledAudio.play()
         this.$emit('pop-page')
       },
       cancel () {

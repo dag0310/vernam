@@ -41,6 +41,7 @@
       this.initQrCodes()
       this.backupKeys.own = this.$store.getters.currentConversation.ownKey
       this.backupKeys.other = this.$store.getters.currentConversation.otherKey
+      this.refilledAudio = new Audio('/static/refilled.wav')
     },
     methods: {
       initQrCodes () {
@@ -95,6 +96,7 @@
       done () {
         this.$ons.openActionSheet({ buttons: ['Yes, they finished', 'Cancel'], title: 'Did the other party finish scanning?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
+            this.refilledAudio.play()
             this.$emit('pop-page')
           }
         })
