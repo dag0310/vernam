@@ -69,14 +69,17 @@
         const { content } = await promise
         const parsedMetaPrefix = this.parseMetaPrefix(content.substr(0, metaPrefixLength))
 
-        const otherId = this.$store.getters.currentConversation.otherId
-        if (otherId != null) {
-          if (this.buildThreeLetterHashFromStrings(this.$store.state.id, otherId) !== parsedMetaPrefix.threeLetterHash) {
-            this.$ons.notification.alert('Your conversations\' IDs do not fit together.')
-            this.$emit('pop-page')
-            return
-          }
-        }
+        // Conversation partner ID check temporarily commented-out, because the whole key will be refilled anyway.
+        // Might be good to do this check again if we add to the existing keys to make sure keys stay synchronized.
+        // On the other hand maybe a key checksum check makes more sense in this case instead of this conversation ID hashing business.
+        // const otherId = this.$store.getters.currentConversation.otherId
+        // if (otherId != null) {
+        //   if (this.buildThreeLetterHashFromStrings(this.$store.state.id, otherId) !== parsedMetaPrefix.threeLetterHash) {
+        //     this.$ons.notification.alert('Your conversations\' IDs do not fit together.')
+        //     this.$emit('pop-page')
+        //     return
+        //   }
+        // }
 
         if (this.qrCodeNumbers.includes(parsedMetaPrefix.number)) {
           this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
