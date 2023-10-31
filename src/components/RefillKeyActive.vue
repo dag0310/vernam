@@ -32,8 +32,8 @@
       }
     },
     created () {
-      this.scanAudio = new Audio('/static/scan.wav')
-      this.refilledAudio = new Audio('/static/refilled.wav')
+      this.scanAudio = new Audio('/static/audio/scan.wav')
+      this.refilledAudio = new Audio('/static/audio/refilled.wav')
     },
     computed: {
       qrCodeNumbers () {

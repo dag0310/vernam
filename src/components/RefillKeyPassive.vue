@@ -38,7 +38,7 @@
     },
     created () {
       this.initQrCodes()
-      this.refilledAudio = new Audio('/static/refilled.wav')
+      this.refilledAudio = new Audio('/static/audio/refilled.wav')
     },
     methods: {
       initQrCodes () {
