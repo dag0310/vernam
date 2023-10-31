@@ -50,8 +50,9 @@
         const qrCodes = []
         const promises = []
         for (let number = 1; number <= numQrCodes; number++) {
-          const checksum = this.generateChecksumFromStrings(this.$store.state.id, this.$store.state.currentConversationId)
-          const metaPrefix = ('' + number).padStart(2, '0') + ('' + numQrCodes).padStart(2, '0') + checksum
+          const otherId = this.$store.getters.currentConversation.otherId
+          const threeLetterHash = (otherId != null) ? this.buildThreeLetterHashFromStrings(this.$store.state.id, this.$store.state.otherId) : '---'
+          const metaPrefix = ('' + number).padStart(2, '0') + ('' + numQrCodes).padStart(2, '0') + threeLetterHash
           const randomBytes = OtpCrypto.generateRandomBytes(bytesPerQrCode)
           const randomText = OtpCrypto.encryptedDataConverter.bytesToBase64(randomBytes)
           promises.push(QRCode.toDataURL([{ data: metaPrefix + randomText, mode: 'byte' }], {errorCorrectionLevel: 'L'}).then(dataUrl => {

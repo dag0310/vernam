@@ -80,32 +80,33 @@
         }
       },
       async onDetect (promise) {
-          const { content } = await promise
-          const parsedMetaPrefix = this.parseMetaPrefix(content.substr(0, metaPrefixLength))
+        const { content } = await promise
+        const parsedMetaPrefix = this.parseMetaPrefix(content.substr(0, metaPrefixLength))
 
-          // Temporarily disabled
-          // const checksum = this.generateChecksumFromStrings(this.$store.state.id, this.$store.state.currentConversationId)
-          // if (checksum !== parsedMetaPrefix.checksum && parsedMetaPrefix.checksum !== '---') {
-          //   this.$ons.notification.alert('Your conversations\' IDs do not fit together.')
-          //   this.$emit('pop-page')
-          //   return
-          // }
-
-          if (this.qrCodeNumbers.includes(parsedMetaPrefix.number)) {
-            this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
+        const otherId = this.$store.getters.currentConversation.otherId
+        if (otherId != null) {
+          if (this.buildThreeLetterHashFromStrings(this.$store.state.id, otherId) !== parsedMetaPrefix.threeLetterHash) {
+            this.$ons.notification.alert('Your conversations\' IDs do not fit together.')
+            this.$emit('pop-page')
             return
           }
+        }
 
-          const keyBase64String = content.substring(metaPrefixLength)
-          const keyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(keyBase64String)
-          this.qrCodes.push({number: parsedMetaPrefix.number, bytes: keyBytes})
-          this.qrCodeNumbersLeft = Array.apply(null, {length: parsedMetaPrefix.numQrCodes})
-            .map(Number.call, Number)
-            .map(n => n + 1)
-            .filter(number => !this.qrCodeNumbers.includes(number))
+        if (this.qrCodeNumbers.includes(parsedMetaPrefix.number)) {
+          this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
+          return
+        }
 
-          if (this.qrCodes.length >= parsedMetaPrefix.numQrCodes) {
-            this.finishQrCodeScanning()
+        const keyBase64String = content.substring(metaPrefixLength)
+        const keyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(keyBase64String)
+        this.qrCodes.push({number: parsedMetaPrefix.number, bytes: keyBytes})
+        this.qrCodeNumbersLeft = Array.apply(null, {length: parsedMetaPrefix.numQrCodes})
+          .map(Number.call, Number)
+          .map(n => n + 1)
+          .filter(number => !this.qrCodeNumbers.includes(number))
+
+        if (this.qrCodes.length >= parsedMetaPrefix.numQrCodes) {
+          this.finishQrCodeScanning()
         } else {
           this.scanAudio.play()
         }
@@ -114,7 +115,7 @@
         return {
           number: parseInt(metaPrefix.substring(0, 2), 10),
           numQrCodes: parseInt(metaPrefix.substring(2, 4), 10),
-          checksum: metaPrefix.substring(4, metaPrefixLength)
+          threeLetterHash: metaPrefix.substring(4, metaPrefixLength)
         }
       },
       finishQrCodeScanning () {

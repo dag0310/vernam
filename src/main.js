@@ -7,6 +7,7 @@ import Vue from 'vue'
 import VueOnsen from 'vue-onsenui'
 import VueChatScroll from 'vue-chat-scroll'
 import VueResource from 'vue-resource'
+import CryptoJS from 'crypto-js'
 import store from './store'
 import App from './App'
 
@@ -54,9 +55,9 @@ Vue.mixin({
       const flattenedByteArrays = Uint8Array.from(byteArrays.reduce((a, b) => [...a, ...b], []))
       return flattenedByteArrays
     },
-    generateChecksumFromStrings (string1, string2) {
-      const getCharSum = number => number.substring(1).split('').map(c => parseInt(c, 10)).reduce((a, b) => a + b)
-      return (getCharSum(string1) ^ getCharSum(string2)).toString().padStart(3, '0')
+    buildThreeLetterHashFromStrings (...strings) {
+      const hash = CryptoJS.SHA256(strings.sort().join('')).toString()
+      return hash.substring(0, 3)
     }
   }
 })
