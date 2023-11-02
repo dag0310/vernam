@@ -28,8 +28,8 @@
           </div>
           <div class="right">
             <span class="list-item__label">{{ lastMessageDateText(conversation) }}</span>
-            <ons-icon icon="ion-ios-trash-outline" class="list-item__icon" @click.stop="deleteConversation(conversation)"></ons-icon>
-            <ons-icon icon="ion-ios-arrow-forward" class="list-item__icon"></ons-icon>
+            <ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteConversation(conversation)"></ons-icon>
+            <ons-icon icon="ion-ios-arrow-forward, material:ion-md-arrow-forward" class="list-item__icon"></ons-icon>
           </div>
         </v-ons-list-item>
       </v-ons-list>
