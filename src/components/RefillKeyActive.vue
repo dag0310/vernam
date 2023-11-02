@@ -17,8 +17,6 @@
   import { QrcodeStream } from 'vue-qrcode-reader'
   import OtpCrypto from 'otp-crypto'
 
-  const metaPrefixLength = 7
-
   export default {
     name: 'refillkeyactive',
     components: {
@@ -67,43 +65,52 @@
       },
       async onDetect (promise) {
         const { content } = await promise
-        const parsedMetaPrefix = this.parseMetaPrefix(content.substr(0, metaPrefixLength))
 
-        // Conversation partner ID check temporarily commented-out, because the whole key will be refilled anyway.
-        // Might be good to do this check again if we add to the existing keys to make sure keys stay synchronized.
-        // On the other hand maybe a key checksum check makes more sense in this case instead of this conversation ID hashing business.
-        // const otherId = this.$store.getters.currentConversation.otherId
-        // if (otherId != null) {
-        //   if (this.buildThreeLetterHashFromStrings(this.$store.state.id, otherId) !== parsedMetaPrefix.threeLetterHash) {
-        //     this.$ons.notification.alert('Your conversations\' IDs do not fit together.')
-        //     this.$emit('pop-page')
-        //     return
-        //   }
-        // }
+        let parsedQrContent
+        try {
+          parsedQrContent = JSON.parse(content)
+        } catch (e) {
+          parsedQrContent = this.parseQrContentLegacy(content)
 
-        if (this.qrCodeNumbers.includes(parsedMetaPrefix.number)) {
+          // Conversation partner ID check temporarily commented-out, because the whole key will be refilled anyway.
+          // Might be good to do this check again if we add to the existing keys to make sure keys stay synchronized.
+          // On the other hand maybe a key checksum check makes more sense in this case instead of this conversation ID hashing business.
+          //
+          // const otherId = this.$store.getters.currentConversation.otherId
+          // if (otherId != null && parsedQrContent.threeLetterHash != null) {
+          //   if (this.buildThreeLetterHashFromStrings(this.$store.state.id, otherId) !== parsedQrContent.threeLetterHash) {
+          //     this.$ons.notification.alert('Your conversations\' IDs do not fit together.')
+          //     this.$emit('pop-page')
+          //     return
+          //   }
+          // }
+        }
+
+        if (this.qrCodeNumbers.includes(parsedQrContent.qr)) {
           this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
           return
         }
 
-        const keyBase64String = content.substring(metaPrefixLength)
-        const keyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(keyBase64String)
-        this.qrCodes.push({number: parsedMetaPrefix.number, bytes: keyBytes})
-        this.qrCodeNumbersLeft = Array.apply(null, {length: parsedMetaPrefix.numQrCodes})
+        const keyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(parsedQrContent.key)
+        this.qrCodes.push({number: parsedQrContent.qr, bytes: keyBytes})
+        this.qrCodeNumbersLeft = Array.apply(null, {length: parsedQrContent.qrT})
           .map(Number.call, Number)
           .map(n => n + 1)
           .filter(number => !this.qrCodeNumbers.includes(number))
 
-        if (this.qrCodes.length >= parsedMetaPrefix.numQrCodes) {
+        if (this.qrCodes.length >= parsedQrContent.qrT) {
           this.finishQrCodeScanning()
         } else {
           this.scanAudio.play()
         }
       },
-      parseMetaPrefix (metaPrefix) {
+      parseQrContentLegacy (content) {
+        const metaPrefixLength = 7
+        const metaPrefix = content.substr(0, metaPrefixLength)
         return {
-          number: parseInt(metaPrefix.substring(0, 2), 10),
-          numQrCodes: parseInt(metaPrefix.substring(2, 4), 10),
+          qr: parseInt(metaPrefix.substring(0, 2), 10),
+          qrT: parseInt(metaPrefix.substring(2, 4), 10),
+          key: content.substring(metaPrefixLength),
           threeLetterHash: metaPrefix.substring(4, metaPrefixLength)
         }
       },
