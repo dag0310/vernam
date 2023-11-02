@@ -37,12 +37,11 @@
     </div>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateConversationDialog">
       <span slot="title">New conversation</span>
-      Name or label of the other person:
-      <br><br>
-      <v-ons-input placeholder="" float v-model="newConversationName" type="text"></v-ons-input>
+      <br>
+      <v-ons-input type="text" placeholder="Enter name ..." float v-model="newConversationName"></v-ons-input>
       <template slot="footer">
         <div class="alert-dialog-button" @click="showCreateConversationDialog = false; newConversationName = '';">Cancel</div>
-        <div class="alert-dialog-button" @click="createConversation(newConversationName);"><b>Create</b></div>
+        <div class="alert-dialog-button" @click="createConversation(newConversationName);"><b>OK</b></div>
       </template>
     </v-ons-alert-dialog>
   </v-ons-page>
