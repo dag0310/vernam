@@ -18,7 +18,7 @@
     "onsenui": "~2.11.0",
     "otp-crypto": "^4.1.0",
     "qrcode": "^1.5.3",
-    "uuid": "^3.3.2",
+    "uuid": "^9.0.1",
     "vue": "~2.6.14",
     "vue-chat-scroll": "^1.4.0",
     "vue-onsenui": "~2.6.4",
