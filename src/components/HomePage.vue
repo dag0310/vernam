@@ -37,8 +37,9 @@
     </div>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateConversationDialog">
       <span slot="title">New conversation</span>
-      <br>
-      <v-ons-input type="text" placeholder="Enter name ..." float v-model="newConversationName"></v-ons-input>
+      <p>
+        <v-ons-input type="text" modifier="underbar" placeholder="Enter name ..." float v-model="newConversationName"></v-ons-input>
+      </p>
       <template slot="footer">
         <div class="alert-dialog-button" @click="showCreateConversationDialog = false; newConversationName = '';">Cancel</div>
         <div class="alert-dialog-button" @click="createConversation(newConversationName);"><b>OK</b></div>
