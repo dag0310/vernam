@@ -99,7 +99,7 @@
           .filter(number => !this.qrCodeNumbers.includes(number))
 
         if (this.qrCodes.length >= parsedQrContent.qrT) {
-          this.finishQrCodeScanning()
+          this.finishQrCodeScanning(parsedQrContent.id)
         } else {
           this.scanAudio.play()
         }
@@ -114,13 +114,17 @@
           threeLetterHash: metaPrefix.substring(4, metaPrefixLength)
         }
       },
-      finishQrCodeScanning () {
+      finishQrCodeScanning (otherId) {
         const byteArrayTotal = this.buildTotalKeyByteArray(this.qrCodes)
         const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
         this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)))
         this.$store.commit('updateOtherKey', {
           id: this.$store.state.currentConversationId,
           otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
+        })
+        this.$store.commit('setConversationOtherId', {
+          id: this.$store.state.currentConversationId,
+          otherId: otherId,
         })
         this.refilledAudio.play()
         this.$emit('pop-page')

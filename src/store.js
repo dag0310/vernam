@@ -46,6 +46,10 @@ export default new Vuex.Store({
       const idx = state.conversations.findIndex(c => c.id === conversation.id)
       state.conversations[idx].name = conversation.name
     },
+    setConversationOtherId (state, conversation) {
+      const idx = state.conversations.findIndex(c => c.id === conversation.id)
+      state.conversations[idx].otherId = conversation.otherId
+    },
   },
   getters: {
     currentConversation (state) {
