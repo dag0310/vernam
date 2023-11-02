@@ -44,9 +44,9 @@
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
       <p>Name: <b>{{conversation.name}}</b> <v-ons-icon @click="newConversationName = conversation.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create"></v-ons-icon></p>
-      <p>Other ID: <b>{{conversation.otherId}}</b></p>
-      <p>Other key size/checksum: <b>{{otherKey.length}} / {{generateChecksum(otherKey)}}</b></p>
-      <p>Own key size/checksum: <b>{{ownKey.length}} / {{generateChecksum(ownKey)}}</b></p>
+      <p>Own key:<br>Size: <b>{{ownKey.length}}</b>, Checksum: <b>{{generateChecksum(ownKey)}}</b></p>
+      <p>Other key:<br>Size: <b>{{otherKey.length}}</b>, Checksum: <b>{{generateChecksum(otherKey)}}</b></p>
+      <p>Other ID:<br><b><i v-if="conversation.otherId == null">UNKNOWN</i><span v-if="conversation.otherId != null">{{conversation.otherId}}</span></b></p>
     </v-ons-dialog>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showEditNameDialog">
       <span slot="title">Edit name</span>
