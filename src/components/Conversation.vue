@@ -43,11 +43,21 @@
       <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled">Send</v-ons-button>
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
-      <p>Name: <b>{{conversation.name}}</b></p>
+      <p>Name: <b>{{conversation.name}}</b> <v-ons-icon @click="newConversationName = conversation.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create"></v-ons-icon></p>
       <p>Other ID: <b>{{conversation.otherId}}</b></p>
       <p>Other key size/checksum: <b>{{otherKey.length}} / {{generateChecksum(otherKey)}}</b></p>
       <p>Own key size/checksum: <b>{{ownKey.length}} / {{generateChecksum(ownKey)}}</b></p>
     </v-ons-dialog>
+    <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showEditNameDialog">
+      <span slot="title">Edit name</span>
+      <p>
+        <v-ons-input type="text" modifier="underbar" placeholder="Enter name ..." float v-model="newConversationName"></v-ons-input>
+      </p>
+      <template slot="footer">
+        <div class="alert-dialog-button" @click="showEditNameDialog = false; newConversationName = '';">Cancel</div>
+        <div class="alert-dialog-button" @click="saveConversationName(newConversationName);"><b>Save</b></div>
+      </template>
+    </v-ons-alert-dialog>
     <v-ons-progress-circular indeterminate v-show="showLoadingIndicator"></v-ons-progress-circular>
   </v-ons-page>
 </template>
@@ -66,7 +76,9 @@ export default {
       searchText: '',
       sendButtonEnabled: true,
       showLoadingIndicator: false,
-      informationDialogVisible: false
+      informationDialogVisible: false,
+      showEditNameDialog: false,
+      newConversationName: '',
     }
   },
   computed: {
@@ -106,6 +118,17 @@ export default {
     }
   },
   methods: {
+    saveConversationName (name) {
+      if (name.trim() === '') {
+        return
+      }
+      this.$store.commit('setConversationName', {
+        id: this.conversation.id,
+        name: name,
+      })
+      this.showEditNameDialog = false
+      this.newConversationName = this.conversation.name
+    },
     dateTimeText (timestamp) {
       const humanDate = this.humanDate(timestamp)
       return humanDate.dateText + ', ' + humanDate.timeText
