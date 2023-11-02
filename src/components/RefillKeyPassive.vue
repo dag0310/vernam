@@ -22,7 +22,7 @@
   import QRCode from 'qrcode'
   import OtpCrypto from 'otp-crypto'
 
-  const numQrCodes = 10
+  const defaultNumQrCodes = 10
   const bytesPerQrCode = 500
 
   export default {
@@ -31,7 +31,7 @@
       return {
         qrCodes: null,
         currentQrCode: null,
-        numQrCodes,
+        numQrCodes: defaultNumQrCodes,
         seenQrCodes: {},
         isDoneButtonDisabled: true
       }
@@ -46,10 +46,10 @@
         this.currentQrCode = null
         const qrCodes = []
         const promises = []
-        for (let number = 1; number <= numQrCodes; number++) {
+        for (let number = 1; number <= this.numQrCodes; number++) {
           const otherId = this.$store.getters.currentConversation.otherId
           const threeLetterHash = (otherId != null) ? this.buildThreeLetterHashFromStrings(this.$store.state.id, this.$store.state.otherId) : '---'
-          const metaPrefix = ('' + number).padStart(2, '0') + ('' + numQrCodes).padStart(2, '0') + threeLetterHash
+          const metaPrefix = ('' + number).padStart(2, '0') + ('' + this.numQrCodes).padStart(2, '0') + threeLetterHash
           const randomBytes = OtpCrypto.generateRandomBytes(bytesPerQrCode)
           const randomText = OtpCrypto.encryptedDataConverter.bytesToBase64(randomBytes)
           promises.push(QRCode.toDataURL([{ data: metaPrefix + randomText, mode: 'byte' }], {errorCorrectionLevel: 'L'}).then(dataUrl => {
@@ -74,7 +74,7 @@
         let currentNumber
         if (this.currentQrCode && direction !== undefined) {
           currentNumber = this.currentQrCode.number + direction
-          if (currentNumber > numQrCodes) {
+          if (currentNumber > this.numQrCodes) {
             currentNumber = 1
           } else if (currentNumber < 1) {
             currentNumber = numQrCodes
@@ -107,7 +107,7 @@
         })
       },
       saveQrCodeKeys () {
-        const byteArrayTotal = this.sortedBytesOfQrCodes(this.qrCodes)
+        const byteArrayTotal = this.buildTotalKeyByteArray(this.qrCodes)
         const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
         this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf)))
         this.$store.commit('updateOtherKey', {

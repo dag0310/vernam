@@ -108,7 +108,7 @@
         }
       },
       finishQrCodeScanning () {
-        const byteArrayTotal = this.sortedBytesOfQrCodes(this.qrCodes)
+        const byteArrayTotal = this.buildTotalKeyByteArray(this.qrCodes)
         const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
         this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)))
         this.$store.commit('updateOtherKey', {
