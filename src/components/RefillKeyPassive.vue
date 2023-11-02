@@ -77,7 +77,7 @@
           if (currentNumber > this.numQrCodes) {
             currentNumber = 1
           } else if (currentNumber < 1) {
-            currentNumber = numQrCodes
+            currentNumber = this.numQrCodes
           }
         } else {
           currentNumber = 1
@@ -86,7 +86,7 @@
         this.currentQrCode = this.qrCodes.find(qrCode => qrCode.number === currentNumber)
         this.seenQrCodes[currentNumber] = true
 
-        if (Object.keys(this.seenQrCodes).length === numQrCodes && this.isDoneButtonDisabled) {
+        if (Object.keys(this.seenQrCodes).length === this.numQrCodes && this.isDoneButtonDisabled) {
           this.isDoneButtonDisabled = false
         }
       },
