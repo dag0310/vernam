@@ -143,9 +143,7 @@ export default {
       })
     },
     refillKey () {
-      this.showLoadingIndicator = true
       this.$ons.openActionSheet({buttons: ['I <u>scan</u> the QR code', 'I <u>show</u> the QR code', 'Cancel'], title: 'What is your part? It doesn\'t matter who does what.', cancelable: true}).then(response => {
-        this.showLoadingIndicator = false
         if (response === 0) {
           this.$emit('push-page', RefillKeyActive)
         } else if (response === 1) {
