@@ -36,7 +36,7 @@ export default {
   name: 'settings',
   methods: {
     resetAppData () {
-      this.$ons.openActionSheet({ buttons: ['Reset app data', 'Cancel'], title: 'Deletes all conversations and their keys.', cancelable: true, destructive: 0 }).then(response => {
+      this.$ons.openActionSheet({ buttons: ['Reset app data', 'Cancel'], title: 'Deletes own ID, all conversations and keys.', cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           window.localStorage.clear()
           window.location.reload()
