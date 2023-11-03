@@ -20,10 +20,11 @@
             <v-ons-button modifier="large" @click="resetAppData()" style="background-color: red;">Reset app data</v-ons-button>
           </div>
         </v-ons-list-item>
-        <v-ons-list-header>Copyright</v-ons-list-header>
+        <v-ons-list-header>Info</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
-            © 2018, 2023 Daniel Geymayer
+            © 2018, 2023 Daniel Geymayer<br>
+            Build: {{ buildTimestamp }}
           </div>
         </v-ons-list-item>
       </v-ons-list>
@@ -34,6 +35,11 @@
 <script>
 export default {
   name: 'settings',
+  data () {
+    return {
+      buildTimestamp: BUILD_TIMESTAMP, // eslint-disable-line
+    }
+  },
   methods: {
     resetAppData () {
       this.$ons.openActionSheet({ buttons: ['Reset app data', 'Cancel'], title: 'Deletes own ID, all conversations and keys.', cancelable: true, destructive: 0 }).then(response => {
