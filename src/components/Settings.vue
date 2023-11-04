@@ -37,6 +37,7 @@ export default {
   name: 'settings',
   data () {
     return {
+      // BUILD_TIMESTAMP will be injected during build process, not available during development, which is OK
       buildTimestamp: BUILD_TIMESTAMP, // eslint-disable-line
     }
   },
