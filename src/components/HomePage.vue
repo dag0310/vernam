@@ -23,7 +23,7 @@
           <div class="center">
             <span class="list-item__title ellipsis" :class="{bold: conversation.newMessages}">{{ conversation.name }}</span>
             <span class="list-item__subtitle ellipsis" :class="{bold: conversation.newMessages}">
-              {{ lastMessageText(conversation) }}
+              <i v-if="lastMessageIsOwn(conversation)">You: </i>{{ lastMessageText(conversation) }}
             </span>
           </div>
           <div class="right">
@@ -108,6 +108,10 @@ export default {
     lastMessageText (conversation) {
       const lastMessage = this.lastMessage(conversation)
       return lastMessage ? lastMessage.text : ''
+    },
+    lastMessageIsOwn (conversation) {
+      const lastMessage = this.lastMessage(conversation)
+      return lastMessage ? lastMessage.own : false
     },
     lastMessageDateText (conversation) {
       const lastMessage = this.lastMessage(conversation)
