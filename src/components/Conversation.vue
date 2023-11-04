@@ -81,6 +81,15 @@ export default {
       newConversationName: '',
     }
   },
+  created () {
+    // FIXME: Temporary: Fixes old messages where the timestamp was retrieved from backend as string instead of number
+    for (const message of this.conversation.messages) {
+      if (typeof message.timestamp === 'string') {
+        message.timestamp = parseInt(message.timestamp, 10)
+        this.$store.commit('updateMessage', message)
+      }
+    }
+  },
   computed: {
     conversation () {
       return this.$store.getters.currentConversation
