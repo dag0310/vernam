@@ -22,7 +22,7 @@ export default {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
         return
       }
-      this.$http.get('messages/' + this.$store.state.id).then(response => {
+      this.$http.get(`messages/${this.$store.state.id}`).then(response => {
         const messages = response.body
         this.conversations.forEach(conversation => {
           const conversationMessages = messages.filter(message => message.sender === conversation.otherId && !messageIdsToDismiss[`${message.sender}${message.timestamp}`])
