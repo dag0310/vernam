@@ -152,7 +152,7 @@ export default {
       }).then(response => {
         const message = response.body
         this.conversation.messages.push({
-          id: message.sender + message.timestamp,
+          id: `${message.sender}${message.timestamp}`,
           own: true,
           text: this.message,
           timestamp: message.timestamp
