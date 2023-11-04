@@ -17,6 +17,8 @@ Vue.use(VueOnsen)
 Vue.use(VueChatScroll)
 Vue.use(VueResource)
 
+const twentyFourHoursInMs = 24 * 60 * 60 * 1000
+
 Vue.mixin({
   data () {
     return {
@@ -26,24 +28,21 @@ Vue.mixin({
   methods: {
     humanDate (timestamp) {
       const date = new Date(timestamp)
+      const timeText = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: 'numeric' }).format(date)
       const now = new Date()
       const todayAtMidnightTimestamp = (new Date(now.getFullYear(), now.getMonth(), now.getDate())).getTime()
-      const dayInMs = 3600000 * 24
-      const timeText = ('' + (date.getHours())).padStart(2, '0') + ':' + ('' + (date.getMinutes())).padStart(2, '0')
       let isToday = false
       let dateText
 
       if (timestamp >= todayAtMidnightTimestamp) {
         isToday = true
         dateText = 'Today'
-      } else if (timestamp >= todayAtMidnightTimestamp - dayInMs) {
+      } else if (timestamp >= todayAtMidnightTimestamp - twentyFourHoursInMs) {
         dateText = 'Yesterday'
-      } else if (timestamp >= todayAtMidnightTimestamp - dayInMs * 6) {
-        dateText = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()]
+      } else if (timestamp >= todayAtMidnightTimestamp - (6 * twentyFourHoursInMs)) {
+        dateText = new Intl.DateTimeFormat(undefined, { weekday: 'long' }).format(date)
       } else {
-        dateText = date.getFullYear() + '-' +
-          ('' + (date.getMonth() + 1)).padStart(2, '0') + '-' +
-          ('' + (date.getDate())).padStart(2, '0')
+        dateText = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' }).format(date)
       }
 
       return { isToday, dateText, timeText }
