@@ -140,7 +140,7 @@ export default {
     },
     dateTimeText (timestamp) {
       const humanDate = this.humanDate(timestamp)
-      return humanDate.dateText + ', ' + humanDate.timeText
+      return humanDate.isToday ? humanDate.timeText : `${humanDate.dateText}, ${humanDate.timeText}`
     },
     deleteMessage (message) {
       this.$ons.openActionSheet({ buttons: ['Delete message', 'Cancel'], title: message.text, cancelable: true, destructive: 0 }).then(response => {
