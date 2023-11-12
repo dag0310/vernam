@@ -41,6 +41,10 @@ npm run dev
 npm run build
 ```
 
+## Compatibility
+
+- [Vernam Backend](https://github.com/dag0310/vernam-backend) Version 1.x.x
+
 ## Tech stack
 
 - [Vue.js](https://vuejs.org/)
