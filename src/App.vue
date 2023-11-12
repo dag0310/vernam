@@ -57,7 +57,7 @@ export default {
 
       this.$http.delete(`messages/${message.sender}/${message.timestamp}/${base64KeyUriEncoded}`).then(() => {
         const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
-        if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substr(0, this.AUTH_SECRET.length) !== this.AUTH_SECRET) {
+        if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_SECRET.length) !== this.AUTH_SECRET) {
           messageIdsToDismiss[polledMessageId] = true
           this.pollMessage(conversation, conversationMessages, idx + 1)
           return
