@@ -8,19 +8,19 @@
     </v-ons-toolbar>
     <div class="content">
       <v-ons-list>
-        <v-ons-list-header>Information</v-ons-list-header>
+        <v-ons-list-header>ID</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
-            ID: {{ $store.state.id }}
+            {{ $store.state.id }}
           </div>
         </v-ons-list-item>
         <v-ons-list-header>Danger zone</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
-            <v-ons-button modifier="large" @click="resetAppData()" style="background-color: red;">Reset app data</v-ons-button>
+            <v-ons-button modifier="large" @click="resetData()" style="background-color: red;">Reset local data</v-ons-button>
           </div>
         </v-ons-list-item>
-        <v-ons-list-header>Info</v-ons-list-header>
+        <v-ons-list-header>About</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
             © 2018, 2023 Daniel Geymayer<br>
@@ -42,8 +42,8 @@ export default {
     }
   },
   methods: {
-    resetAppData () {
-      this.$ons.openActionSheet({ buttons: ['Reset app data', 'Cancel'], title: 'Deletes own ID, all conversations and keys.', cancelable: true, destructive: 0 }).then(response => {
+    resetData () {
+      this.$ons.openActionSheet({ buttons: ['Reset local data', 'Cancel'], title: 'Deletes own ID, all conversations and keys.', cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           window.localStorage.clear()
           window.location.reload()
