@@ -59,7 +59,7 @@ Vue.mixin({
   }
 })
 
-Vue.http.options.root = (process.env.NODE_ENV === 'production') ? 'https://vernam-backend.fly.dev' : 'http://localhost:3000'
+Vue.http.options.root = process.env.API_URL || 'http://localhost:3000'
 
 /* eslint-disable no-new */
 new Vue({

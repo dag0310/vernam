@@ -16,4 +16,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 
+.env
 /deploy.sh

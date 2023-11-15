@@ -30,6 +30,12 @@ If you come across any other flaws, please create an issue or pull-request for t
 
 ## Development
 
+Create `.env` file in project root with content:
+```
+API_URL_DEVELOPMENT=<API_URL_TO_USE_IN_DEVELOPMENT>
+API_URL_PRODUCTION=<API_URL_TO_USE_IN_PRODUCTION>
+```
+
 ``` bash
 # install dependencies
 npm install
