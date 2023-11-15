@@ -49,9 +49,9 @@
       <p>Other ID:<br><b><i v-if="conversation.otherId == null">UNKNOWN</i><span v-if="conversation.otherId != null">{{conversation.otherId}}</span></b></p>
     </v-ons-dialog>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showEditNameDialog">
-      <span slot="title">Edit name</span>
+      <span slot="title">Edit conversation name</span>
       <p>
-        <v-ons-input type="text" modifier="underbar" placeholder="Enter name ..." float v-model="newConversationName"></v-ons-input>
+        <v-ons-input type="text" modifier="underbar" placeholder="Conversation name ..." float v-model="newConversationName"></v-ons-input>
       </p>
       <template slot="footer">
         <div class="alert-dialog-button" @click="showEditNameDialog = false; newConversationName = '';">Cancel</div>
