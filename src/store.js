@@ -10,6 +10,12 @@ export default new Vuex.Store({
     setId (state, id) {
       state.id = id
     },
+    setNumQrCodes (state, value) {
+      state.numQrCodes = value
+    },
+    setBytesPerQrCode (state, value) {
+      state.bytesPerQrCode = value
+    },
     setLastTimestamp (state, lastTimestamp) {
       state.lastTimestamp = lastTimestamp
     },
@@ -64,5 +70,7 @@ export default new Vuex.Store({
     currentConversationId: null,
     id: null,
     lastTimestamp: null,
+    numQrCodes: 10,
+    bytesPerQrCode: 500,
   }
 })

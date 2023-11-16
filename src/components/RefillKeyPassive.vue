@@ -22,21 +22,21 @@
   import QRCode from 'qrcode'
   import OtpCrypto from 'otp-crypto'
 
-  const defaultNumQrCodes = 10
-  const bytesPerQrCode = 500
-
   export default {
     name: 'refillkeypassive',
     data () {
       return {
         qrCodes: null,
         currentQrCode: null,
-        numQrCodes: defaultNumQrCodes,
         seenQrCodes: {},
+        numQrCodes: null,
+        bytesPerQrCode: null,
         isDoneButtonDisabled: true
       }
     },
     created () {
+      this.numQrCodes = this.$store.state.numQrCodes
+      this.bytesPerQrCode = this.$store.state.bytesPerQrCode
       this.initQrCodes()
       this.refilledAudio = new Audio('/static/audio/refilled.wav')
     },
@@ -47,7 +47,7 @@
         const qrCodes = []
         const promises = []
         for (let number = 1; number <= this.numQrCodes; number++) {
-          const randomBytes = OtpCrypto.generateRandomBytes(bytesPerQrCode)
+          const randomBytes = OtpCrypto.generateRandomBytes(this.bytesPerQrCode)
           const randomText = OtpCrypto.encryptedDataConverter.bytesToBase64(randomBytes)
           const dataObj = {
             id: this.$store.state.id,

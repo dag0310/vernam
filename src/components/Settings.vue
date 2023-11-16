@@ -14,6 +14,15 @@
             {{ $store.state.id }}
           </div>
         </v-ons-list-item>
+        <v-ons-list-header>QR codes</v-ons-list-header>
+        <v-ons-list-item>
+          <div class="left">Amount:</div>
+          <v-ons-input class="right" type="number" min="1" max="100" step="1" modifier="underbar" inputmode="numeric" v-model="numQrCodes"></v-ons-input>
+        </v-ons-list-item>
+        <v-ons-list-item>
+          <div class="left">Bytes per code:</div>
+          <v-ons-input class="right" type="number" min="100" max="500" step="50" modifier="underbar" inputmode="numeric" v-model="bytesPerQrCode"></v-ons-input>
+        </v-ons-list-item>
         <v-ons-list-header>Danger zone</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
@@ -39,6 +48,24 @@ export default {
     return {
       // BUILD_TIMESTAMP will be injected during build process, not available during development, which is OK
       buildTimestamp: BUILD_TIMESTAMP, // eslint-disable-line
+    }
+  },
+  computed: {
+    numQrCodes: {
+      get () {
+        return this.$store.state.numQrCodes
+      },
+      set (value) {
+        this.$store.commit('setNumQrCodes', value)
+      }
+    },
+    bytesPerQrCode: {
+      get () {
+        return this.$store.state.bytesPerQrCode
+      },
+      set (value) {
+        this.$store.commit('setBytesPerQrCode', value)
+      }
     }
   },
   methods: {
