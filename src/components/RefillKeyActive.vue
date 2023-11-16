@@ -51,7 +51,7 @@
           } else if (error.name === 'NotFoundError') {
             this.scanStatus = 'No suitable camera device installed.'
           } else if (error.name === 'NotSupportedError' || error.name === 'InsecureContextError') {
-            this.scanStatus = 'Page is not served over HTTPS (or localhost).'
+            this.scanStatus = 'Page is not served over HTTPS or localhost.'
           } else if (error.name === 'NotReadableError') {
             this.scanStatus = 'Maybe camera is already in use.'
           } else if (error.name === 'OverconstrainedError') {
