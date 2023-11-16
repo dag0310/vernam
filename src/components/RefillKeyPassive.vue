@@ -7,11 +7,12 @@
   </div>
   </v-ons-toolbar>
   <div class="content">
-    <img v-if="currentQrCode" :src="currentQrCode.dataUrl" class="qrCode" @click="setCurrentQrCode(+1)">
+    <img v-if="currentQrCode" :src="currentQrCode.dataUrl" class="qrCode" @click="stopAutoplay(); setCurrentQrCode(+1)">
     <div class="navigationAndCounter" v-if="currentQrCode">
       <h3>#{{ currentQrCode.number }} / {{ numQrCodes }}</h3>
-      <v-ons-button modifier="outline" class="pull-left" @click="setCurrentQrCode(-1)">Previous</v-ons-button>
-      <v-ons-button modifier="outline" class="pull-right" @click="setCurrentQrCode(+1)">Next</v-ons-button>
+      <v-ons-button modifier="outline" class="pull-left" @click="stopAutoplay(); setCurrentQrCode(-1)">Previous</v-ons-button>
+      <v-ons-button modifier="outline" class="pull-center" @click="(autoplayInterval == null) ? startAutoplay() : stopAutoplay()">{{ (autoplayInterval == null) ? '>' : '||' }}</v-ons-button>
+      <v-ons-button modifier="outline" class="pull-right" @click="stopAutoplay(); setCurrentQrCode(+1)">Next</v-ons-button>
       <div class="clearfix"></div>
     </div>
   </div>
@@ -22,6 +23,8 @@
   import QRCode from 'qrcode'
   import OtpCrypto from 'otp-crypto'
 
+  const autoplayIntervalInMs = 1000
+
   export default {
     name: 'refillkeypassive',
     data () {
@@ -31,7 +34,8 @@
         seenQrCodes: {},
         numQrCodes: null,
         bytesPerQrCode: null,
-        isDoneButtonDisabled: true
+        isDoneButtonDisabled: true,
+        autoplayInterval: null,
       }
     },
     created () {
@@ -67,6 +71,7 @@
           }
           this.qrCodes = qrCodes
           this.setCurrentQrCode()
+          this.startAutoplay()
         })
       },
       setCurrentQrCode (direction) {
@@ -93,11 +98,27 @@
           this.isDoneButtonDisabled = false
         }
       },
+      startAutoplay () {
+        if (this.autoplayInterval != null) {
+          return
+        }
+        this.autoplayInterval = setInterval(() => {
+          this.setCurrentQrCode(+1, true)
+        }, autoplayIntervalInMs)
+      },
+      stopAutoplay () {
+        if (this.autoplayInterval == null) {
+          return
+        }
+        clearInterval(this.autoplayInterval)
+        this.autoplayInterval = null
+      },
       done () {
         this.$ons.openActionSheet({ buttons: ['Yes, scanning finished', 'Cancel'], title: 'Did the other party finish scanning?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             this.saveQrCodeKeys()
             this.refilledAudio.play()
+            this.stopAutoplay()
             this.$emit('pop-page')
           }
         })
@@ -105,6 +126,7 @@
       cancel () {
         this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
+            this.stopAutoplay()
             this.$emit('pop-page')
           }
         })

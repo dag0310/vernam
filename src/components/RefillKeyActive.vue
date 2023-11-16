@@ -87,7 +87,8 @@
         }
 
         if (this.qrCodeNumbers.includes(parsedQrContent.qr)) {
-          this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
+          // Do not show this toast anymore, because in autoplay mode it would be annoying
+          // this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
           return
         }
 
