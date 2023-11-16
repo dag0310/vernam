@@ -40,7 +40,7 @@
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message" autocomplete="off"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !conversation.otherId">Send</v-ons-button>
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
       <p>Name: <b>{{conversation.name}}</b> <v-ons-icon @click="newConversationName = conversation.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create"></v-ons-icon></p>
