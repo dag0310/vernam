@@ -155,6 +155,11 @@ export default {
     },
     sendMessage () {
       if (!this.otpCryptoResult.isKeyLongEnough) {
+        this.$ons.notification.toast('Key not long enough.', { timeout: 1000 })
+        return
+      }
+      if (!this.conversation.otherId) {
+        this.$ons.notification.toast('Other ID not set (yet).', { timeout: 1000 })
         return
       }
       this.sendButtonEnabled = false
