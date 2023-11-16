@@ -61,7 +61,7 @@ export default {
         return this.$store.state.numQrCodes
       },
       set (value) {
-        this.$store.commit('setNumQrCodes', value)
+        this.$store.commit('setNumQrCodes', parseInt(value, 10))
       }
     },
     bytesPerQrCode: {
@@ -69,7 +69,7 @@ export default {
         return this.$store.state.bytesPerQrCode
       },
       set (value) {
-        this.$store.commit('setBytesPerQrCode', value)
+        this.$store.commit('setBytesPerQrCode', parseInt(value, 10))
       }
     }
   },
