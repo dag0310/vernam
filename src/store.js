@@ -10,6 +10,9 @@ export default new Vuex.Store({
     setId (state, id) {
       state.id = id
     },
+    setLastTimestamp (state, lastTimestamp) {
+      state.lastTimestamp = lastTimestamp
+    },
     setCurrentConversationId (state, id) {
       state.currentConversationId = id
     },
@@ -60,6 +63,6 @@ export default new Vuex.Store({
     conversations: [],
     currentConversationId: null,
     id: null,
-    countryCode: null
+    lastTimestamp: null,
   }
 })

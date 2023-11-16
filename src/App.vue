@@ -12,7 +12,6 @@ import HomePage from './components/HomePage'
 import OtpCrypto from 'otp-crypto'
 
 const pollMessagesIntervalInMs = 1000
-const messageIdsToDismiss = {}
 
 export default {
   name: 'app',
@@ -22,10 +21,11 @@ export default {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
         return
       }
-      this.$http.get(`messages/${this.$store.state.id}`, { timeout: 5000 }).then(response => {
+      const lastTimestampQueryString = (this.$store.state.lastTimestamp !== null) ? `?timestamp=${this.$store.state.lastTimestamp}` : ''
+      this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 }).then(response => {
         const messages = response.body
         this.conversations.forEach(conversation => {
-          const conversationMessages = messages.filter(message => message.sender === conversation.otherId && !messageIdsToDismiss[`${message.sender}${message.timestamp}`])
+          const conversationMessages = messages.filter(message => message.sender === conversation.otherId)
           this.pollMessage(conversation, conversationMessages, 0)
         })
       }).then(() => {
@@ -56,9 +56,9 @@ export default {
       const polledMessageId = `${message.sender}${message.timestamp}`
 
       this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${encodeURIComponent(base64Key)}`, { timeout: 5000 }).then(() => {
+        this.$store.commit('setLastTimestamp', message.timestamp)
         const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
         if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_SECRET.length) !== this.AUTH_SECRET) {
-          messageIdsToDismiss[polledMessageId] = true
           this.pollMessage(conversation, conversationMessages, idx + 1)
           return
         }
@@ -83,6 +83,11 @@ export default {
           timestamp: message.timestamp
         })
         this.pollMessage(conversation, conversationMessages, idx + 1)
+      }, response => {
+        if (response.status >= 400 && response.status < 500) {
+          this.$store.commit('setLastTimestamp', message.timestamp)
+          this.pollMessage(conversation, conversationMessages, idx + 1)
+        }
       })
     }
   }
