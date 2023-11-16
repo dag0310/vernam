@@ -146,6 +146,10 @@
           id: this.$store.state.currentConversationId,
           otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf))
         })
+        this.$store.commit('setConversationOtherId', {
+          id: this.$store.state.currentConversationId,
+          otherId: null,
+        })
       },
     }
   }
