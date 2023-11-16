@@ -71,6 +71,6 @@ export default new Vuex.Store({
     id: null,
     lastTimestamp: null,
     numQrCodes: 10,
-    bytesPerQrCode: 500,
+    bytesPerQrCode: 400,
   }
 })
