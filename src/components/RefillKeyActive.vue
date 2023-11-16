@@ -98,10 +98,10 @@
           .map(n => n + 1)
           .filter(number => !this.qrCodeNumbers.includes(number))
 
+        this.scanAudio.play()
+
         if (this.qrCodes.length >= parsedQrContent.qrT) {
           this.finishQrCodeScanning(parsedQrContent.id)
-        } else {
-          this.scanAudio.play()
         }
       },
       parseQrContentLegacy (content) {
@@ -115,19 +115,24 @@
         }
       },
       finishQrCodeScanning (otherId) {
-        const byteArrayTotal = this.buildTotalKeyByteArray(this.qrCodes)
-        const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
-        this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)))
-        this.$store.commit('updateOtherKey', {
-          id: this.$store.state.currentConversationId,
-          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
+        this.$ons.openActionSheet({ buttons: ['Yes, they confirmed'], title: 'Wait for the other party to confirm scanning finished.', cancelable: false, destructive: 0 }).then(response => {
+          if (response !== 0) {
+            return
+          }
+          const byteArrayTotal = this.buildTotalKeyByteArray(this.qrCodes)
+          const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
+          this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)))
+          this.$store.commit('updateOtherKey', {
+            id: this.$store.state.currentConversationId,
+            otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
+          })
+          this.$store.commit('setConversationOtherId', {
+            id: this.$store.state.currentConversationId,
+            otherId: otherId,
+          })
+          this.refilledAudio.play()
+          this.$emit('pop-page')
         })
-        this.$store.commit('setConversationOtherId', {
-          id: this.$store.state.currentConversationId,
-          otherId: otherId,
-        })
-        this.refilledAudio.play()
-        this.$emit('pop-page')
       },
       cancel () {
         this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
