@@ -23,7 +23,11 @@
           <div class="center">
             <span class="list-item__title ellipsis" :class="{bold: conversation.newMessages}">{{ conversation.name }}</span>
             <span class="list-item__subtitle ellipsis" :class="{bold: conversation.newMessages}">
-              <i v-if="lastMessageIsOwn(conversation)">You: </i>{{ lastMessageText(conversation) }}
+              <template v-if="conversation.message.length > 0"><i>Draft: </i>{{ conversation.message }}</template>
+              <template v-else>
+                <i v-if="lastMessageIsOwn(conversation)">You: </i>
+                {{ lastMessageText(conversation) }}
+              </template>
             </span>
           </div>
           <div class="right">
