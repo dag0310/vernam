@@ -12,7 +12,7 @@
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
-    <div class="content" v-chat-scroll>
+    <div class="content" v-chat-scroll="{ always: true, smooth: false, scrollonremoved: true }">
       <p class="searchContainer marginalizedContent">
         <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
@@ -36,7 +36,7 @@
         <div class="infoText">Your key is <span v-if="!keyEmpty">almost</span> empty &ndash;<br>Please refill it together with your contact to send messages.</div>
         <v-ons-button modifier="large" @click="refillKey">Refill 🔑</v-ons-button>
       </div>
-      <div class="buffer"></div>
+      <div class="buffer" v-if="showBuffer"></div>
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message" autocomplete="off"></textarea>
@@ -79,6 +79,7 @@ export default {
       informationDialogVisible: false,
       showEditNameDialog: false,
       newConversationName: '',
+      showBuffer: false,
     }
   },
   created () {
@@ -89,6 +90,9 @@ export default {
         this.$store.commit('updateMessage', message)
       }
     }
+    setTimeout(() => {
+      this.showBuffer = true // To trigger v-chat-scroll to scroll to bottom on initial load
+    })
   },
   computed: {
     conversation () {
