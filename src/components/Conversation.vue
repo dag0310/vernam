@@ -167,7 +167,7 @@ export default {
         sender: this.$store.state.id,
         receiver: this.conversation.otherId,
         payload: this.otpCryptoResult.base64Encrypted
-      }).then(response => {
+      }, { timeout: 5000 }).then(response => {
         const message = response.body
         this.conversation.messages.push({
           id: `${message.sender}${message.timestamp}`,

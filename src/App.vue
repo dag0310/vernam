@@ -22,7 +22,7 @@ export default {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
         return
       }
-      this.$http.get(`messages/${this.$store.state.id}`).then(response => {
+      this.$http.get(`messages/${this.$store.state.id}`, { timeout: 5000 }).then(response => {
         const messages = response.body
         this.conversations.forEach(conversation => {
           const conversationMessages = messages.filter(message => message.sender === conversation.otherId && !messageIdsToDismiss[`${message.sender}${message.timestamp}`])
@@ -55,7 +55,7 @@ export default {
       const base64KeyUriEncoded = encodeURIComponent(OtpCrypto.encryptedDataConverter.bytesToBase64(authSecretLengthKeyBytes))
       const polledMessageId = `${message.sender}${message.timestamp}`
 
-      this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${base64KeyUriEncoded}`).then(() => {
+      this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${base64KeyUriEncoded}`, { timeout: 5000 }).then(() => {
         const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
         if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_SECRET.length) !== this.AUTH_SECRET) {
           messageIdsToDismiss[polledMessageId] = true
