@@ -20,7 +20,7 @@
       <div v-for="message in filteredMessages" :key="(message.own ? 'own' : 'other') + '-' + message.id">
         <div class="card" :class="{ownMessage: message.own}">
           <div class="card__content">
-            <span class="messageText" style="user-select: auto;">{{ message.text }}</span>
+            <span v-html="message.text" class="messageText" style="user-select: auto;"></span>
             <br>
             <span class="messageInfo">
               <span class="messageInfoDate">{{ dateTimeText(message.timestamp) }}</span>
@@ -109,7 +109,16 @@ export default {
     filteredMessages () {
       return this.conversation.messages
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
-        .sort((a, b) => a.timestamp - b.timestamp)
+        .sort((messageA, messageB) => messageA.timestamp - messageB.timestamp)
+        .map(message => {
+          const messageCopy = { ...message }
+          const tempDiv = document.createElement('div')
+          tempDiv.appendChild(document.createTextNode(messageCopy.text))
+          messageCopy.text = tempDiv.innerHTML
+            .replace(/\n/g, ' <br> ')
+            .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>')
+          return messageCopy
+        })
     },
     ownKey () {
       return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.ownKey)
