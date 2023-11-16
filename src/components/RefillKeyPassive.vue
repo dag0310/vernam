@@ -7,13 +7,13 @@
   </div>
   </v-ons-toolbar>
   <div class="content">
+    <img v-if="currentQrCode" :src="currentQrCode.dataUrl" class="qrCode" @click="setCurrentQrCode(+1)">
     <div class="navigationAndCounter" v-if="currentQrCode">
+      <h3>#{{ currentQrCode.number }} / {{ numQrCodes }}</h3>
       <v-ons-button modifier="outline" class="pull-left" @click="setCurrentQrCode(-1)">Previous</v-ons-button>
       <v-ons-button modifier="outline" class="pull-right" @click="setCurrentQrCode(+1)">Next</v-ons-button>
-      <h3>#{{ currentQrCode.number }} / {{ numQrCodes }}</h3>
       <div class="clearfix"></div>
     </div>
-    <img v-if="currentQrCode" :src="currentQrCode.dataUrl" class="qrCode" @click="setCurrentQrCode(+1)">
   </div>
   </v-ons-page>
 </template>
@@ -127,12 +127,13 @@
     text-align: center;
   }
   .qrCode {
+    margin-top: 15px;
     min-width: 308px;
     max-width: 100%;
     cursor: pointer;
   }
   .navigationAndCounter {
-    padding: 15px 15px 10px;
+    padding: 0 15px 10px;
   }
   .navigationAndCounter ons-button {
     min-width: 100px;
