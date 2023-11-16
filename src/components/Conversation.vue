@@ -118,13 +118,13 @@ export default {
       return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.otherKey)
     },
     keyAlmostEmpty () {
-      return OtpCrypto.encrypt(this.AUTH_SECRET + 'V'.repeat(keyAlmostEmptyThreshold), this.ownKey).remainingKey.length <= 0
+      return OtpCrypto.encrypt(this.AUTH_PREAMBLE + 'V'.repeat(keyAlmostEmptyThreshold), this.ownKey).remainingKey.length <= 0
     },
     keyEmpty () {
-      return OtpCrypto.encrypt(this.AUTH_SECRET, this.ownKey).remainingKey.length <= 0
+      return OtpCrypto.encrypt(this.AUTH_PREAMBLE, this.ownKey).remainingKey.length <= 0
     },
     otpCryptoResult () {
-      return OtpCrypto.encrypt(this.AUTH_SECRET + this.message, this.ownKey)
+      return OtpCrypto.encrypt(this.AUTH_PREAMBLE + this.message, this.ownKey)
     },
     remainingKeyLength () {
       return this.otpCryptoResult.isKeyLongEnough ? this.otpCryptoResult.remainingKey.length : 'X'

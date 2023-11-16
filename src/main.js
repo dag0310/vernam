@@ -22,7 +22,7 @@ const twentyFourHoursInMs = 24 * 60 * 60 * 1000
 Vue.mixin({
   data () {
     return {
-      AUTH_SECRET: 'VERNAM'
+      AUTH_PREAMBLE: 'VERNAM'
     }
   },
   methods: {

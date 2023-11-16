@@ -51,14 +51,14 @@ export default {
       }
       const message = conversationMessages[messageIdx]
       const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(conversation.otherKey)
-      const authSecretLengthKeyBytes = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_SECRET).length)
-      const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(authSecretLengthKeyBytes)
+      const otherKeyBytesPreambleLength = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_PREAMBLE).length)
+      const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytesPreambleLength)
       const polledMessageId = `${message.sender}${message.timestamp}`
 
       this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${encodeURIComponent(base64Key)}`, { timeout: 5000 }).then(() => {
         this.$store.commit('setLastTimestamp', message.timestamp)
         const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
-        if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_SECRET.length) !== this.AUTH_SECRET) {
+        if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_PREAMBLE.length) !== this.AUTH_PREAMBLE) {
           this.pollMessage(conversation, conversationMessages, messageIdx + 1)
           return
         }
@@ -85,7 +85,7 @@ export default {
         conversation.messages.push({
           id: polledMessageId,
           own: false,
-          text: otpCryptoResult.plaintextDecrypted.substring(this.AUTH_SECRET.length),
+          text: otpCryptoResult.plaintextDecrypted.substring(this.AUTH_PREAMBLE.length),
           timestamp: message.timestamp
         })
         this.pollMessage(conversation, conversationMessages, messageIdx + 1)
