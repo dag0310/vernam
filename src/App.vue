@@ -45,11 +45,11 @@ export default {
     }
   },
   methods: {
-    pollMessage (conversation, conversationMessages, idx) {
-      if (idx >= conversationMessages.length) {
+    pollMessage (conversation, conversationMessages, messageIdx) {
+      if (messageIdx >= conversationMessages.length) {
         return
       }
-      const message = conversationMessages[idx]
+      const message = conversationMessages[messageIdx]
       const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(conversation.otherKey)
       const authSecretLengthKeyBytes = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_SECRET).length)
       const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(authSecretLengthKeyBytes)
@@ -59,7 +59,7 @@ export default {
         this.$store.commit('setLastTimestamp', message.timestamp)
         const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
         if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_SECRET.length) !== this.AUTH_SECRET) {
-          this.pollMessage(conversation, conversationMessages, idx + 1)
+          this.pollMessage(conversation, conversationMessages, messageIdx + 1)
           return
         }
 
@@ -75,7 +75,7 @@ export default {
         }
 
         if (conversation.messages.some(message => message.id === polledMessageId)) {
-          this.pollMessage(conversation, conversationMessages, idx + 1)
+          this.pollMessage(conversation, conversationMessages, messageIdx + 1)
           return
         }
 
@@ -88,11 +88,11 @@ export default {
           text: otpCryptoResult.plaintextDecrypted.substring(this.AUTH_SECRET.length),
           timestamp: message.timestamp
         })
-        this.pollMessage(conversation, conversationMessages, idx + 1)
+        this.pollMessage(conversation, conversationMessages, messageIdx + 1)
       }, response => {
         if (response.status >= 400 && response.status < 500) {
           this.$store.commit('setLastTimestamp', message.timestamp)
-          this.pollMessage(conversation, conversationMessages, idx + 1)
+          this.pollMessage(conversation, conversationMessages, messageIdx + 1)
         }
       })
     }
