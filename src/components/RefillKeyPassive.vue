@@ -94,7 +94,7 @@
         }
       },
       done () {
-        this.$ons.openActionSheet({ buttons: ['Yes, they finished', 'Cancel'], title: 'Did the other party finish scanning?', cancelable: true, destructive: 0 }).then(response => {
+        this.$ons.openActionSheet({ buttons: ['Yes, scanning finished', 'Cancel'], title: 'Did the other party finish scanning?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             this.saveQrCodeKeys()
             this.refilledAudio.play()
