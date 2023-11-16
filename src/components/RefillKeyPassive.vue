@@ -10,9 +10,16 @@
     <img v-if="currentQrCode" :src="currentQrCode.dataUrl" class="qrCode" @click="stopAutoplay(); setCurrentQrCode(+1)">
     <div class="navigationAndCounter" v-if="currentQrCode">
       <h3>#{{ currentQrCode.number }} / {{ numQrCodes }}</h3>
-      <v-ons-button modifier="outline" class="pull-left" @click="stopAutoplay(); setCurrentQrCode(-1)">Previous</v-ons-button>
-      <v-ons-button modifier="outline" class="pull-center" @click="(autoplayInterval == null) ? startAutoplay() : stopAutoplay()">{{ (autoplayInterval == null) ? '>' : '||' }}</v-ons-button>
-      <v-ons-button modifier="outline" class="pull-right" @click="stopAutoplay(); setCurrentQrCode(+1)">Next</v-ons-button>
+      <v-ons-button modifier="outline" class="pull-left" @click="stopAutoplay(); setCurrentQrCode(-1)">
+        <v-ons-icon icon="ion-ios-skip-backward, material:ion-md-skip-backward"></v-ons-icon>
+      </v-ons-button>
+      <v-ons-button modifier="outline" class="pull-center" @click="(autoplayInterval == null) ? startAutoplay() : stopAutoplay()">
+        <v-ons-icon v-if="autoplayInterval == null" icon="ion-ios-play, material:ion-md-play"></v-ons-icon>
+        <v-ons-icon v-if="autoplayInterval != null" icon="ion-ios-pause, material:ion-md-pause"></v-ons-icon>
+      </v-ons-button>
+      <v-ons-button modifier="outline" class="pull-right" @click="stopAutoplay(); setCurrentQrCode(+1)">
+        <v-ons-icon icon="ion-ios-skip-forward, material:ion-md-skip-forward"></v-ons-icon>
+      </v-ons-button>
       <div class="clearfix"></div>
     </div>
   </div>
