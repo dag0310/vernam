@@ -25,7 +25,7 @@ export default {
       this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 }).then(response => {
         const messages = response.body
         this.conversations.forEach(conversation => {
-          const conversationMessages = messages.filter(message => message.sender === conversation.otherId)
+          const conversationMessages = messages.filter(message => message.sender === conversation.otherId || conversation.otherId == null)
           this.pollMessage(conversation, conversationMessages, 0)
         })
       }).then(() => {
@@ -67,6 +67,12 @@ export default {
           id: conversation.id,
           otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
         })
+        if (conversation.otherId == null) {
+          this.$store.commit('setConversationOtherId', {
+            id: conversation.id,
+            otherId: message.sender,
+          })
+        }
 
         if (conversation.messages.some(message => message.id === polledMessageId)) {
           this.pollMessage(conversation, conversationMessages, idx + 1)
