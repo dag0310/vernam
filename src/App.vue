@@ -55,7 +55,7 @@ export default {
       const base64KeyUriEncoded = encodeURIComponent(OtpCrypto.encryptedDataConverter.bytesToBase64(authSecretLengthKeyBytes))
       const polledMessageId = `${message.sender}${message.timestamp}`
 
-      this.$http.delete(`messages/${message.sender}/${message.timestamp}/${base64KeyUriEncoded}`).then(() => {
+      this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${base64KeyUriEncoded}`).then(() => {
         const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
         if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_SECRET.length) !== this.AUTH_SECRET) {
           messageIdsToDismiss[polledMessageId] = true
