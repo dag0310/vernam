@@ -52,10 +52,10 @@ export default {
       const message = conversationMessages[idx]
       const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(conversation.otherKey)
       const authSecretLengthKeyBytes = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_SECRET).length)
-      const base64KeyUriEncoded = encodeURIComponent(OtpCrypto.encryptedDataConverter.bytesToBase64(authSecretLengthKeyBytes))
+      const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(authSecretLengthKeyBytes)
       const polledMessageId = `${message.sender}${message.timestamp}`
 
-      this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${base64KeyUriEncoded}`, { timeout: 5000 }).then(() => {
+      this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${encodeURIComponent(base64Key)}`, { timeout: 5000 }).then(() => {
         const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
         if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_SECRET.length) !== this.AUTH_SECRET) {
           messageIdsToDismiss[polledMessageId] = true
