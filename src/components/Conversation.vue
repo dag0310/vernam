@@ -20,7 +20,7 @@
       <div v-for="message in filteredMessages" :key="(message.own ? 'own' : 'other') + '-' + message.id">
         <div class="card" :class="{ownMessage: message.own}">
           <div class="card__content">
-            <span class="messageText">{{ message.text }}</span>
+            <span class="messageText" style="user-select: auto;">{{ message.text }}</span>
             <br>
             <span class="messageInfo">
               <span class="messageInfoDate">{{ dateTimeText(message.timestamp) }}</span>
@@ -44,9 +44,9 @@
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
       <p>Name: <b>{{conversation.name}}</b> <v-ons-icon @click="newConversationName = conversation.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create"></v-ons-icon></p>
-      <p>Own key:<br>Size: <b>{{ownKey.length}}</b>, Checksum: <b>{{calculateByteArrayChecksum(ownKey)}}</b></p>
-      <p>Other key:<br>Size: <b>{{otherKey.length}}</b>, Checksum: <b>{{calculateByteArrayChecksum(otherKey)}}</b></p>
-      <p>Other ID:<br><b><i v-if="conversation.otherId == null">UNKNOWN</i><span v-if="conversation.otherId != null">{{conversation.otherId}}</span></b></p>
+      <p style="user-select: auto;">Own key:<br>Size: <b style="user-select: auto;">{{ownKey.length}}</b>, Checksum: <b style="user-select: auto;">{{calculateByteArrayChecksum(ownKey)}}</b></p>
+      <p style="user-select: auto;">Other key:<br>Size: <b style="user-select: auto;">{{otherKey.length}}</b>, Checksum: <b style="user-select: auto;">{{calculateByteArrayChecksum(otherKey)}}</b></p>
+      <p style="user-select: auto;">Other ID:<br><b><i v-if="conversation.otherId == null">UNKNOWN</i><span v-if="conversation.otherId != null" style="user-select: auto;">{{conversation.otherId}}</span></b></p>
     </v-ons-dialog>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showEditNameDialog">
       <span slot="title">Edit conversation name</span>
