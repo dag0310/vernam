@@ -147,7 +147,7 @@ export default {
       return humanDate.isToday ? humanDate.timeText : `${humanDate.dateText}, ${humanDate.timeText}`
     },
     deleteMessage (message) {
-      this.$ons.openActionSheet({ buttons: ['Delete message', 'Cancel'], title: message.text, cancelable: true, destructive: 0 }).then(response => {
+      this.$ons.openActionSheet({ buttons: ['Delete message locally', 'Cancel'], title: message.text, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           this.$store.commit('deleteMessage', message.id)
         }

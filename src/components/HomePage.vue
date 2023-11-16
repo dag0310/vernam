@@ -130,7 +130,7 @@ export default {
       this.$emit('push-page', Conversation)
     },
     deleteConversation (conversation) {
-      this.$ons.openActionSheet({ buttons: ['Delete conversation', 'Cancel'], title: conversation.name, cancelable: true, destructive: 0 }).then(response => {
+      this.$ons.openActionSheet({ buttons: ['Delete conversation locally', 'Cancel'], title: conversation.name, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           this.$store.commit('deleteConversation', conversation.id)
         }
