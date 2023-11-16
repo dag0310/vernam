@@ -17,11 +17,16 @@
         <v-ons-list-header>QR codes</v-ons-list-header>
         <v-ons-list-item>
           <div class="left">Amount:</div>
-          <v-ons-input class="right" type="number" min="1" max="100" step="1" modifier="underbar" inputmode="numeric" v-model="numQrCodes"></v-ons-input>
+          <v-ons-input class="center" type="number" min="1" max="100" step="1" modifier="underbar" inputmode="numeric" v-model="numQrCodes"></v-ons-input>
+          <div class="right">QR codes</div>
         </v-ons-list-item>
         <v-ons-list-item>
-          <div class="left">Bytes per code:</div>
-          <v-ons-input class="right" type="number" min="100" max="500" step="50" modifier="underbar" inputmode="numeric" v-model="bytesPerQrCode"></v-ons-input>
+          <div class="left">Data per code:</div>
+          <v-ons-input class="center" type="number" min="100" max="500" step="50" modifier="underbar" inputmode="numeric" v-model="bytesPerQrCode"></v-ons-input>
+          <div class="right">Bytes</div>
+        </v-ons-list-item>
+        <v-ons-list-item>
+          <div class="center">Total key refill data:&nbsp;<strong>{{ numQrCodes * bytesPerQrCode }} Bytes</strong></div>
         </v-ons-list-item>
         <v-ons-list-header>Danger zone</v-ons-list-header>
         <v-ons-list-item>
@@ -80,3 +85,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.left, .right {
+  white-space: nowrap;
+}
+</style>
