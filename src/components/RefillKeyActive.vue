@@ -26,7 +26,8 @@
       return {
         scanStatus: '',
         qrCodes: [],
-        qrCodeNumbersLeft: null
+        qrCodeNumbersLeft: null,
+        otherId: null,
       }
     },
     created () {
@@ -79,16 +80,24 @@
           // const otherId = this.$store.getters.currentConversation.otherId
           // if (otherId != null && parsedQrContent.threeLetterHash != null) {
           //   if (this.buildThreeLetterHashFromStrings(this.$store.state.id, otherId) !== parsedQrContent.threeLetterHash) {
-          //     this.$ons.notification.alert('Your conversations\' IDs do not fit together.')
+          //     this.$ons.notification.toast('Your conversations\' IDs do not fit together.', { timeout: 3000 })
           //     this.$emit('pop-page')
           //     return
           //   }
           // }
         }
 
+        if (this.otherId == null) {
+          this.otherId = parsedQrContent.id
+        }
+        if (this.otherId !== parsedQrContent.id) {
+          this.$ons.notification.toast('This QR code belongs to another series.', { timeout: 3000 })
+          return
+        }
+
         if (this.qrCodeNumbers.includes(parsedQrContent.qr)) {
           // Do not show this toast anymore, because in autoplay mode it would be annoying
-          // this.$ons.notification.toast('You already scanned this code.', {timeout: 3000})
+          // this.$ons.notification.toast('You already scanned this code.', { timeout: 3000 })
           return
         }
 
@@ -102,7 +111,7 @@
         this.scanAudio.play()
 
         if (this.qrCodes.length >= parsedQrContent.qrT) {
-          this.finishQrCodeScanning(parsedQrContent.id)
+          this.finishQrCodeScanning()
         }
       },
       parseQrContentLegacy (content) {
@@ -116,7 +125,7 @@
           otherId: null,
         }
       },
-      finishQrCodeScanning (otherId) {
+      finishQrCodeScanning () {
         this.$ons.openActionSheet({ buttons: ['Yes, they confirmed'], title: 'Wait for the other party to confirm scanning finished.', cancelable: false, destructive: 0 }).then(response => {
           if (response !== 0) {
             return
@@ -130,7 +139,7 @@
           })
           this.$store.commit('setConversationOtherId', {
             id: this.$store.state.currentConversationId,
-            otherId: otherId,
+            otherId: this.otherId,
           })
           this.refilledAudio.play()
           this.$emit('pop-page')
