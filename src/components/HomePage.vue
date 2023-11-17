@@ -6,9 +6,9 @@
           <v-ons-icon icon="ion-ios-cog, material:ion-md-cog"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
-      <div class="center">Conversations</div>
+      <div class="center">Chats</div>
       <div class="right">
-        <v-ons-toolbar-button @click="showCreateConversationDialog = true">
+        <v-ons-toolbar-button @click="showCreateChatDialog = true">
           <v-ons-icon icon="ion-ios-create, material:ion-md-create"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
@@ -18,44 +18,44 @@
         <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
       </p>
-      <v-ons-list v-show="filteredConversations.length > 0">
-        <v-ons-list-item v-for="conversation in filteredConversations" :key="conversation.id" tappable @click="showConversationPage(conversation)">
+      <v-ons-list v-show="filteredChats.length > 0">
+        <v-ons-list-item v-for="chat in filteredChats" :key="chat.id" tappable @click="showChatPage(chat)">
           <div class="center">
-            <span class="list-item__title ellipsis" :class="{bold: conversation.newMessages}">{{ conversation.name }}</span>
-            <span class="list-item__subtitle ellipsis" :class="{bold: conversation.newMessages}">
-              <template v-if="conversation.message.length > 0"><i>Draft: </i>{{ conversation.message }}</template>
+            <span class="list-item__title ellipsis" :class="{bold: chat.newMessages}">{{ chat.name }}</span>
+            <span class="list-item__subtitle ellipsis" :class="{bold: chat.newMessages}">
+              <template v-if="chat.message.length > 0"><i>Draft: </i>{{ chat.message }}</template>
               <template v-else>
-                <i v-if="lastMessageIsOwn(conversation)">You: </i>
-                {{ lastMessageText(conversation) }}
+                <i v-if="lastMessageIsOwn(chat)">You: </i>
+                {{ lastMessageText(chat) }}
               </template>
             </span>
           </div>
           <div class="right">
-            <span class="list-item__label">{{ lastMessageDateText(conversation) }}</span>
-            <ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteConversation(conversation)"></ons-icon>
+            <span class="list-item__label">{{ lastMessageDateText(chat) }}</span>
+            <ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteChat(chat)"></ons-icon>
             <ons-icon icon="ion-ios-arrow-forward, material:ion-md-arrow-forward" class="list-item__icon"></ons-icon>
           </div>
         </v-ons-list-item>
       </v-ons-list>
-      <div class="marginalizedContent infoText" v-show="filteredConversations.length <= 0">No conversations found</div>
+      <div class="marginalizedContent infoText" v-show="filteredChats.length <= 0">No chats found</div>
     </div>
-    <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateConversationDialog">
-      <span slot="title">New conversation</span>
+    <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateChatDialog">
+      <span slot="title">New chat</span>
       <p>
-        <v-ons-input type="text" modifier="underbar" placeholder="Conversation name ..." float v-model="newConversationName"></v-ons-input>
+        <v-ons-input type="text" modifier="underbar" placeholder="Chat name ..." float v-model="newChatName"></v-ons-input>
       </p>
       <template slot="footer">
-        <div class="alert-dialog-button" @click="showCreateConversationDialog = false; newConversationName = '';">Cancel</div>
-        <div class="alert-dialog-button" @click="createConversation(newConversationName);"><b>OK</b></div>
+        <div class="alert-dialog-button" @click="showCreateChatDialog = false; newChatName = '';">Cancel</div>
+        <div class="alert-dialog-button" @click="createChat(newChatName);"><b>OK</b></div>
       </template>
     </v-ons-alert-dialog>
   </v-ons-page>
 </template>
 
 <script>
-// import OtpCrypto from 'otp-crypto' // For dummy conversations
+// import OtpCrypto from 'otp-crypto' // For dummy chats
 import Settings from './Settings'
-import Conversation from './Conversation'
+import Chat from './Chat'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -64,8 +64,8 @@ export default {
   data () {
     return {
       searchText: '',
-      showCreateConversationDialog: false,
-      newConversationName: '',
+      showCreateChatDialog: false,
+      newChatName: '',
     }
   },
   created () {
@@ -75,17 +75,17 @@ export default {
 
     document.addEventListener('show', event => {
       if (event.target.matches('#home')) {
-        this.$store.commit('setCurrentConversationId', null)
+        this.$store.commit('setCurrentChatId', null)
       }
     }, false)
   },
   computed: {
-    conversations () {
-      return this.$store.state.conversations
+    chats () {
+      return this.$store.state.chats
     },
-    filteredConversations () {
-      return this.conversations
-        .filter(conversation => conversation.name.toUpperCase().includes(this.searchText.toUpperCase()))
+    filteredChats () {
+      return this.chats
+        .filter(chat => chat.name.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((a, b) => {
           const lastMessageA = this.lastMessage(a)
           const lastMessageB = this.lastMessage(b)
@@ -105,20 +105,20 @@ export default {
     }
   },
   methods: {
-    lastMessage (conversation) {
-      const messages = JSON.parse(JSON.stringify(conversation.messages)) // Avoids infinite loop in render function
+    lastMessage (chat) {
+      const messages = JSON.parse(JSON.stringify(chat.messages)) // Avoids infinite loop in render function
       return (messages.length > 0) ? messages.sort((a, b) => b.timestamp - a.timestamp)[0] : null
     },
-    lastMessageText (conversation) {
-      const lastMessage = this.lastMessage(conversation)
+    lastMessageText (chat) {
+      const lastMessage = this.lastMessage(chat)
       return lastMessage ? lastMessage.text : ''
     },
-    lastMessageIsOwn (conversation) {
-      const lastMessage = this.lastMessage(conversation)
+    lastMessageIsOwn (chat) {
+      const lastMessage = this.lastMessage(chat)
       return lastMessage ? lastMessage.own : false
     },
-    lastMessageDateText (conversation) {
-      const lastMessage = this.lastMessage(conversation)
+    lastMessageDateText (chat) {
+      const lastMessage = this.lastMessage(chat)
       if (lastMessage !== null) {
         const humanDate = this.humanDate(lastMessage.timestamp)
         return humanDate.isToday ? humanDate.timeText : humanDate.dateText
@@ -128,25 +128,25 @@ export default {
     showSettingsPage () {
       this.$emit('push-page', Settings)
     },
-    showConversationPage (conversation) {
-      this.$store.commit('setNewMessagesFalse', conversation.id)
-      this.$store.commit('setCurrentConversationId', conversation.id)
-      this.$emit('push-page', Conversation)
+    showChatPage (chat) {
+      this.$store.commit('setNewMessagesFalse', chat.id)
+      this.$store.commit('setCurrentChatId', chat.id)
+      this.$emit('push-page', Chat)
     },
-    deleteConversation (conversation) {
-      this.$ons.openActionSheet({ buttons: ['Delete conversation locally', 'Cancel'], title: conversation.name, cancelable: true, destructive: 0 }).then(response => {
+    deleteChat (chat) {
+      this.$ons.openActionSheet({ buttons: ['Delete chat locally', 'Cancel'], title: chat.name, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
-          this.$store.commit('deleteConversation', conversation.id)
+          this.$store.commit('deleteChat', chat.id)
         }
       })
     },
-    createConversation (name) {
+    createChat (name) {
       if (name.trim() === '') {
         return
       }
-      const newConversationId = uuidv4()
-      this.$store.commit('createConversation', {
-        id: newConversationId,
+      const newChatId = uuidv4()
+      this.$store.commit('createChat', {
+        id: newChatId,
         otherId: null,
         name: name,
         messages: [],
@@ -155,10 +155,10 @@ export default {
         ownKey: '',
         otherKey: '',
       })
-      this.$store.commit('setCurrentConversationId', newConversationId)
-      this.$emit('push-page', Conversation)
-      this.showCreateConversationDialog = false
-      this.newConversationName = ''
+      this.$store.commit('setCurrentChatId', newChatId)
+      this.$emit('push-page', Chat)
+      this.showCreateChatDialog = false
+      this.newChatName = ''
     }
   }
 }

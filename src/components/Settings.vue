@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     resetData () {
-      this.$ons.openActionSheet({ buttons: ['Reset local data', 'Cancel'], title: 'Deletes own ID, all conversations and keys.', cancelable: true, destructive: 0 }).then(response => {
+      this.$ons.openActionSheet({ buttons: ['Reset local data', 'Cancel'], title: 'Deletes own ID, all chats and keys.', cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           window.localStorage.clear()
           window.location.reload()

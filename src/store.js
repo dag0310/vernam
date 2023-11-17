@@ -19,55 +19,59 @@ export default new Vuex.Store({
     setLastTimestamp (state, lastTimestamp) {
       state.lastTimestamp = lastTimestamp
     },
-    setCurrentConversationId (state, id) {
-      state.currentConversationId = id
+    setCurrentChatId (state, id) {
+      state.currentChatId = id
     },
-    deleteConversation (state, id) {
-      const idx = state.conversations.findIndex(conversation => conversation.id === id)
-      state.conversations.splice(idx, 1)
+    deleteChat (state, id) {
+      const idx = state.chats.findIndex(chat => chat.id === id)
+      state.chats.splice(idx, 1)
     },
     deleteMessage (state, id) {
-      const idx = this.getters.currentConversation.messages.findIndex(message => message.id === id)
-      this.getters.currentConversation.messages.splice(idx, 1)
+      const idx = this.getters.currentChat.messages.findIndex(message => message.id === id)
+      this.getters.currentChat.messages.splice(idx, 1)
     },
     updateMessage (state, newValue) {
-      this.getters.currentConversation.message = newValue
+      this.getters.currentChat.message = newValue
     },
     updateOwnKey (state, newValue) {
-      this.getters.currentConversation.ownKey = newValue
+      this.getters.currentChat.ownKey = newValue
     },
     updateOtherKey (state, newValue) {
-      const idx = state.conversations.findIndex(conversation => conversation.id === newValue.id)
-      state.conversations[idx].otherKey = newValue.otherKey
+      const idx = state.chats.findIndex(chat => chat.id === newValue.id)
+      state.chats[idx].otherKey = newValue.otherKey
     },
     setNewMessagesTrue (state, id) {
-      const idx = state.conversations.findIndex(conversation => conversation.id === id)
-      state.conversations[idx].newMessages = true
+      const idx = state.chats.findIndex(chat => chat.id === id)
+      state.chats[idx].newMessages = true
     },
     setNewMessagesFalse (state, id) {
-      const idx = state.conversations.findIndex(conversation => conversation.id === id)
-      state.conversations[idx].newMessages = false
+      const idx = state.chats.findIndex(chat => chat.id === id)
+      state.chats[idx].newMessages = false
     },
-    createConversation (state, conversation) {
-      state.conversations.push(conversation)
+    createChat (state, chat) {
+      state.chats.push(chat)
     },
-    setConversationName (state, conversation) {
-      const idx = state.conversations.findIndex(c => c.id === conversation.id)
-      state.conversations[idx].name = conversation.name
+    setChatName (state, chat) {
+      const idx = state.chats.findIndex(c => c.id === chat.id)
+      state.chats[idx].name = chat.name
     },
-    setConversationOtherId (state, conversation) {
-      const idx = state.conversations.findIndex(c => c.id === conversation.id)
-      state.conversations[idx].otherId = conversation.otherId
+    setChatOtherId (state, chat) {
+      const idx = state.chats.findIndex(c => c.id === chat.id)
+      state.chats[idx].otherId = chat.otherId
+    },
+    deleteLegacyConversations (state) {
+      delete state.conversations
+      delete state.currentConversationId
     },
   },
   getters: {
-    currentConversation (state) {
-      return state.conversations.find(conversation => conversation.id === state.currentConversationId)
+    currentChat (state) {
+      return state.chats.find(chat => chat.id === state.currentChatId)
     }
   },
   state: {
-    conversations: [],
-    currentConversationId: null,
+    chats: [],
+    currentChatId: null,
     id: null,
     lastTimestamp: null,
     numQrCodes: 10,

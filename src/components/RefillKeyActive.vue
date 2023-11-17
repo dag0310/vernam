@@ -73,14 +73,14 @@
         } catch (e) {
           parsedQrContent = this.parseQrContentLegacy(content)
 
-          // Conversation partner ID check temporarily commented-out, because the whole key will be refilled anyway.
+          // Chat partner ID check temporarily commented-out, because the whole key will be refilled anyway.
           // Might be good to do this check again if we add to the existing keys to make sure keys stay synchronized.
-          // On the other hand maybe a key checksum check makes more sense in this case instead of this conversation ID hashing business.
+          // On the other hand maybe a key checksum check makes more sense in this case instead of this chat ID hashing business.
           //
-          // const otherId = this.$store.getters.currentConversation.otherId
+          // const otherId = this.$store.getters.currentChat.otherId
           // if (otherId != null && parsedQrContent.threeLetterHash != null) {
           //   if (this.buildThreeLetterHashFromStrings(this.$store.state.id, otherId) !== parsedQrContent.threeLetterHash) {
-          //     this.$ons.notification.toast('Your conversations\' IDs do not fit together.', { timeout: 3000 })
+          //     this.$ons.notification.toast('Your chats\' IDs do not fit together.', { timeout: 3000 })
           //     this.$emit('pop-page')
           //     return
           //   }
@@ -134,11 +134,11 @@
           const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
           this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)))
           this.$store.commit('updateOtherKey', {
-            id: this.$store.state.currentConversationId,
+            id: this.$store.state.currentChatId,
             otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
           })
-          this.$store.commit('setConversationOtherId', {
-            id: this.$store.state.currentConversationId,
+          this.$store.commit('setChatOtherId', {
+            id: this.$store.state.currentChatId,
             otherId: this.otherId,
           })
           this.refilledAudio.play()

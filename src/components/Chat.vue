@@ -4,7 +4,7 @@
       <div class="left">
         <v-ons-back-button>Back</v-ons-back-button>
       </div>
-      <div class="center ellipsis" @click="informationDialogVisible = true">{{ conversation.name }}</div>
+      <div class="center ellipsis" @click="informationDialogVisible = true">{{ chat.name }}</div>
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
           <template v-if="keyEmpty">Refill 🔑</template>
@@ -40,22 +40,22 @@
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message" autocomplete="off"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !conversation.otherId">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !chat.otherId">Send</v-ons-button>
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
-      <p>Name: <b>{{conversation.name}}</b> <v-ons-icon @click="newConversationName = conversation.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create"></v-ons-icon></p>
+      <p>Name: <b>{{chat.name}}</b> <v-ons-icon @click="newChatName = chat.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create"></v-ons-icon></p>
       <p style="user-select: auto;">Own key:<br>Size: <b style="user-select: auto;">{{ownKey.length}}</b>, Checksum: <b style="user-select: auto;">{{calculateByteArrayChecksum(ownKey)}}</b></p>
       <p style="user-select: auto;">Other key:<br>Size: <b style="user-select: auto;">{{otherKey.length}}</b>, Checksum: <b style="user-select: auto;">{{calculateByteArrayChecksum(otherKey)}}</b></p>
-      <p style="user-select: auto;">Other ID:<br><b><i v-if="conversation.otherId == null">UNKNOWN</i><span v-if="conversation.otherId != null" style="user-select: auto;">{{conversation.otherId}}</span></b></p>
+      <p style="user-select: auto;">Other ID:<br><b><i v-if="chat.otherId == null">UNKNOWN</i><span v-if="chat.otherId != null" style="user-select: auto;">{{chat.otherId}}</span></b></p>
     </v-ons-dialog>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showEditNameDialog">
-      <span slot="title">Edit conversation name</span>
+      <span slot="title">Edit chat name</span>
       <p>
-        <v-ons-input type="text" modifier="underbar" placeholder="Conversation name ..." float v-model="newConversationName"></v-ons-input>
+        <v-ons-input type="text" modifier="underbar" placeholder="Chat name ..." float v-model="newChatName"></v-ons-input>
       </p>
       <template slot="footer">
-        <div class="alert-dialog-button" @click="showEditNameDialog = false; newConversationName = '';">Cancel</div>
-        <div class="alert-dialog-button" @click="saveConversationName(newConversationName);"><b>Save</b></div>
+        <div class="alert-dialog-button" @click="showEditNameDialog = false; newChatName = '';">Cancel</div>
+        <div class="alert-dialog-button" @click="saveChatName(newChatName);"><b>Save</b></div>
       </template>
     </v-ons-alert-dialog>
     <v-ons-progress-circular indeterminate v-show="showLoadingIndicator"></v-ons-progress-circular>
@@ -70,7 +70,7 @@ import RefillKeyPassive from './RefillKeyPassive'
 const keyAlmostEmptyThreshold = 100
 
 export default {
-  name: 'conversation',
+  name: 'chat',
   data () {
     return {
       searchText: '',
@@ -78,13 +78,13 @@ export default {
       showLoadingIndicator: false,
       informationDialogVisible: false,
       showEditNameDialog: false,
-      newConversationName: '',
+      newChatName: '',
       showBuffer: false,
     }
   },
   created () {
     // FIXME: Temporary: Fixes old messages where the timestamp was retrieved from backend as string instead of number
-    for (const message of this.conversation.messages) {
+    for (const message of this.chat.messages) {
       if (typeof message.timestamp === 'string') {
         message.timestamp = parseInt(message.timestamp, 10)
         this.$store.commit('updateMessage', message)
@@ -95,19 +95,19 @@ export default {
     })
   },
   computed: {
-    conversation () {
-      return this.$store.getters.currentConversation
+    chat () {
+      return this.$store.getters.currentChat
     },
     message: {
       get () {
-        return this.$store.getters.currentConversation.message
+        return this.$store.getters.currentChat.message
       },
       set (value) {
         this.$store.commit('updateMessage', value)
       }
     },
     filteredMessages () {
-      return this.conversation.messages
+      return this.chat.messages
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((messageA, messageB) => messageA.timestamp - messageB.timestamp)
         .map(message => {
@@ -121,10 +121,10 @@ export default {
         })
     },
     ownKey () {
-      return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.ownKey)
+      return OtpCrypto.encryptedDataConverter.base64ToBytes(this.chat.ownKey)
     },
     otherKey () {
-      return OtpCrypto.encryptedDataConverter.base64ToBytes(this.conversation.otherKey)
+      return OtpCrypto.encryptedDataConverter.base64ToBytes(this.chat.otherKey)
     },
     keyAlmostEmpty () {
       return OtpCrypto.encrypt(this.AUTH_PREAMBLE + 'V'.repeat(keyAlmostEmptyThreshold), this.ownKey).remainingKey.length <= 0
@@ -140,16 +140,16 @@ export default {
     }
   },
   methods: {
-    saveConversationName (name) {
+    saveChatName (name) {
       if (name.trim() === '') {
         return
       }
-      this.$store.commit('setConversationName', {
-        id: this.conversation.id,
+      this.$store.commit('setChatName', {
+        id: this.chat.id,
         name: name,
       })
       this.showEditNameDialog = false
-      this.newConversationName = this.conversation.name
+      this.newChatName = this.chat.name
     },
     dateTimeText (timestamp) {
       const humanDate = this.humanDate(timestamp)
@@ -167,18 +167,18 @@ export default {
         this.$ons.notification.toast('Key not long enough.', { timeout: 1000 })
         return
       }
-      if (!this.conversation.otherId) {
+      if (!this.chat.otherId) {
         this.$ons.notification.toast('Other ID not set (yet).', { timeout: 1000 })
         return
       }
       this.sendButtonEnabled = false
       this.$http.post('messages', {
         sender: this.$store.state.id,
-        receiver: this.conversation.otherId,
+        receiver: this.chat.otherId,
         payload: this.otpCryptoResult.base64Encrypted
       }, { timeout: 5000 }).then(response => {
         const message = response.body
-        this.conversation.messages.push({
+        this.chat.messages.push({
           id: `${message.sender}${message.timestamp}`,
           own: true,
           text: this.message,

@@ -143,11 +143,11 @@
         const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
         this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf)))
         this.$store.commit('updateOtherKey', {
-          id: this.$store.state.currentConversationId,
+          id: this.$store.state.currentChatId,
           otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf))
         })
-        this.$store.commit('setConversationOtherId', {
-          id: this.$store.state.currentConversationId,
+        this.$store.commit('setChatOtherId', {
+          id: this.$store.state.currentChatId,
           otherId: null,
         })
       },

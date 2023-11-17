@@ -24,15 +24,24 @@ export default {
       const lastTimestampQueryString = (this.$store.state.lastTimestamp !== null) ? `?timestamp=${this.$store.state.lastTimestamp}` : ''
       this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 }).then(response => {
         const messages = response.body
-        this.conversations.forEach(conversation => {
-          const conversationMessages = messages.filter(message => message.sender === conversation.otherId || conversation.otherId == null)
-          this.pollMessage(conversation, conversationMessages, 0)
+        this.chats.forEach(chat => {
+          const chatMessages = messages.filter(message => message.sender === chat.otherId || chat.otherId == null)
+          this.pollMessage(chat, chatMessages, 0)
         })
       }).then(() => {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
       })
     }
     pollMessages()
+
+    // Legacy conversations state migration
+    if (this.$store.state.conversations != null) {
+      for (const conversation of this.$store.state.conversations) {
+        this.$store.commit('createChat', JSON.parse(JSON.stringify(conversation)))
+      }
+      this.$store.commit('setCurrentChatId', (this.$store.currentConversationId != null) ? this.$store.currentConversationId : null)
+      this.$store.commit('deleteLegacyConversations')
+    }
   },
   data () {
     return {
@@ -40,17 +49,17 @@ export default {
     }
   },
   computed: {
-    conversations () {
-      return this.$store.state.conversations
+    chats () {
+      return this.$store.state.chats
     }
   },
   methods: {
-    pollMessage (conversation, conversationMessages, messageIdx) {
-      if (messageIdx >= conversationMessages.length) {
+    pollMessage (chat, chatMessages, messageIdx) {
+      if (messageIdx >= chatMessages.length) {
         return
       }
-      const message = conversationMessages[messageIdx]
-      const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(conversation.otherKey)
+      const message = chatMessages[messageIdx]
+      const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(chat.otherKey)
       const otherKeyBytesPreambleLength = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_PREAMBLE).length)
       const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytesPreambleLength)
       const polledMessageId = `${message.sender}${message.timestamp}`
@@ -59,40 +68,40 @@ export default {
         this.$store.commit('setLastTimestamp', message.timestamp)
         const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
         if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_PREAMBLE.length) !== this.AUTH_PREAMBLE) {
-          this.pollMessage(conversation, conversationMessages, messageIdx + 1)
+          this.pollMessage(chat, chatMessages, messageIdx + 1)
           return
         }
 
         this.$store.commit('updateOtherKey', {
-          id: conversation.id,
+          id: chat.id,
           otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
         })
-        if (conversation.otherId == null) {
-          this.$store.commit('setConversationOtherId', {
-            id: conversation.id,
+        if (chat.otherId == null) {
+          this.$store.commit('setChatOtherId', {
+            id: chat.id,
             otherId: message.sender,
           })
         }
 
-        if (conversation.messages.some(message => message.id === polledMessageId)) {
-          this.pollMessage(conversation, conversationMessages, messageIdx + 1)
+        if (chat.messages.some(message => message.id === polledMessageId)) {
+          this.pollMessage(chat, chatMessages, messageIdx + 1)
           return
         }
 
-        if (conversation.id !== this.$store.state.currentConversationId) {
-          this.$store.commit('setNewMessagesTrue', conversation.id)
+        if (chat.id !== this.$store.state.currentChatId) {
+          this.$store.commit('setNewMessagesTrue', chat.id)
         }
-        conversation.messages.push({
+        chat.messages.push({
           id: polledMessageId,
           own: false,
           text: otpCryptoResult.plaintextDecrypted.substring(this.AUTH_PREAMBLE.length),
           timestamp: message.timestamp
         })
-        this.pollMessage(conversation, conversationMessages, messageIdx + 1)
+        this.pollMessage(chat, chatMessages, messageIdx + 1)
       }, response => {
         if (response.status >= 400 && response.status < 500) {
           this.$store.commit('setLastTimestamp', message.timestamp)
-          this.pollMessage(conversation, conversationMessages, messageIdx + 1)
+          this.pollMessage(chat, chatMessages, messageIdx + 1)
         }
       })
     }
