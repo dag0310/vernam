@@ -9,6 +9,7 @@ import VueChatScroll from 'vue-chat-scroll'
 import VueResource from 'vue-resource'
 import store from './store'
 import App from './App'
+import i18n from './i18n'
 
 Vue.config.productionTip = false
 
@@ -65,6 +66,7 @@ Vue.http.options.root = process.env.API_URL || 'http://localhost:3000'
 
 /* eslint-disable no-new */
 new Vue({
+  i18n: i18n,
   el: '#app',
   store,
   template: '<App/>',
