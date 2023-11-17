@@ -199,8 +199,7 @@ export default {
             extends: RefillKeyActive,
             onsNavigatorProps: {
               sendMessageCallback: () => {
-                this.message = 'HELLO'
-                this.sendMessage()
+                this.message = `Hi, ${this.chat.name}!`
               },
             },
           })
