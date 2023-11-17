@@ -10,7 +10,7 @@
       <v-ons-list>
         <v-ons-list-header>ID</v-ons-list-header>
         <v-ons-list-item>
-          <div class="center" style="user-select: auto;">
+          <div class="center">
             {{ $store.state.id }}
           </div>
         </v-ons-list-item>
@@ -36,7 +36,7 @@
         </v-ons-list-item>
         <v-ons-list-header>About</v-ons-list-header>
         <v-ons-list-item>
-          <div class="center" style="user-select: auto;">
+          <div class="center">
             © 2018, 2023 Daniel Geymayer<br>
             Build: {{ buildTimestamp }}
           </div>

@@ -136,6 +136,9 @@ export default {
     cursor: pointer;
     color: gray;
   }
+  .selectable, .selectable * {
+    user-select: text;
+  }
   .ellipsis {
     white-space: nowrap;
     overflow: hidden;
