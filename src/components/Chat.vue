@@ -93,7 +93,7 @@ export default {
     }
     setTimeout(() => {
       this.showBuffer = true // To trigger v-chat-scroll to scroll to bottom on initial load
-    })
+    }, 250)
   },
   computed: {
     chat () {
