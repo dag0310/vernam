@@ -46,6 +46,7 @@
       }
     },
     created () {
+      this.setPollingActive(false)
       this.numQrCodes = this.$store.state.numQrCodes
       this.bytesPerQrCode = this.$store.state.bytesPerQrCode
       this.initQrCodes()
@@ -126,6 +127,7 @@
             this.saveQrCodeKeys()
             this.refilledAudio.play()
             this.stopAutoplay()
+            this.setPollingActive(true)
             this.$emit('pop-page')
           }
         })
@@ -134,6 +136,7 @@
         this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             this.stopAutoplay()
+            this.setPollingActive(true)
             this.$emit('pop-page')
           }
         })

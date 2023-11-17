@@ -17,7 +17,7 @@ export default {
   name: 'app',
   created () {
     const pollMessages = () => {
-      if (!this.$store.state.id) {
+      if (!this.$store.state.id || !this.isPollingActive()) {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
         return
       }

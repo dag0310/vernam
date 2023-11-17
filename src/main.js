@@ -17,6 +17,7 @@ Vue.use(VueChatScroll)
 Vue.use(VueResource)
 
 const twentyFourHoursInMs = 24 * 60 * 60 * 1000
+let pollingActive = true
 
 Vue.mixin({
   data () {
@@ -25,6 +26,12 @@ Vue.mixin({
     }
   },
   methods: {
+    setPollingActive (isActive) {
+      pollingActive = isActive
+    },
+    isPollingActive () {
+      return pollingActive
+    },
     humanDate (timestamp) {
       const date = new Date(timestamp)
       const timeText = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: 'numeric' }).format(date)

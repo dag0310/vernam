@@ -37,6 +37,7 @@
       }
     },
     created () {
+      this.setPollingActive(false)
       this.scanAudio = new Audio('/static/audio/scan.wav')
       this.refilledAudio = new Audio('/static/audio/refilled.wav')
     },
@@ -119,31 +120,28 @@
         }
       },
       finishQrCodeScanning () {
-        this.$ons.openActionSheet({ buttons: ['Yes, they confirmed'], title: 'Wait for the other party to confirm scanning finished.', cancelable: false, destructive: 0 }).then(response => {
-          if (response !== 0) {
-            return
-          }
-          const byteArrayTotal = this.buildTotalKeyByteArray(this.qrCodes)
-          const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
-          this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)))
-          this.$store.commit('updateOtherKey', {
-            id: this.$store.state.currentChatId,
-            otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
-          })
-          this.$store.commit('setChatOtherId', {
-            id: this.$store.state.currentChatId,
-            otherId: this.otherId,
-          })
-          this.refilledAudio.play()
-          if (this.sendMessageCallback != null) {
-            this.sendMessageCallback()
-          }
-          this.$emit('pop-page')
+        const byteArrayTotal = this.buildTotalKeyByteArray(this.qrCodes)
+        const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
+        this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)))
+        this.$store.commit('updateOtherKey', {
+          id: this.$store.state.currentChatId,
+          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf))
         })
+        this.$store.commit('setChatOtherId', {
+          id: this.$store.state.currentChatId,
+          otherId: this.otherId,
+        })
+        this.refilledAudio.play()
+        if (this.sendMessageCallback != null) {
+          this.sendMessageCallback()
+        }
+        this.setPollingActive(true)
+        this.$emit('pop-page')
       },
       cancel () {
         this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
+            this.setPollingActive(true)
             this.$emit('pop-page')
           }
         })
