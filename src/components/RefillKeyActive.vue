@@ -118,11 +118,11 @@
         const metaPrefixLength = 7
         const metaPrefix = content.substring(0, metaPrefixLength)
         return {
+          id: null,
           qr: parseInt(metaPrefix.substring(0, 2), 10),
           qrT: parseInt(metaPrefix.substring(2, 4), 10),
           key: content.substring(metaPrefixLength),
           threeLetterHash: metaPrefix.substring(4, metaPrefixLength),
-          otherId: null,
         }
       },
       finishQrCodeScanning () {
