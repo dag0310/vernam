@@ -70,9 +70,9 @@ export default new Vuex.Store({
     }
   },
   state: {
+    id: null,
     chats: [],
     currentChatId: null,
-    id: null,
     lastTimestamp: null,
     numQrCodes: 10,
     bytesPerQrCode: 400,
