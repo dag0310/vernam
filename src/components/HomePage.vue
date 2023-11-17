@@ -53,7 +53,6 @@
 </template>
 
 <script>
-// import OtpCrypto from 'otp-crypto' // For dummy chats
 import Settings from './Settings'
 import Chat from './Chat'
 

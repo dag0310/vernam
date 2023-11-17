@@ -34,7 +34,7 @@ export default {
     }
     pollMessages()
 
-    // Legacy conversations state migration
+    // FIXME: Temporary: Legacy conversations state migration
     if (this.$store.state.conversations != null) {
       for (const conversation of this.$store.state.conversations) {
         this.$store.commit('createChat', JSON.parse(JSON.stringify(conversation)))
