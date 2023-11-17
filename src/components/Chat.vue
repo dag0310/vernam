@@ -195,7 +195,15 @@ export default {
     refillKey () {
       this.$ons.openActionSheet({buttons: ['I <u>scan</u> the QR codes', 'I <u>show</u> the QR codes', 'Cancel'], title: 'What is your part? It doesn\'t matter who does what.', cancelable: true}).then(response => {
         if (response === 0) {
-          this.$emit('push-page', RefillKeyActive)
+          this.$emit('push-page', {
+            extends: RefillKeyActive,
+            onsNavigatorProps: {
+              sendMessageCallback: () => {
+                this.message = 'HELLO'
+                this.sendMessage()
+              },
+            },
+          })
         } else if (response === 1) {
           this.$emit('push-page', RefillKeyPassive)
         }

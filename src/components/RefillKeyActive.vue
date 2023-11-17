@@ -22,6 +22,12 @@
     components: {
       QrcodeStream,
     },
+    props: {
+      sendMessageCallback: {
+        type: Function,
+        required: false,
+      }
+    },
     data () {
       return {
         scanStatus: '',
@@ -129,6 +135,9 @@
             otherId: this.otherId,
           })
           this.refilledAudio.play()
+          if (this.sendMessageCallback != null) {
+            this.sendMessageCallback()
+          }
           this.$emit('pop-page')
         })
       },
