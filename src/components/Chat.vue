@@ -20,7 +20,7 @@
       <div v-for="message in filteredMessages" :key="(message.own ? 'own' : 'other') + '-' + message.id">
         <div class="card" :class="{ownMessage: message.own}">
           <div class="card__content">
-            <span v-html="message.text" class="messageText" style="user-select: auto;"></span>
+            <span v-html="message.html" class="messageText" style="user-select: auto;"></span>
             <br>
             <span class="messageInfo">
               <span class="messageInfoDate">{{ dateTimeText(message.timestamp) }}</span>
@@ -111,13 +111,13 @@ export default {
         .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((messageA, messageB) => messageA.timestamp - messageB.timestamp)
         .map(message => {
-          const messageCopy = { ...message }
           const tempDiv = document.createElement('div')
-          tempDiv.appendChild(document.createTextNode(messageCopy.text))
-          messageCopy.text = tempDiv.innerHTML
+          tempDiv.appendChild(document.createTextNode(message.text))
+          message.textHtmlEscaped = tempDiv.innerHTML
+          message.html = tempDiv.innerHTML
             .replace(/\n/g, ' <br> ')
             .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>')
-          return messageCopy
+          return message
         })
     },
     ownKey () {
@@ -156,7 +156,7 @@ export default {
       return humanDate.isToday ? humanDate.timeText : `${humanDate.dateText}, ${humanDate.timeText}`
     },
     deleteMessage (message) {
-      this.$ons.openActionSheet({ buttons: ['Delete message locally', 'Cancel'], title: message.text, cancelable: true, destructive: 0 }).then(response => {
+      this.$ons.openActionSheet({ buttons: ['Delete message locally', 'Cancel'], title: message.textHtmlEscaped, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           this.$store.commit('deleteMessage', message.id)
         }
