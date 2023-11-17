@@ -14,7 +14,6 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
-    "js-sha256": "^0.10.1",
     "onsenui": "~2.11.0",
     "otp-crypto": "^4.1.0",
     "qrcode": "^1.5.3",

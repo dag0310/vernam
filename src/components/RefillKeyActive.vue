@@ -71,20 +71,7 @@
         try {
           parsedQrContent = JSON.parse(content)
         } catch (e) {
-          parsedQrContent = this.parseQrContentLegacy(content)
-
-          // Chat partner ID check temporarily commented-out, because the whole key will be refilled anyway.
-          // Might be good to do this check again if we add to the existing keys to make sure keys stay synchronized.
-          // On the other hand maybe a key checksum check makes more sense in this case instead of this chat ID hashing business.
-          //
-          // const otherId = this.$store.getters.currentChat.otherId
-          // if (otherId != null && parsedQrContent.threeLetterHash != null) {
-          //   if (this.buildThreeLetterHashFromStrings(this.$store.state.id, otherId) !== parsedQrContent.threeLetterHash) {
-          //     this.$ons.notification.toast('Your chats\' IDs do not fit together.', { timeout: 3000 })
-          //     this.$emit('pop-page')
-          //     return
-          //   }
-          // }
+          parsedQrContent = this.parseQrContentLegacy(content)  // FIXME: Temporary: Remove in the future
         }
 
         if (this.otherId == null) {
@@ -114,15 +101,15 @@
           this.finishQrCodeScanning()
         }
       },
-      parseQrContentLegacy (content) {
+      parseQrContentLegacy (content) { // FIXME: Temporary: Remove in the future
         const metaPrefixLength = 7
         const metaPrefix = content.substring(0, metaPrefixLength)
         return {
           id: null,
           qr: parseInt(metaPrefix.substring(0, 2), 10),
           qrT: parseInt(metaPrefix.substring(2, 4), 10),
-          key: content.substring(metaPrefixLength),
           threeLetterHash: metaPrefix.substring(4, metaPrefixLength),
+          key: content.substring(metaPrefixLength),
         }
       },
       finishQrCodeScanning () {

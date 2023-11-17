@@ -7,7 +7,6 @@ import Vue from 'vue'
 import VueOnsen from 'vue-onsenui'
 import VueChatScroll from 'vue-chat-scroll'
 import VueResource from 'vue-resource'
-import sha256 from 'js-sha256'
 import store from './store'
 import App from './App'
 
@@ -52,10 +51,6 @@ Vue.mixin({
       const flattenedByteArrays = Uint8Array.from(byteArrays.reduce((a, b) => [...a, ...b], []))
       return flattenedByteArrays
     },
-    buildThreeLetterHashFromStrings (...strings) {
-      const hash = sha256(strings.sort().join('')).toString()
-      return hash.substring(0, 3)
-    }
   }
 })
 
