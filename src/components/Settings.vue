@@ -10,7 +10,7 @@
       <v-ons-list>
         <v-ons-list-header>{{ $t('id') }}</v-ons-list-header>
         <v-ons-list-item>
-          <div class="center">
+          <div class="center selectable">
             {{ $store.state.id }}
           </div>
         </v-ons-list-item>
@@ -36,7 +36,7 @@
         </v-ons-list-item>
         <v-ons-list-header>{{ $t('about') }}</v-ons-list-header>
         <v-ons-list-item>
-          <div class="center">
+          <div class="center selectable">
             © 2018, 2023 Daniel Geymayer<br>
             {{ $t('version') }}: {{ buildTimestamp }}
           </div>
