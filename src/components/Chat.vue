@@ -199,7 +199,6 @@ export default {
       })
     },
     refillKey () {
-      // this.$ons.openActionSheet({buttons: ['', '', 'Cancel'], title: '', cancelable: true}).then(response => {
       this.$ons.openActionSheet({buttons: [this.$t('iScanTheQrCodes'), this.$t('iShowTheQrCodes'), this.$t('cancel')], title: this.$t('whatIsYourPart'), cancelable: true}).then(response => {
         if (response === 0) {
           this.$emit('push-page', {
