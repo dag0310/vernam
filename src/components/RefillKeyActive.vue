@@ -16,6 +16,7 @@
 <script>
   import { QrcodeStream } from 'vue-qrcode-reader'
   import OtpCrypto from 'otp-crypto'
+  import { stringify } from 'uuid'
 
   export default {
     name: 'refillkeyactive',
@@ -63,6 +64,7 @@
         let parsedQrContent
         try {
           parsedQrContent = JSON.parse(content)
+          parsedQrContent.id = stringify(OtpCrypto.encryptedDataConverter.base64ToBytes(parsedQrContent.id))
         } catch (e) {
           parsedQrContent = this.parseQrContentLegacy(content)  // FIXME: Temporary: Remove in the future
         }

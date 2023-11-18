@@ -29,6 +29,7 @@
 <script>
   import QRCode from 'qrcode'
   import OtpCrypto from 'otp-crypto'
+  import { parse } from 'uuid'
 
   const autoplayIntervalInMs = 1000
 
@@ -62,7 +63,7 @@
           const randomBytes = OtpCrypto.generateRandomBytes(this.bytesPerQrCode)
           const randomText = OtpCrypto.encryptedDataConverter.bytesToBase64(randomBytes)
           const dataObj = {
-            id: this.$store.state.id,
+            id: OtpCrypto.encryptedDataConverter.bytesToBase64(parse(this.$store.state.id)),
             qr: number,
             qrT: this.numQrCodes,
             key: randomText,
