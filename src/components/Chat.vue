@@ -24,7 +24,7 @@
             <br>
             <span class="messageInfo">
               <span class="messageInfoDate">{{ dateTimeText(message.timestamp) }}</span>
-              <ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click="deleteMessage(message)" :aria-label="$t('deleteMessageLocally')"></ons-icon>
+              <v-ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click="deleteMessage(message)" :aria-label="$t('deleteMessageLocally')"></v-ons-icon>
             </span>
             <div class="clearfix"></div>
           </div>

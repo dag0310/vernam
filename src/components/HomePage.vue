@@ -32,8 +32,8 @@
           </div>
           <div class="right">
             <span class="list-item__label">{{ lastMessageDateText(chat) }}</span>
-            <ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteChat(chat)" :aria-label="$t('deleteChatLocally')"></ons-icon>
-            <ons-icon icon="ion-ios-arrow-forward, material:ion-md-arrow-forward" class="list-item__icon"></ons-icon>
+            <v-ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteChat(chat)" :aria-label="$t('deleteChatLocally')"></v-ons-icon>
+            <v-ons-icon icon="ion-ios-arrow-forward, material:ion-md-arrow-forward" class="list-item__icon"></v-ons-icon>
           </div>
         </v-ons-list-item>
       </v-ons-list>
