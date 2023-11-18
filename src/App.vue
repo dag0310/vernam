@@ -16,6 +16,18 @@ const pollMessagesIntervalInMs = 1000
 export default {
   name: 'app',
   created () {
+    // FIXME: Temporary: Legacy conversations state migration
+    if (this.$store.state.conversations != null) {
+      for (const conversation of this.$store.state.conversations) {
+        this.$store.commit('createChat', JSON.parse(JSON.stringify(conversation)))
+      }
+      this.$store.commit('deleteLegacyConversations')
+    }
+    if (this.$store.state.currentConversationId != null) {
+      this.$store.commit('setCurrentChatId', this.$store.state.currentConversationId)
+      this.$store.commit('deleteLegacyCurrentConversationId')
+    }
+
     const pollMessages = () => {
       if (!this.$store.state.id || !this.isPollingActive()) {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
@@ -33,15 +45,6 @@ export default {
       })
     }
     pollMessages()
-
-    // FIXME: Temporary: Legacy conversations state migration
-    if (this.$store.state.conversations != null) {
-      for (const conversation of this.$store.state.conversations) {
-        this.$store.commit('createChat', JSON.parse(JSON.stringify(conversation)))
-      }
-      this.$store.commit('setCurrentChatId', (this.$store.currentConversationId != null) ? this.$store.currentConversationId : null)
-      this.$store.commit('deleteLegacyConversations')
-    }
   },
   data () {
     return {

@@ -61,6 +61,8 @@ export default new Vuex.Store({
     },
     deleteLegacyConversations (state) { // FIXME: Temporary: Remove legacy migration method
       delete state.conversations
+    },
+    deleteLegacyCurrentConversationId (state) { // FIXME: Temporary: Remove legacy migration method
       delete state.currentConversationId
     },
   },
