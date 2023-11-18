@@ -33,7 +33,7 @@
           <div class="right">
             <span class="list-item__label">{{ lastMessageDateText(chat) }}</span>
             <v-ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteChat(chat)" :aria-label="$t('deleteChatLocally')"></v-ons-icon>
-            <v-ons-icon icon="ion-ios-arrow-forward, material:ion-md-arrow-forward" class="list-item__icon"></v-ons-icon>
+            <v-ons-icon icon="ion-ios-arrow-forward, material:ion-md-arrow-forward" class="list-item__icon chevron"></v-ons-icon>
           </div>
         </v-ons-list-item>
       </v-ons-list>
@@ -172,8 +172,11 @@ export default {
     overflow: visible;
     white-space: nowrap;
   }
-  .list-item__icon.ion-ios-arrow-forward {
-    color: #c7c7cc;
+  .list-item__icon {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .list-item__icon.chevron {
     font-size: 20px;
+    color: #c7c7cc;
   }
 </style>
