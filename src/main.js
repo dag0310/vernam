@@ -43,9 +43,9 @@ Vue.mixin({
 
       if (timestamp >= todayAtMidnightTimestamp) {
         isToday = true
-        dateText = 'Today'
+        dateText = this.$t('today')
       } else if (timestamp >= todayAtMidnightTimestamp - twentyFourHoursInMs) {
-        dateText = 'Yesterday'
+        dateText = this.$t('yesterday')
       } else if (timestamp >= todayAtMidnightTimestamp - (6 * twentyFourHoursInMs)) {
         dateText = new Intl.DateTimeFormat(undefined, { weekday: 'long' }).format(date)
       } else {

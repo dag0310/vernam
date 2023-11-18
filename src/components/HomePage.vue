@@ -2,20 +2,20 @@
   <v-ons-page id="home">
     <v-ons-toolbar>
       <div class="left">
-        <v-ons-toolbar-button @click="showSettingsPage">
+        <v-ons-toolbar-button @click="showSettingsPage" :aria-label="$t('settings')">
           <v-ons-icon icon="ion-ios-cog, material:ion-md-cog"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
-      <div class="center">Chats</div>
+      <div class="center">{{ $t('chats') }}</div>
       <div class="right">
-        <v-ons-toolbar-button @click="showCreateChatDialog = true">
+        <v-ons-toolbar-button @click="showCreateChatDialog = true" :aria-label="$t('newChat')">
           <v-ons-icon icon="ion-ios-create, material:ion-md-create"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
     <div class="content">
       <p class="searchContainer marginalizedContent">
-        <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
+        <v-ons-search-input :placeholder="$t('searchbarPlaceholder')" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
       </p>
       <v-ons-list v-show="filteredChats.length > 0">
@@ -23,30 +23,30 @@
           <div class="center">
             <span class="list-item__title ellipsis" :class="{bold: chat.newMessages}">{{ chat.name }}</span>
             <span class="list-item__subtitle ellipsis" :class="{bold: chat.newMessages}">
-              <template v-if="chat.message.length > 0"><i>Draft: </i>{{ chat.message }}</template>
+              <template v-if="chat.message.length > 0"><i>{{ $t('draft') }}: </i>{{ chat.message }}</template>
               <template v-else>
-                <i v-if="lastMessageIsOwn(chat)">You: </i>
+                <i v-if="lastMessageIsOwn(chat)">{{ $t('you') }}: </i>
                 {{ lastMessageText(chat) }}
               </template>
             </span>
           </div>
           <div class="right">
             <span class="list-item__label">{{ lastMessageDateText(chat) }}</span>
-            <ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteChat(chat)"></ons-icon>
+            <ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteChat(chat)" :aria-label="$t('deleteChatLocally')"></ons-icon>
             <ons-icon icon="ion-ios-arrow-forward, material:ion-md-arrow-forward" class="list-item__icon"></ons-icon>
           </div>
         </v-ons-list-item>
       </v-ons-list>
-      <div class="marginalizedContent infoText" v-show="filteredChats.length <= 0">No chats found</div>
+      <div class="marginalizedContent infoText" v-show="filteredChats.length <= 0">{{ $t('noChatsFound') }}</div>
     </div>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateChatDialog">
-      <span slot="title">New chat</span>
+      <span slot="title">{{ $t('newChat') }}</span>
       <p>
-        <v-ons-input type="text" modifier="underbar" placeholder="Chat name ..." float v-model="newChatName"></v-ons-input>
+        <v-ons-input type="text" modifier="underbar" :placeholder="$t('chatName') + ' ...'" float v-model="newChatName"></v-ons-input>
       </p>
       <template slot="footer">
-        <div class="alert-dialog-button" @click="showCreateChatDialog = false; newChatName = '';">Cancel</div>
-        <div class="alert-dialog-button" @click="createChat(newChatName);"><b>OK</b></div>
+        <div class="alert-dialog-button" @click="showCreateChatDialog = false; newChatName = '';">{{ $t('cancel') }}</div>
+        <div class="alert-dialog-button" @click="createChat(newChatName);"><b>{{ $t('ok') }}</b></div>
       </template>
     </v-ons-alert-dialog>
   </v-ons-page>
@@ -133,7 +133,7 @@ export default {
       this.$emit('push-page', Chat)
     },
     deleteChat (chat) {
-      this.$ons.openActionSheet({ buttons: ['Delete chat locally', 'Cancel'], title: chat.name, cancelable: true, destructive: 0 }).then(response => {
+      this.$ons.openActionSheet({ buttons: [this.$t('deleteChatLocally'), this.$t('cancel')], title: chat.name, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           this.$store.commit('deleteChat', chat.id)
         }

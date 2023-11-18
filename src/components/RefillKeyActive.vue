@@ -1,12 +1,12 @@
 <template>
 <v-ons-page>
   <v-ons-toolbar>
-    <div class="left"><v-ons-toolbar-button @click="cancel">Cancel</v-ons-toolbar-button></div>
-    <div class="center">Refill Key</div>
+    <div class="left"><v-ons-toolbar-button @click="cancel">{{ $t('cancel') }}</v-ons-toolbar-button></div>
+    <div class="center">{{ $t('refillKey') }}</div>
   </v-ons-toolbar>
   <div class="content">
-    <h3 v-if="qrCodeNumbersLeft">{{qrCodeNumbersLeft.length}} code<template v-if="qrCodeNumbersLeft.length !== 1">s</template> left to scan:<br><b>{{ qrCodeNumbersLeft.map(code => `#${code}`).join(', ') }}</b></h3>
-    <h3 v-else><b>Scan QR codes of your contact.</b></h3>
+    <h3 v-if="qrCodeNumbersLeft">{{ $tc('codesLeftToScan', qrCodeNumbersLeft.length) }}<br><b>{{ qrCodeNumbersLeft.map(code => `#${code}`).join(', ') }}</b></h3>
+    <h3 v-else><b>{{ $t('scanQrCodesOfYourContact') }}</b></h3>
     <qrcode-stream class="qr-stream" @init="onInit" @detect="onDetect" />
     <p><b>{{ scanStatus }}</b></p>
   </div>
@@ -48,27 +48,13 @@
     },
     methods: {
       async onInit (promise) {
-        this.scanStatus = 'Preparing to scan ...'
+        this.scanStatus = `${this.$t('scanStatusPreparingToScan')} ...`
         try {
           const { capabilities } = await promise
           console.log({ capabilities })
-          this.scanStatus = 'Ready to scan.'
+          this.scanStatus = this.$t('scanStatusReadyToScan')
         } catch (error) {
-          if (error.name === 'NotAllowedError') {
-            this.scanStatus = 'User denied camera access permisson.'
-          } else if (error.name === 'NotFoundError') {
-            this.scanStatus = 'No suitable camera device installed.'
-          } else if (error.name === 'NotSupportedError' || error.name === 'InsecureContextError') {
-            this.scanStatus = 'Page is not served over HTTPS or localhost.'
-          } else if (error.name === 'NotReadableError') {
-            this.scanStatus = 'Maybe camera is already in use.'
-          } else if (error.name === 'OverconstrainedError') {
-            this.scanStatus = 'Did you requested the front camera although there is none?'
-          } else if (error.name === 'StreamApiNotSupportedError') {
-            this.scanStatus = 'Browser seems to be lacking features.'
-          } else {
-            this.scanStatus = 'Unknown error: "' + error.name + '"'
-          }
+          this.scanStatus = this.$t(`scanStatus${error.name}`) || `${this.$t('scanStatusUnknownError')}: "${error.name}"`
         }
       },
       async onDetect (promise) {
@@ -85,13 +71,13 @@
           this.otherId = parsedQrContent.id
         }
         if (this.otherId !== parsedQrContent.id) {
-          this.$ons.notification.toast('This QR code belongs to another series.', { timeout: 3000 })
+          this.$ons.notification.toast(this.$t('qrCodeBelongsToAnotherSeries'), { timeout: 3000 })
           return
         }
 
         if (this.qrCodeNumbers.includes(parsedQrContent.qr)) {
           // Do not show this toast anymore, because in autoplay mode it would be annoying
-          // this.$ons.notification.toast('You already scanned this code.', { timeout: 3000 })
+          // this.$ons.notification.toast(this.$t('youAlreadyScannedThisCode'), { timeout: 3000 })
           return
         }
 
@@ -139,7 +125,7 @@
         this.$emit('pop-page')
       },
       cancel () {
-        this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
+        this.$ons.openActionSheet({ buttons: [this.$t('yesAbort'), this.$t('noContinue')], title: this.$t('sureYouWantToCancel'), cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             this.setPollingActive(true)
             this.$emit('pop-page')

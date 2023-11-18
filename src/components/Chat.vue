@@ -2,19 +2,19 @@
   <v-ons-page>
     <v-ons-toolbar>
       <div class="left">
-        <v-ons-back-button>Back</v-ons-back-button>
+        <v-ons-back-button>{{ $t('back') }}</v-ons-back-button>
       </div>
       <div class="center ellipsis" @click="informationDialogVisible = true">{{ chat.name }}</div>
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
-          <template v-if="keyEmpty">Refill 🔑</template>
+          <template v-if="keyEmpty">{{ $t('refillShort') }} 🔑</template>
           <template v-else>🔑 {{ remainingKeyLength }}</template>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
     <div class="content" v-chat-scroll="{ always: true, smooth: false, scrollonremoved: true }">
       <p class="searchContainer marginalizedContent">
-        <v-ons-search-input placeholder="Search" v-model="searchText"></v-ons-search-input>
+        <v-ons-search-input :placeholder="$t('searchbarPlaceholder')" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
       </p>
       <div v-for="message in filteredMessages" :key="(message.own ? 'own' : 'other') + '-' + message.id">
@@ -24,39 +24,44 @@
             <br>
             <span class="messageInfo">
               <span class="messageInfoDate">{{ dateTimeText(message.timestamp) }}</span>
-              <ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click="deleteMessage(message)"></ons-icon>
+              <ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click="deleteMessage(message)" :aria-label="$t('deleteMessageLocally')"></ons-icon>
             </span>
             <div class="clearfix"></div>
           </div>
         </div>
         <div class="clearfix"></div>
       </div>
-      <div class="marginalizedContent infoText" v-show="chat.otherId == null && !keyEmpty">Your contact needs to message you before you can start messaging.</div>
-      <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">No messages found</div>
+      <div class="marginalizedContent infoText" v-show="chat.otherId == null && !keyEmpty">{{ $t('noOtherIdMessage') }}</div>
+      <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">{{ $t('noMessagesFoundMessage') }}</div>
       <div class="marginalizedContent keyRefillInfoBox" v-if="keyAlmostEmpty">
-        <div class="infoText">Your key is <span v-if="!keyEmpty">almost</span> empty &ndash;<br>Please refill it together with your contact to send messages.</div>
-        <v-ons-button modifier="large" @click="refillKey">Refill 🔑</v-ons-button>
+        <div class="infoText">
+          <template v-if="keyEmpty">{{ $t('keyEmptyMessage') }}</template>
+          <template v-else>{{ $t('keyAlmostEmptyMessage') }}</template>
+          &ndash;<br>
+          {{ $t('pleaseRefillKeyMessage') }}
+        </div>
+        <v-ons-button modifier="large" @click="refillKey">{{ $t('refill') }} 🔑</v-ons-button>
       </div>
       <div class="buffer" v-if="showBuffer"></div>
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message" autocomplete="off"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !chat.otherId">Send</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !chat.otherId">{{ $t('send') }}</v-ons-button>
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
-      <p>Name: <b>{{chat.name}}</b> <v-ons-icon @click="newChatName = chat.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create"></v-ons-icon></p>
-      <p class="selectable">Own key:<br>Size: <b>{{ownKey.length}}</b>, Checksum: <b>{{calculateByteArrayChecksum(ownKey)}}</b></p>
-      <p class="selectable">Other key:<br>Size: <b>{{otherKey.length}}</b>, Checksum: <b>{{calculateByteArrayChecksum(otherKey)}}</b></p>
-      <p class="selectable">Other ID:<br><b><i v-if="chat.otherId == null">UNKNOWN</i><span v-if="chat.otherId != null">{{chat.otherId}}</span></b></p>
+      <p>{{ $t('name') }}: <b>{{chat.name}}</b> <v-ons-icon @click="newChatName = chat.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create" :aria-label="$t('editChatName')"></v-ons-icon></p>
+      <p class="selectable">{{ $t('ownKey') }}:<br>{{ $t('size') }}: <b>{{ownKey.length}}</b>, {{ $t('checksum') }}: <b>{{calculateByteArrayChecksum(ownKey)}}</b></p>
+      <p class="selectable">{{ $t('otherKey') }}:<br>{{ $t('size') }}: <b>{{otherKey.length}}</b>, {{ $t('checksum') }}: <b>{{calculateByteArrayChecksum(otherKey)}}</b></p>
+      <p class="selectable">{{ $t('otherId') }}:<br><b><i v-if="chat.otherId == null">{{ $t('unknown') }}</i><span v-if="chat.otherId != null">{{chat.otherId}}</span></b></p>
     </v-ons-dialog>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showEditNameDialog">
-      <span slot="title">Edit chat name</span>
+      <span slot="title">{{ $t('editChatName') }}</span>
       <p>
-        <v-ons-input type="text" modifier="underbar" placeholder="Chat name ..." float v-model="newChatName"></v-ons-input>
+        <v-ons-input type="text" modifier="underbar" :placeholder="$t('chatName') + ' ...'" float v-model="newChatName"></v-ons-input>
       </p>
       <template slot="footer">
-        <div class="alert-dialog-button" @click="showEditNameDialog = false; newChatName = '';">Cancel</div>
-        <div class="alert-dialog-button" @click="saveChatName(newChatName);"><b>Save</b></div>
+        <div class="alert-dialog-button" @click="showEditNameDialog = false; newChatName = '';">{{ $t('cancel') }}</div>
+        <div class="alert-dialog-button" @click="saveChatName(newChatName);"><b>{{ $t('save') }}</b></div>
       </template>
     </v-ons-alert-dialog>
     <v-ons-progress-circular indeterminate v-show="showLoadingIndicator"></v-ons-progress-circular>
@@ -157,7 +162,7 @@ export default {
       return humanDate.isToday ? humanDate.timeText : `${humanDate.dateText}, ${humanDate.timeText}`
     },
     deleteMessage (message) {
-      this.$ons.openActionSheet({ buttons: ['Delete message locally', 'Cancel'], title: message.textHtmlEscaped, cancelable: true, destructive: 0 }).then(response => {
+      this.$ons.openActionSheet({ buttons: [this.$t('deleteMessageLocally'), this.$t('cancel')], title: message.textHtmlEscaped, cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           this.$store.commit('deleteMessage', message.id)
         }
@@ -165,11 +170,11 @@ export default {
     },
     sendMessage () {
       if (!this.otpCryptoResult.isKeyLongEnough) {
-        this.$ons.notification.toast('Key not long enough.', { timeout: 1000 })
+        this.$ons.notification.toast(this.$t('keyNotLongEnough'), { timeout: 1000 })
         return
       }
       if (!this.chat.otherId) {
-        this.$ons.notification.toast('Other ID not set (yet).', { timeout: 1000 })
+        this.$ons.notification.toast(this.$t('otherIdNotSet'), { timeout: 1000 })
         return
       }
       this.sendButtonEnabled = false
@@ -188,19 +193,20 @@ export default {
         this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(this.otpCryptoResult.remainingKey))
         this.message = ''
       }, response => {
-        this.$ons.notification.toast('Message could not be sent.', { timeout: 1000 })
+        this.$ons.notification.toast(this.$t('messageCouldNotBeSent'), { timeout: 1000 })
       }).then(() => {
         this.sendButtonEnabled = true
       })
     },
     refillKey () {
-      this.$ons.openActionSheet({buttons: ['I <u>scan</u> the QR codes', 'I <u>show</u> the QR codes', 'Cancel'], title: 'What is your part? It doesn\'t matter who does what.', cancelable: true}).then(response => {
+      // this.$ons.openActionSheet({buttons: ['', '', 'Cancel'], title: '', cancelable: true}).then(response => {
+      this.$ons.openActionSheet({buttons: [this.$t('iScanTheQrCodes'), this.$t('iShowTheQrCodes'), this.$t('cancel')], title: this.$t('whatIsYourPart'), cancelable: true}).then(response => {
         if (response === 0) {
           this.$emit('push-page', {
             extends: RefillKeyActive,
             onsNavigatorProps: {
               sendMessageCallback: () => {
-                this.message = `Hi, ${this.chat.name}!`
+                this.message = this.$t('helloChatMessage', { name: this.chat.name })
               },
             },
           })

@@ -1,24 +1,24 @@
 <template>
 <v-ons-page>
   <v-ons-toolbar>
-    <div class="left"><v-ons-toolbar-button @click="cancel">Cancel</v-ons-toolbar-button></div>
-    <div class="center">Refill Key</div>
-    <div class="right"><v-ons-toolbar-button @click="done" :disabled="isDoneButtonDisabled">Done</v-ons-toolbar-button>
+    <div class="left"><v-ons-toolbar-button @click="cancel">{{ $t('cancel') }}</v-ons-toolbar-button></div>
+    <div class="center">{{ $t('refillKey') }}</div>
+    <div class="right"><v-ons-toolbar-button @click="done" :disabled="isDoneButtonDisabled">{{ $t('done') }}</v-ons-toolbar-button>
   </div>
   </v-ons-toolbar>
   <div class="content">
     <img v-if="currentQrCode" :src="currentQrCode.dataUrl" class="qrCode" @click="stopAutoplay(); setCurrentQrCode(+1)">
     <div class="navigationAndCounter" v-if="currentQrCode">
       <h3>#{{ currentQrCode.number }} / {{ numQrCodes }}</h3>
-      <v-ons-button modifier="outline" class="pull-left" @click="stopAutoplay(); setCurrentQrCode(-1)">
+      <v-ons-button modifier="outline" class="pull-left" @click="stopAutoplay(); setCurrentQrCode(-1)" :aria-label="$t('previous')">
         <v-ons-icon icon="ion-ios-skip-backward, material:ion-md-skip-backward"></v-ons-icon>
       </v-ons-button>
       <v-ons-button modifier="outline" class="pull-center" @click="(autoplayInterval == null) ? startAutoplay() : stopAutoplay()">
-        <v-ons-icon v-if="autoplayInterval == null" icon="ion-ios-play, material:ion-md-play"></v-ons-icon>
-        <v-ons-icon v-if="autoplayInterval != null" icon="ion-ios-pause, material:ion-md-pause"></v-ons-icon>
+        <v-ons-icon v-if="autoplayInterval == null" icon="ion-ios-play, material:ion-md-play" :aria-label="$t('play')"></v-ons-icon>
+        <v-ons-icon v-if="autoplayInterval != null" icon="ion-ios-pause, material:ion-md-pause" :aria-label="$t('pause')"></v-ons-icon>
       </v-ons-button>
       <v-ons-button modifier="outline" class="pull-right" @click="stopAutoplay(); setCurrentQrCode(+1)">
-        <v-ons-icon icon="ion-ios-skip-forward, material:ion-md-skip-forward"></v-ons-icon>
+        <v-ons-icon icon="ion-ios-skip-forward, material:ion-md-skip-forward" :aria-label="$t('next')"></v-ons-icon>
       </v-ons-button>
       <div class="clearfix"></div>
     </div>
@@ -122,7 +122,7 @@
         this.autoplayInterval = null
       },
       done () {
-        this.$ons.openActionSheet({ buttons: ['Yes, scanning finished', 'Cancel'], title: 'Did the other party finish scanning?', cancelable: true, destructive: 0 }).then(response => {
+        this.$ons.openActionSheet({ buttons: [this.$t('yesScanningFinished'), this.$t('cancel')], title: this.$t('didContactFinishScanning'), cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             this.saveQrCodeKeys()
             this.refilledAudio.play()
@@ -133,7 +133,7 @@
         })
       },
       cancel () {
-        this.$ons.openActionSheet({ buttons: ['Yes, abort', 'No, continue'], title: 'Sure you want to cancel?', cancelable: true, destructive: 0 }).then(response => {
+        this.$ons.openActionSheet({ buttons: [this.$t('yesAbort'), this.$t('noContinue')], title: this.$t('sureYouWantToCancel'), cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             this.stopAutoplay()
             this.setPollingActive(true)

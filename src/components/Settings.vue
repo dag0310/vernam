@@ -2,43 +2,43 @@
   <v-ons-page>
     <v-ons-toolbar>
       <div class="left">
-        <v-ons-back-button>Back</v-ons-back-button>
+        <v-ons-back-button>{{ $t('back') }}</v-ons-back-button>
       </div>
-      <div class="center">Settings</div>
+      <div class="center">{{ $t('settings') }}</div>
     </v-ons-toolbar>
     <div class="content">
       <v-ons-list>
-        <v-ons-list-header>ID</v-ons-list-header>
+        <v-ons-list-header>{{ $t('id') }}</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
             {{ $store.state.id }}
           </div>
         </v-ons-list-item>
-        <v-ons-list-header>QR codes</v-ons-list-header>
+        <v-ons-list-header>{{ $t('qrCodes') }}</v-ons-list-header>
         <v-ons-list-item>
-          <div class="left">Amount:</div>
+          <div class="left">{{ $t('amount') }}:</div>
           <v-ons-input class="center" type="number" min="1" max="100" step="1" modifier="underbar" inputmode="numeric" v-model="numQrCodes"></v-ons-input>
-          <div class="right">QR codes</div>
+          <div class="right">{{ $t('qrCodes') }}</div>
         </v-ons-list-item>
         <v-ons-list-item>
-          <div class="left">Data per code:</div>
+          <div class="left">{{ $t('dataPerQrCode') }}:</div>
           <v-ons-input class="center" type="number" min="100" max="500" step="50" modifier="underbar" inputmode="numeric" v-model="bytesPerQrCode"></v-ons-input>
-          <div class="right">Bytes</div>
+          <div class="right">{{ $t('bytes') }}</div>
         </v-ons-list-item>
         <v-ons-list-item>
-          <div class="center">Total key refill data:&nbsp;<strong>{{ numQrCodes * bytesPerQrCode }} Bytes</strong></div>
+          <div class="center">{{ $t('totalKeyRefillData') }}:&nbsp;<strong>{{ numQrCodes * bytesPerQrCode }} Bytes</strong></div>
         </v-ons-list-item>
-        <v-ons-list-header>Danger zone</v-ons-list-header>
+        <v-ons-list-header>{{ $t('dangerZone') }}</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
-            <v-ons-button modifier="large" @click="resetData()" style="background-color: red;">Reset local data</v-ons-button>
+            <v-ons-button modifier="large" @click="resetData()" style="background-color: red;">{{ $t('resetLocalData') }}</v-ons-button>
           </div>
         </v-ons-list-item>
-        <v-ons-list-header>About</v-ons-list-header>
+        <v-ons-list-header>{{ $t('about') }}</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
             © 2018, 2023 Daniel Geymayer<br>
-            Build: {{ buildTimestamp }}
+            {{ $t('version') }}: {{ buildTimestamp }}
           </div>
         </v-ons-list-item>
       </v-ons-list>
@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     resetData () {
-      this.$ons.openActionSheet({ buttons: ['Reset local data', 'Cancel'], title: 'Deletes own ID, all chats and keys.', cancelable: true, destructive: 0 }).then(response => {
+      this.$ons.openActionSheet({ buttons: [this.$t('resetLocalData'), this.$t('cancel')], title: this.$t('resetLocalDataTitle'), cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           window.localStorage.clear()
           window.location.reload()

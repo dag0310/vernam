@@ -16,7 +16,7 @@ Meet up, exchange your one-time pad (OTP) keys using QR code scanning and start 
 ## Under the Hood
 - Named after [Gilbert Vernam](https://en.wikipedia.org/wiki/Gilbert_Vernam), co-inventor of the one-time pad cipher.
 - The app works with a symmetric stream cipher that allows for perfect secrecy encryption aka a one-time pad. This app does not use any other encryption mechanisms which could weaken its security.
-- Since keys are only used once and since they are as long as the message sent itself, they need to be refilled with your partner from time to time by scanning QR codes. The exchanged key data will be split among the partners so they can continue sending messages.
+- Since keys are only used once and since they are as long as the message sent itself, they need to be refilled with your contact from time to time by scanning QR codes. The exchanged key data will be split among the contacts so they can continue sending messages.
 - Authenticity is provided by prepending each message with the text "VERNAM" before encrypting it, which only the receiver can decrypt correctly, since only they are in possession of the private key as well.
 - XOR encryption/decryption for the one-time pads and generation of random key bytes is performed using the [OTP Crypto](https://github.com/dag0310/otp-crypto) library.
 - Keys shall remain only on the device's localStorage.
