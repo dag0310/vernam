@@ -17,34 +17,32 @@
         <v-ons-search-input :placeholder="$t('searchbarPlaceholder')" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
       </p>
-      <div class="messages">
-        <div v-for="message in filteredMessages" :key="(message.own ? 'own' : 'other') + '-' + message.id">
-          <div class="card" :class="{ownMessage: message.own}">
-            <div class="card__content">
-              <span v-html="message.html" class="messageText selectable"></span>
-              <br>
-              <span class="messageInfo">
-                <span class="messageInfoDate">{{ dateTimeText(message.timestamp) }}</span>
-                <v-ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click="deleteMessage(message)" :aria-label="$t('deleteMessageLocally')"></v-ons-icon>
-              </span>
-              <div class="clearfix"></div>
-            </div>
+      <div v-for="message in filteredMessages" :key="(message.own ? 'own' : 'other') + '-' + message.id">
+        <div class="card" :class="{ownMessage: message.own}">
+          <div class="card__content">
+            <span v-html="message.html" class="messageText selectable"></span>
+            <br>
+            <span class="messageInfo">
+              <span class="messageInfoDate">{{ dateTimeText(message.timestamp) }}</span>
+              <v-ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click="deleteMessage(message)" :aria-label="$t('deleteMessageLocally')"></v-ons-icon>
+            </span>
+            <div class="clearfix"></div>
           </div>
-          <div class="clearfix"></div>
         </div>
-        <div class="marginalizedContent infoText" v-show="chat.otherId == null && !keyEmpty">{{ $t('noOtherIdMessage') }}</div>
-        <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">{{ $t('noMessagesFoundMessage') }}</div>
-        <div class="marginalizedContent keyRefillInfoBox" v-if="keyAlmostEmpty">
-          <div class="infoText">
-            <template v-if="keyEmpty">{{ $t('keyEmptyMessage') }}</template>
-            <template v-else>{{ $t('keyAlmostEmptyMessage') }}</template>
-            &ndash;<br>
-            {{ $t('pleaseRefillKeyMessage') }}
-          </div>
-          <v-ons-button modifier="large" @click="refillKey">{{ $t('refill') }} 🔑</v-ons-button>
-        </div>
-        <div class="buffer" v-if="showBuffer"></div>
+        <div class="clearfix"></div>
       </div>
+      <div class="marginalizedContent infoText" v-show="chat.otherId == null && !keyEmpty">{{ $t('noOtherIdMessage') }}</div>
+      <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">{{ $t('noMessagesFoundMessage') }}</div>
+      <div class="marginalizedContent keyRefillInfoBox" v-if="keyAlmostEmpty">
+        <div class="infoText">
+          <template v-if="keyEmpty">{{ $t('keyEmptyMessage') }}</template>
+          <template v-else>{{ $t('keyAlmostEmptyMessage') }}</template>
+          &ndash;<br>
+          {{ $t('pleaseRefillKeyMessage') }}
+        </div>
+        <v-ons-button modifier="large" @click="refillKey">{{ $t('refill') }} 🔑</v-ons-button>
+      </div>
+      <div class="buffer" v-if="showBuffer"></div>
     </div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message" autocomplete="off"></textarea>
@@ -226,18 +224,6 @@ export default {
 </script>
 
 <style scoped>
-  .searchContainer {
-    position: fixed;
-    background-color: #efeff4;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 16px 15px;
-    margin: 0;
-    z-index: 1;
-  }
-  .messages {
-    padding-top: 60px;
-  }
   .card {
     max-width: 230px;
     padding: 5px 10px;
