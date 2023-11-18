@@ -18,26 +18,28 @@
         <v-ons-search-input :placeholder="$t('searchbarPlaceholder')" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
       </p>
-      <v-ons-list v-show="filteredChats.length > 0">
-        <v-ons-list-item v-for="chat in filteredChats" :key="chat.id" tappable @click="showChatPage(chat)">
-          <div class="center">
-            <span class="list-item__title ellipsis" :class="{bold: chat.newMessages}">{{ chat.name }}</span>
-            <span class="list-item__subtitle ellipsis" :class="{bold: chat.newMessages}">
-              <template v-if="chat.message.length > 0"><i>{{ $t('draft') }}: </i>{{ chat.message }}</template>
-              <template v-else>
-                <i v-if="lastMessageIsOwn(chat)">{{ $t('you') }}: </i>
-                {{ lastMessageText(chat) }}
-              </template>
-            </span>
-          </div>
-          <div class="right">
-            <span class="list-item__label">{{ lastMessageDateText(chat) }}</span>
-            <v-ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteChat(chat)" :aria-label="$t('deleteChatLocally')"></v-ons-icon>
-            <v-ons-icon icon="ion-ios-arrow-forward, material:ion-md-arrow-forward" class="list-item__icon chevron"></v-ons-icon>
-          </div>
-        </v-ons-list-item>
-      </v-ons-list>
-      <div class="marginalizedContent infoText" v-show="filteredChats.length <= 0">{{ $t('noChatsFound') }}</div>
+      <div class="chats">
+        <v-ons-list v-show="filteredChats.length > 0">
+          <v-ons-list-item v-for="chat in filteredChats" :key="chat.id" tappable @click="showChatPage(chat)">
+            <div class="center">
+              <span class="list-item__title ellipsis" :class="{bold: chat.newMessages}">{{ chat.name }}</span>
+              <span class="list-item__subtitle ellipsis" :class="{bold: chat.newMessages}">
+                <template v-if="chat.message.length > 0"><i>{{ $t('draft') }}: </i>{{ chat.message }}</template>
+                <template v-else>
+                  <i v-if="lastMessageIsOwn(chat)">{{ $t('you') }}: </i>
+                  {{ lastMessageText(chat) }}
+                </template>
+              </span>
+            </div>
+            <div class="right">
+              <span class="list-item__label">{{ lastMessageDateText(chat) }}</span>
+              <v-ons-icon icon="ion-ios-trash, material:ion-md-trash" class="list-item__icon" @click.stop="deleteChat(chat)" :aria-label="$t('deleteChatLocally')"></v-ons-icon>
+              <v-ons-icon icon="ion-ios-arrow-forward, material:ion-md-arrow-forward" class="list-item__icon chevron"></v-ons-icon>
+            </div>
+          </v-ons-list-item>
+        </v-ons-list>
+        <div class="marginalizedContent infoText" v-show="filteredChats.length <= 0">{{ $t('noChatsFound') }}</div>
+      </div>
     </div>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateChatDialog">
       <span slot="title">{{ $t('newChat') }}</span>
@@ -164,6 +166,18 @@ export default {
 </script>
 
 <style scoped>
+  .searchContainer {
+    position: fixed;
+    background-color: #efeff4;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 15px;
+    margin: 0;
+    z-index: 1;
+  }
+  .chats {
+    padding-top: 60px;
+  }
   .list-item__subtitle {
     width: 150px;
   }
