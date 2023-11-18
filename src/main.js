@@ -66,8 +66,8 @@ Vue.http.options.root = process.env.API_URL || 'http://localhost:3000'
 
 /* eslint-disable no-new */
 new Vue({
-  i18n: i18n,
   el: '#app',
+  i18n,
   store,
   template: '<App/>',
   components: { App }
