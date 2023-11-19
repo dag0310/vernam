@@ -13,7 +13,7 @@
       </div>
     </v-ons-toolbar>
     <div class="content" v-chat-scroll="{ always: true, smooth: false, scrollonremoved: true }">
-      <p class="searchContainer marginalizedContent">
+      <p class="searchContainer marginalizedContent" v-show="searchText.length > 0 || filteredMessages.length > 0">
         <v-ons-search-input :placeholder="$t('searchbarPlaceholder')" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
       </p>
@@ -31,19 +31,21 @@
         </div>
         <div class="clearfix"></div>
       </div>
-      <div class="marginalizedContent infoText" v-show="chat.otherId == null && !keyEmpty">{{ $t('noOtherIdMessage') }}</div>
-      <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0 && searchText.length > 0">{{ $t('noMessagesFoundMessage') }}</div>
-      <div class="marginalizedContent keyRefillInfoBox" v-if="keyAlmostEmpty">
-        <div class="infoText">
-          <template v-if="keyEmpty">{{ $t('keyEmptyMessage') }}</template>
-          <template v-else>{{ $t('keyAlmostEmptyMessage') }}</template>
-          &ndash;<br>
-          {{ $t('refillKeyMessage') }}
+      <p>
+        <div class="marginalizedContent infoText" v-show="chat.otherId == null && !keyEmpty">{{ $t('noOtherIdMessage') }}</div>
+        <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0 && searchText.length > 0">{{ $t('noMessagesFoundMessage') }}</div>
+        <div class="marginalizedContent keyRefillInfoBox" v-if="keyAlmostEmpty">
+          <div class="infoText">
+            <template v-if="keyEmpty">{{ $t('keyEmptyMessage') }}</template>
+            <template v-else>{{ $t('keyAlmostEmptyMessage') }}</template>
+            &ndash;<br>
+            {{ $t('refillKeyMessage') }}
+          </div>
+          <v-ons-button modifier="large" @click="refillKey">{{ $t('refill') }} 🔑</v-ons-button>
         </div>
-        <v-ons-button modifier="large" @click="refillKey">{{ $t('refill') }} 🔑</v-ons-button>
-      </div>
-      <div class="buffer" v-if="showBuffer"></div>
+      </p>
     </div>
+    <div class="buffer" v-if="showBuffer"></div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message" autocomplete="off"></textarea>
       <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !chat.otherId">{{ $t('send') }}</v-ons-button>
