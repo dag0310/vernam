@@ -141,6 +141,7 @@ export default {
     },
     createChat (name) {
       if (name.trim() === '') {
+        this.$ons.notification.toast(this.$t('enterChatNameMessage'), { timeout: 3000 })
         return
       }
       const newChatId = uuidv4()

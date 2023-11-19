@@ -150,6 +150,7 @@ export default {
   methods: {
     saveChatName (name) {
       if (name.trim() === '') {
+        this.$ons.notification.toast(this.$t('enterChatNameMessage'), { timeout: 3000 })
         return
       }
       this.$store.commit('setChatName', {

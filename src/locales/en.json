@@ -73,5 +73,6 @@
   "next": "Next",
   "add": "Add",
   "chatNamePlaceholder": "Contact name ...",
-  "editName": "Edit name"
+  "editName": "Edit name",
+  "enterChatNameMessage": "Please enter the name of your contact."
 }
