@@ -258,10 +258,10 @@ export default {
   }
   .keyRefillInfoBox {
     text-align: center;
-    margin: 25px 0 15px;
+    margin-bottom: 15px;
   }
-  .keyRefillInfoBox .infoText {
-    margin-bottom: 5px;
+  .infoText {
+    margin-bottom: 15px;
   }
   ons-progress-circular {
     position: fixed;
