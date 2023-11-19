@@ -48,7 +48,7 @@
   "today": "Heute",
   "yesterday": "Gestern",
   "refillKey": "Schlüssel aufladen",
-  "scanQrCodesOfYourContact": "Scanne QR-Codes deines Kontakts.",
+  "scanQrCodesOfYourContact": "Scanne QR-Codes deines Kontakts:",
   "codesLeftToScan": "Alle Codes gescanned | Nur noch ein Code übrig | {n} Codes zum Scannen übrig",
   "scanStatusPreparingToScan": "Zum Scannen vorbereiten",
   "scanStatusReadyToScan": "Bereit zum Scannen",
