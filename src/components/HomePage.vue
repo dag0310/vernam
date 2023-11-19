@@ -14,6 +14,9 @@
       </div>
     </v-ons-toolbar>
     <div class="content">
+      <p class="marginalizedContent" v-if="searchText.length <= 0 && filteredChats.length <= 0">
+        <v-ons-button modifier="large" @click="showCreateChatDialog = true" :aria-label="$t('newChat')">{{ $t('newChat') }}</v-ons-button>
+      </p>
       <p class="searchContainer marginalizedContent" v-show="searchText.length > 0 || filteredChats.length > 0">
         <v-ons-search-input :placeholder="$t('searchbarPlaceholder')" v-model="searchText"></v-ons-search-input>
         <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
