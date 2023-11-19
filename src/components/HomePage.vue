@@ -42,7 +42,7 @@
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateChatDialog">
       <span slot="title">{{ $t('newChat') }}</span>
       <p>
-        <v-ons-input type="text" modifier="underbar" :placeholder="$t('chatNamePlaceholder') + ' ...'" float v-model="newChatName"></v-ons-input>
+        <v-ons-input type="text" modifier="underbar" :placeholder="$t('chatNamePlaceholder')" float v-model="newChatName"></v-ons-input>
       </p>
       <template slot="footer">
         <div class="alert-dialog-button" @click="showCreateChatDialog = false; newChatName = '';">{{ $t('cancel') }}</div>

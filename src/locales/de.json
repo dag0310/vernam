@@ -15,7 +15,7 @@
   "resetLocalDataTitle": "Löscht die eigene ID, alle Chats und Schlüssel.",
   "chats": "Chats",
   "newChat": "Neuer Chat",
-  "searchbarPlaceholder": "Suchen",
+  "searchbarPlaceholder": "Suchen ...",
   "draft": "Entwurf",
   "you": "Du",
   "noChatsFound": "Keine Chats gefunden",
@@ -50,7 +50,7 @@
   "refillKey": "Schlüssel aufladen",
   "scanQrCodesOfYourContact": "Scanne QR-Codes deines Kontakts:",
   "codesLeftToScan": "Alle Codes gescanned | Nur noch ein Code übrig | {n} Codes zum Scannen übrig",
-  "scanStatusPreparingToScan": "Zum Scannen vorbereiten",
+  "scanStatusPreparingToScan": "Zum Scannen vorbereiten ...",
   "scanStatusReadyToScan": "Bereit zum Scannen",
   "scanStatusNotAllowedError": "Benutzer verweigert Kamerazugriffsberechtigung.",
   "scanStatusNotFoundError": "Keine geeignete Kamera vorhanden.",
@@ -73,6 +73,6 @@
   "pause": "Pause",
   "next": "Nächster",
   "add": "Hinzufügen",
-  "chatNamePlaceholder": "Kontaktname",
+  "chatNamePlaceholder": "Kontaktname ...",
   "editName": "Name ändern"
 }

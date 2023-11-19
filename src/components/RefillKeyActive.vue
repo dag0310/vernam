@@ -48,7 +48,7 @@
     },
     methods: {
       async onInit (promise) {
-        this.scanStatus = `${this.$t('scanStatusPreparingToScan')} ...`
+        this.scanStatus = this.$t('scanStatusPreparingToScan')
         try {
           const { capabilities } = await promise
           console.log({ capabilities })
