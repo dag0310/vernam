@@ -37,7 +37,7 @@
           </div>
         </v-ons-list-item>
       </v-ons-list>
-      <div class="marginalizedContent infoText" v-show="filteredChats.length <= 0">{{ $t('noChatsFound') }}</div>
+      <div class="marginalizedContent infoText" v-show="filteredChats.length <= 0 && searchText.length > 0">{{ $t('noChatsFound') }}</div>
     </div>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateChatDialog">
       <span slot="title">{{ $t('newChat') }}</span>

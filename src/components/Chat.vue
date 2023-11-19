@@ -32,7 +32,7 @@
         <div class="clearfix"></div>
       </div>
       <div class="marginalizedContent infoText" v-show="chat.otherId == null && !keyEmpty">{{ $t('noOtherIdMessage') }}</div>
-      <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0">{{ $t('noMessagesFoundMessage') }}</div>
+      <div class="marginalizedContent infoText" v-show="filteredMessages.length <= 0 && searchText.length > 0">{{ $t('noMessagesFoundMessage') }}</div>
       <div class="marginalizedContent keyRefillInfoBox" v-if="keyAlmostEmpty">
         <div class="infoText">
           <template v-if="keyEmpty">{{ $t('keyEmptyMessage') }}</template>
