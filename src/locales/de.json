@@ -29,7 +29,7 @@
   "noMessagesFoundMessage": "Keine Nachrichten gefunden",
   "keyEmptyMessage": "Dein Schlüssel ist leer",
   "keyAlmostEmptyMessage": "Dein Schlüssel ist fast leer",
-  "pleaseRefillKeyMessage": "Bitte lade ihn mit deinem Kontakt auf, um Nachrichten senden zu können.",
+  "refillKeyMessage": "Lade ihn mit deinem Kontakt auf, um Nachrichten senden zu können.",
   "send": "Senden",
   "name": "Name",
   "editChatName": "Chatname ändern",

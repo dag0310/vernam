@@ -29,7 +29,7 @@
   "noMessagesFoundMessage": "No messages found",
   "keyEmptyMessage": "Your key is empty",
   "keyAlmostEmptyMessage": "Your key is almost empty",
-  "pleaseRefillKeyMessage": "Please refill it together with your contact to send messages.",
+  "refillKeyMessage": "Refill it together with your contact to send messages.",
   "send": "Send",
   "name": "Name",
   "editChatName": "Edit chat name",

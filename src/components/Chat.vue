@@ -38,7 +38,7 @@
           <template v-if="keyEmpty">{{ $t('keyEmptyMessage') }}</template>
           <template v-else>{{ $t('keyAlmostEmptyMessage') }}</template>
           &ndash;<br>
-          {{ $t('pleaseRefillKeyMessage') }}
+          {{ $t('refillKeyMessage') }}
         </div>
         <v-ons-button modifier="large" @click="refillKey">{{ $t('refill') }} 🔑</v-ons-button>
       </div>
