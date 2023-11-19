@@ -19,7 +19,6 @@
   "draft": "Entwurf",
   "you": "Du",
   "noChatsFound": "Keine Chats gefunden",
-  "chatName": "Chatname",
   "ok": "OK",
   "deleteChatLocally": "Chat lokal löschen",
   "refill": "Aufladen",
@@ -32,7 +31,6 @@
   "refillKeyMessage": "Lade ihn mit deinem Kontakt auf, um Nachrichten senden zu können.",
   "send": "Senden",
   "name": "Name",
-  "editChatName": "Chatname ändern",
   "ownKey": "eigener Schlüssel",
   "otherKey": "anderer Schlüssel",
   "otherId": "andere ID",
@@ -73,5 +71,8 @@
   "previous": "Voriger",
   "play": "Abspielen",
   "pause": "Pause",
-  "next": "Nächster"
+  "next": "Nächster",
+  "add": "Hinzufügen",
+  "chatNamePlaceholder": "Kontaktname",
+  "editName": "Name ändern"
 }

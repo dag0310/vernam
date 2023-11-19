@@ -9,7 +9,7 @@
       <div class="center">{{ $t('chats') }}</div>
       <div class="right">
         <v-ons-toolbar-button @click="showCreateChatDialog = true" :aria-label="$t('newChat')">
-          <v-ons-icon icon="ion-ios-create, material:ion-md-create"></v-ons-icon>
+          <v-ons-icon icon="ion-ios-add, material:ion-md-add"></v-ons-icon>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
@@ -42,11 +42,11 @@
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showCreateChatDialog">
       <span slot="title">{{ $t('newChat') }}</span>
       <p>
-        <v-ons-input type="text" modifier="underbar" :placeholder="$t('chatName') + ' ...'" float v-model="newChatName"></v-ons-input>
+        <v-ons-input type="text" modifier="underbar" :placeholder="$t('chatNamePlaceholder') + ' ...'" float v-model="newChatName"></v-ons-input>
       </p>
       <template slot="footer">
         <div class="alert-dialog-button" @click="showCreateChatDialog = false; newChatName = '';">{{ $t('cancel') }}</div>
-        <div class="alert-dialog-button" @click="createChat(newChatName);"><b>{{ $t('ok') }}</b></div>
+        <div class="alert-dialog-button" @click="createChat(newChatName);"><b>{{ $t('add') }}</b></div>
       </template>
     </v-ons-alert-dialog>
   </v-ons-page>
