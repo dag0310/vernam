@@ -71,7 +71,7 @@ export default {
     }
   },
   created () {
-    if (this.$store.state.id === null) {
+    if (this.$store.state.id == null) {
       this.$store.commit('setId', uuidv4())
     }
 
