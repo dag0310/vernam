@@ -19,7 +19,6 @@
   "draft": "Entwurf",
   "you": "Du",
   "noChatsFound": "Keine Chats gefunden",
-  "ok": "OK",
   "deleteChatLocally": "Chat lokal löschen",
   "refill": "Aufladen",
   "refillShort": "Laden",
@@ -74,5 +73,6 @@
   "add": "Hinzufügen",
   "chatNamePlaceholder": "Kontaktname ...",
   "editName": "Name ändern",
-  "enterChatNameMessage": "Bitte gib den Namen deines Kontakts an."
+  "enterChatNameMessage": "Bitte gib den Namen deines Kontakts an.",
+  "enablePushNotifications": "Push-Benachrichtigungen aktivieren"
 }
