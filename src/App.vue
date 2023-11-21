@@ -33,7 +33,7 @@ export default {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
         return
       }
-      const lastTimestampQueryString = (this.$store.state.lastTimestamp !== null) ? `?timestamp=${this.$store.state.lastTimestamp}` : ''
+      const lastTimestampQueryString = (this.$store.state.lastTimestamp != null) ? `?timestamp=${this.$store.state.lastTimestamp}` : ''
       this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 }).then(response => {
         const messages = response.body
         this.chats.forEach(chat => {
