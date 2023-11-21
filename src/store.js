@@ -65,12 +65,6 @@ export default new Vuex.Store({
       const idx = state.chats.findIndex(c => c.id === chat.id)
       state.chats[idx].otherId = chat.otherId
     },
-    deleteLegacyConversations (state) { // FIXME: Temporary: Remove legacy migration method
-      delete state.conversations
-    },
-    deleteLegacyCurrentConversationId (state) { // FIXME: Temporary: Remove legacy migration method
-      delete state.currentConversationId
-    },
   },
   getters: {
     currentChat (state) {
