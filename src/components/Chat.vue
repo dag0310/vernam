@@ -15,7 +15,7 @@
     <div class="content" v-chat-scroll="{ always: true, smooth: false, scrollonremoved: true }">
       <p class="searchContainer marginalizedContent" v-show="searchText.length > 0 || filteredMessages.length > 0">
         <v-ons-search-input :placeholder="$t('searchbarPlaceholder')" v-model="searchText"></v-ons-search-input>
-        <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
+        <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0"><v-ons-icon icon="ion-ios-close, material:ion-md-close"></v-ons-icon></span>
       </p>
       <div v-for="message in filteredMessages" :key="(message.own ? 'own' : 'other') + '-' + message.id">
         <div class="card" :class="{ownMessage: message.own}">

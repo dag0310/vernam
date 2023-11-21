@@ -19,7 +19,7 @@
       </p>
       <p class="searchContainer marginalizedContent" v-show="searchText.length > 0 || filteredChats.length > 0">
         <v-ons-search-input :placeholder="$t('searchbarPlaceholder')" v-model="searchText"></v-ons-search-input>
-        <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0">×</span>
+        <span class="clearSearch" @click="searchText = ''" v-show="searchText.length > 0"><v-ons-icon icon="ion-ios-close, material:ion-md-close"></v-ons-icon></span>
       </p>
       <v-ons-list v-show="filteredChats.length > 0">
         <v-ons-list-item v-for="chat in filteredChats" :key="chat.id" tappable @click="showChatPage(chat)">
