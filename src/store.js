@@ -33,6 +33,9 @@ export default new Vuex.Store({
       const idx = this.getters.currentChat.messages.findIndex(message => message.id === id)
       this.getters.currentChat.messages.splice(idx, 1)
     },
+    deleteAllMessages (state, id) {
+      state.chats.find(chat => chat.id === id).messages = []
+    },
     updateMessage (state, newValue) {
       this.getters.currentChat.message = newValue
     },

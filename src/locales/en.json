@@ -85,5 +85,8 @@
   "pushNotifications": "Push notifications",
   "pushNotificationsGrantedMessage": "Permission <b>allowed</b> &ndash; it can be denied via browser notification settings.",
   "pushNotificationsDeniedMessage": "Permission <b>denied</b> &ndash; it can be allowed via browser notification settings.",
-  "notificationPermission": "Notification permission"
+  "notificationPermission": "Notification permission",
+  "deleteAllMessagesLocally": "Delete all messages locally",
+  "deleteAllMessagesLocallyTitle": "Sure you want to delete all messages in this chat?",
+  "deleteChatHistory": "Delete chat history"
 }

@@ -55,6 +55,7 @@
       <p class="selectable">{{ $t('id') }}: <b><i v-if="chat.otherId == null">{{ $t('unknown') }}</i><span v-if="chat.otherId != null">{{chat.otherId}}</span></b></p>
       <p class="selectable">{{ $t('ownKey') }}:<br>{{ $t('size') }}: <b>{{ownKey.length}}</b>, {{ $t('checksum') }}: <b>{{calculateByteArrayChecksum(ownKey)}}</b></p>
       <p class="selectable">{{ $t('otherKey') }}:<br>{{ $t('size') }}: <b>{{otherKey.length}}</b>, {{ $t('checksum') }}: <b>{{calculateByteArrayChecksum(otherKey)}}</b></p>
+      <p><v-ons-button @click="deleteAllMessages()" v-show="chat.messages.length > 0">{{ $t('deleteChatHistory') }}</v-ons-button></p>
     </v-ons-dialog>
     <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showEditNameDialog">
       <span slot="title">{{ $t('editName') }}</span>
@@ -159,6 +160,13 @@ export default {
       })
       this.showEditNameDialog = false
       this.newChatName = this.chat.name
+    },
+    deleteAllMessages () {
+      this.$ons.openActionSheet({ buttons: [this.$t('deleteAllMessagesLocally'), this.$t('cancel')], title: this.$t('deleteAllMessagesLocallyTitle'), cancelable: true, destructive: 0 }).then(response => {
+        if (response === 0) {
+          this.$store.commit('deleteAllMessages', this.chat.id)
+        }
+      })
     },
     dateTimeText (timestamp) {
       const humanDate = this.humanDate(timestamp)

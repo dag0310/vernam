@@ -85,5 +85,8 @@
   "pushNotifications": "Push-Mitteilungen",
   "pushNotificationsGrantedMessage": "Berechtigung <b>erteilt</b> &ndash; sie kann über die Browser-Einstellungen wieder entzogen werden.",
   "pushNotificationsDeniedMessage": "Berechtigung <b>abgelehnt</b> &ndash; sie kann über die Browser-Einstellungen wieder  gewährt werden.",
-  "notificationPermission": "Mitteilungs-Berechtigung"
+  "notificationPermission": "Mitteilungs-Berechtigung",
+  "deleteAllMessagesLocally": "Alle Nachrichten lokal löschen",
+  "deleteAllMessagesLocallyTitle": "Sicher alle Nachrichten in diesem Chat löschen?",
+  "deleteChatHistory": "Chatverlauf löschen"
 }
