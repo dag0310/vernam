@@ -113,6 +113,11 @@ export default {
 </script>
 
 <style>
+  body {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: black;
+  }
   .searchContainer {
     position: relative;
   }
