@@ -28,6 +28,17 @@
         <v-ons-list-item>
           <div class="center">{{ $t('totalKeyRefillData') }}:&nbsp;<strong>{{ numQrCodes * bytesPerQrCode }} Bytes</strong></div>
         </v-ons-list-item>
+        <template v-if="notificationPermission != null">
+          <v-ons-list-header>{{ $t('pushNotifications') }}</v-ons-list-header>
+          <v-ons-list-item>
+            <div class="center">
+              <v-ons-button v-if="notificationPermission === 'default'" modifier="large" @click="showAndGoToEnablePushNotificationsButton()">{{ $t('enablePushNotifications') }}</v-ons-button>
+              <span v-else-if="notificationPermission === 'granted'" v-html="$t('pushNotificationsGrantedMessage')"></span>
+              <span v-else-if="notificationPermission === 'denied'" v-html="$t('pushNotificationsDeniedMessage')"></span>
+              <span v-else>{{ $t('notificationPermission') }}: <b>{{ notificationPermission }}</b></span>
+            </div>
+          </v-ons-list-item>
+        </template>
         <v-ons-list-header>{{ $t('dangerZone') }}</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
@@ -55,6 +66,9 @@ export default {
       buildTimestamp: BUILD_TIMESTAMP, // eslint-disable-line
     }
   },
+  created () {
+    this.notificationPermission = ('Notification' in window) ? Notification.permission : null
+  },
   computed: {
     numQrCodes: {
       get () {
@@ -71,9 +85,21 @@ export default {
       set (value) {
         this.$store.commit('setBytesPerQrCode', parseInt(value, 10))
       }
-    }
+    },
+    showEnablePushNotifications: {
+      get () {
+        return this.$store.state.showEnablePushNotifications
+      },
+      set (value) {
+        this.$store.commit('setShowEnablePushNotifications', value)
+      }
+    },
   },
   methods: {
+    showAndGoToEnablePushNotificationsButton () {
+      this.showEnablePushNotifications = true
+      this.$emit('pop-page')
+    },
     resetData () {
       this.$ons.openActionSheet({ buttons: [this.$t('resetLocalData'), this.$t('cancel')], title: this.$t('resetLocalDataTitle'), cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {

@@ -14,6 +14,10 @@
       </div>
     </v-ons-toolbar>
     <div class="content">
+        <p class="marginalizedContent" v-show="showEnablePushNotifications && $store.state.id != null && serviceWorkerRegistration != null && notificationPermission === 'default'">
+          <span class="notification" @click="hideEnablePushNotifications()">&times;</span>
+          <v-ons-button modifier="large" @click="enablePushNotifications()" :disabled="!pushNotificationButtonEnabled">{{ $t('enablePushNotifications') }}</v-ons-button>
+        </p>
       <p class="marginalizedContent" v-if="searchText.length <= 0 && filteredChats.length <= 0">
         <v-ons-button modifier="large" @click="showCreateChatDialog = true" :aria-label="$t('newChat')">{{ $t('newChat') }}</v-ons-button>
       </p>
@@ -68,6 +72,9 @@ export default {
       searchText: '',
       showCreateChatDialog: false,
       newChatName: '',
+      pushNotificationButtonEnabled: true,
+      notificationPermission: ('Notification' in window) ? Notification.permission : null,
+      serviceWorkerRegistration: ('serviceWorker' in navigator) ? navigator.serviceWorker.register('/static/js/serviceworker.js?t=1700599657') : null,
     }
   },
   created () {
@@ -82,6 +89,14 @@ export default {
     }, false)
   },
   computed: {
+    showEnablePushNotifications: {
+      get () {
+        return this.$store.state.showEnablePushNotifications
+      },
+      set (value) {
+        this.$store.commit('setShowEnablePushNotifications', value)
+      }
+    },
     chats () {
       return this.$store.state.chats
     },
@@ -107,6 +122,56 @@ export default {
     }
   },
   methods: {
+    async enablePushNotifications () {
+      this.pushNotificationButtonEnabled = false
+      let vapidPublicKeyResponse
+      try {
+        vapidPublicKeyResponse = await this.$http.get('push-key', { timeout: 5000 })
+      } catch (error) {
+        switch (error.status) {
+          case 0: this.$ons.notification.toast(this.$t('networkError'), { timeout: 3000 }); break
+          case 500: this.$ons.notification.toast(this.$t('vapidPublicKeyNotSet'), { timeout: 3000 }); break
+          default: this.$ons.notification.toast(this.$t('unknownErrorWithCode', { code: error.status }), { timeout: 3000 })
+        }
+        this.pushNotificationButtonEnabled = true
+        return
+      }
+      const vapidPublicKey = (vapidPublicKeyResponse.body != null) ? vapidPublicKeyResponse.body.vapidPublicKey : null
+      if (vapidPublicKey == null) {
+        this.$ons.notification.toast(this.$t('vapidPublicKeyNotInResponse'), { timeout: 3000 })
+        this.pushNotificationButtonEnabled = true
+        return
+      }
+
+      const serviceWorkerRegistration = await this.serviceWorkerRegistration
+      this.notificationPermission = await Notification.requestPermission()
+
+      if (this.notificationPermission !== 'granted') {
+        this.pushNotificationButtonEnabled = true
+        return
+      }
+      const pushSubscription = await serviceWorkerRegistration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: vapidPublicKey,
+      })
+
+      try {
+        await this.$http.post('push-subscription', { receiver: this.$store.state.id, endpoint: pushSubscription.endpoint }, { timeout: 5000 })
+        this.$ons.notification.toast(this.$t('pushNotificationSubscriptionSuccessMessage'), { timeout: 3000 })
+      } catch (error) {
+        switch (error.status) {
+          case 0: this.$ons.notification.toast(this.$t('networkError'), { timeout: 3000 }); break
+          case 409: this.$ons.notification.toast(this.$t('pushNotificationSubscriptionDuplicateErrorMessage'), { timeout: 3000 }); break
+          default: this.$ons.notification.toast(this.$t('unknownErrorWithCode', { code: error.status }), { timeout: 3000 })
+        }
+      } finally {
+        this.pushNotificationButtonEnabled = true
+      }
+    },
+    hideEnablePushNotifications () {
+      this.showEnablePushNotifications = false
+      this.$ons.notification.toast(this.$t('canBeEnabledInSettings'), { timeout: 5000 })
+    },
     lastMessage (chat) {
       const messages = JSON.parse(JSON.stringify(chat.messages)) // Avoids infinite loop in render function
       return (messages.length > 0) ? messages.sort((a, b) => b.timestamp - a.timestamp)[0] : null
@@ -168,6 +233,13 @@ export default {
 </script>
 
 <style scoped>
+  .notification {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-50%, 50%);
+    z-index: 1;
+  }
   .list-item__subtitle {
     width: 150px;
   }

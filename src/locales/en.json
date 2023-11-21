@@ -74,5 +74,16 @@
   "chatNamePlaceholder": "Contact name ...",
   "editName": "Edit name",
   "enterChatNameMessage": "Please enter the name of your contact.",
-  "enablePushNotifications": "Enable push notifications"
+  "enablePushNotifications": "Enable push notifications",
+  "pushNotificationSubscriptionSuccessMessage": "Push notifications activated successfully!",
+  "pushNotificationSubscriptionDuplicateErrorMessage": "Push notifications already activated.",
+  "networkError": "Connection error",
+  "unknownErrorWithCode": "Unknown error. Error code: {code}",
+  "vapidPublicKeyNotSet": "Public VAPID key not set.",
+  "vapidPublicKeyNotInResponse": "Public VAPID key not in response.",
+  "canBeEnabledInSettings": "Can be displayed again via settings.",
+  "pushNotifications": "Push notifications",
+  "pushNotificationsGrantedMessage": "Permission <b>allowed</b> &ndash; it can be denied via browser notification settings.",
+  "pushNotificationsDeniedMessage": "Permission <b>denied</b> &ndash; it can be allowed via browser notification settings.",
+  "notificationPermission": "Notification permission"
 }

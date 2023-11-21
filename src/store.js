@@ -10,6 +10,9 @@ export default new Vuex.Store({
     setId (state, id) {
       state.id = id
     },
+    setShowEnablePushNotifications (state, value) {
+      state.showEnablePushNotifications = value
+    },
     setNumQrCodes (state, value) {
       state.numQrCodes = value
     },
@@ -73,6 +76,7 @@ export default new Vuex.Store({
   },
   state: {
     id: null,
+    showEnablePushNotifications: true,
     chats: [],
     currentChatId: null,
     lastTimestamp: null,

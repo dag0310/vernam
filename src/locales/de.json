@@ -74,5 +74,16 @@
   "chatNamePlaceholder": "Kontaktname ...",
   "editName": "Name ändern",
   "enterChatNameMessage": "Bitte gib den Namen deines Kontakts an.",
-  "enablePushNotifications": "Push-Benachrichtigungen aktivieren"
+  "enablePushNotifications": "Push-Mitteilungen aktivieren",
+  "pushNotificationSubscriptionSuccessMessage": "Push-Mitteilungen erfolgreich aktiviert!",
+  "pushNotificationSubscriptionDuplicateErrorMessage": "Push-Mitteilungen bereits aktiviert.",
+  "networkError": "Verbindungsfehler",
+  "unknownErrorWithCode": "Unbekannter Fehler. Fehlercode: {code}",
+  "vapidPublicKeyNotSet": "Öffentlicher VAPID-Schlüssel nicht gesetzt.",
+  "vapidPublicKeyNotInResponse": "Öffentlicher VAPID-Schlüssel nicht in Antwort.",
+  "canBeEnabledInSettings": "Kann in den Einstellungen wieder angezeigt werden.",
+  "pushNotifications": "Push-Mitteilungen",
+  "pushNotificationsGrantedMessage": "Berechtigung <b>erteilt</b> &ndash; sie kann über die Browser-Einstellungen wieder entzogen werden.",
+  "pushNotificationsDeniedMessage": "Berechtigung <b>abgelehnt</b> &ndash; sie kann über die Browser-Einstellungen wieder  gewährt werden.",
+  "notificationPermission": "Mitteilungs-Berechtigung"
 }
