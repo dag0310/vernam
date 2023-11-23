@@ -16,6 +16,7 @@
   "dependencies": {
     "onsenui": "~2.11.0",
     "otp-crypto": "^4.1.0",
+    "platform-detect": "^3.0.1",
     "qrcode": "^1.5.3",
     "uuid": "^9.0.1",
     "vue": "~2.6.14",

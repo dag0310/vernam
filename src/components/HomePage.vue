@@ -14,10 +14,15 @@
       </div>
     </v-ons-toolbar>
     <div class="content">
-        <p class="marginalizedContent" v-show="showEnablePushNotifications && $store.state.id != null && serviceWorkerRegistration != null && notificationPermission === 'default'">
-          <span class="notification" @click="hideEnablePushNotifications()">&times;</span>
-          <v-ons-button modifier="large" @click="enablePushNotifications()" :disabled="!pushNotificationButtonEnabled">{{ $t('enablePushNotifications') }}</v-ons-button>
-        </p>
+      <p class="marginalizedContent" v-show="showEnablePushNotifications && $store.state.id != null && notificationPermission !== 'granted' && notificationPermission !== 'denied'">
+        <span class="notification" @click="showEnablePushNotifications = false">&times;</span>
+        <v-ons-button v-if="serviceWorkerRegistration != null && notificationPermission === 'default'" modifier="large" @click="enablePushNotifications()" :disabled="!pushNotificationButtonEnabled">{{ $t('enablePushNotifications') }}</v-ons-button>
+        <v-ons-card v-if="serviceWorkerRegistration == null || notificationPermission == null ">
+          {{ $t('notificationPermissionNotSupported') }}
+          <span v-if="isIos" v-html="$t('notificationPermissionNotSupportedIos')"></span>
+          <span v-if="isAndroid" v-html="$t('notificationPermissionNotSupportedAndroid')"></span>
+        </v-ons-card>
+      </p>
       <p class="marginalizedContent" v-if="searchText.length <= 0 && filteredChats.length <= 0">
         <v-ons-button modifier="large" @click="showCreateChatDialog = true" :aria-label="$t('newChat')">{{ $t('newChat') }}</v-ons-button>
       </p>
@@ -64,6 +69,7 @@ import Settings from './Settings'
 import Chat from './Chat'
 
 import { v4 as uuidv4 } from 'uuid'
+import platform from 'platform-detect'
 
 export default {
   name: 'home',
@@ -81,6 +87,9 @@ export default {
     if (this.$store.state.id == null) {
       this.$store.commit('setId', uuidv4())
     }
+
+    this.isIos = platform.ios
+    this.isAndroid = platform.android
 
     document.addEventListener('show', event => {
       if (event.target.matches('#home')) {
@@ -167,10 +176,6 @@ export default {
       } finally {
         this.pushNotificationButtonEnabled = true
       }
-    },
-    hideEnablePushNotifications () {
-      this.showEnablePushNotifications = false
-      this.$ons.notification.toast(this.$t('canBeEnabledInSettings'), { timeout: 5000 })
     },
     lastMessage (chat) {
       const messages = JSON.parse(JSON.stringify(chat.messages)) // Avoids infinite loop in render function

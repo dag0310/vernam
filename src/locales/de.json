@@ -34,7 +34,7 @@
   "otherKey": "Empfangs-Schlüssel",
   "size": "Größe",
   "checksum": "Prüfsumme",
-  "unknown": "Unbekannt",
+  "unknown": "unbekannt",
   "save": "Speichern",
   "keyNotLongEnough": "Schlüssel nicht groß genug",
   "otherIdNotSet": "Kontakt-ID (noch) nicht gesetzt",
@@ -81,12 +81,13 @@
   "unknownErrorWithCode": "Unbekannter Fehler. Fehlercode: {code}",
   "vapidPublicKeyNotSet": "Öffentlicher VAPID-Schlüssel nicht gesetzt.",
   "vapidPublicKeyNotInResponse": "Öffentlicher VAPID-Schlüssel nicht in Antwort.",
-  "canBeEnabledInSettings": "Kann in den Einstellungen wieder angezeigt werden.",
   "pushNotifications": "Push-Mitteilungen",
   "pushNotificationsGrantedMessage": "Berechtigung <b>erteilt</b> &ndash; sie kann über die Browser-Einstellungen wieder entzogen werden.",
   "pushNotificationsDeniedMessage": "Berechtigung <b>abgelehnt</b> &ndash; sie kann über die Browser-Einstellungen wieder  gewährt werden.",
-  "notificationPermission": "Mitteilungs-Berechtigung",
   "deleteAllMessagesLocally": "Alle Nachrichten lokal löschen",
   "deleteAllMessagesLocallyTitle": "Sicher alle Nachrichten in diesem Chat löschen?",
-  "deleteChatHistory": "Chatverlauf löschen"
+  "deleteChatHistory": "Chatverlauf löschen",
+  "notificationPermissionNotSupported": "Push-Mitteilungen werden von dieser Browser-Umgebung nicht unterstützt.",
+  "notificationPermissionNotSupportedIos": "<b>Safari-Browser:</b> Wähle über die Teilen-Schaltfläche \"Zum Home-Bildschirm\" aus und öffne Vernam künftig von dort als App.",
+  "notificationPermissionNotSupportedAndroid": "<b>Chrome-Browser:</b> Wähle über das Menü \"Zum Startbildschirm hinzufügen\" aus und öffne Vernam künftig von dort als App."
 }

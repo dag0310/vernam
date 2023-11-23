@@ -34,7 +34,7 @@
   "otherKey": "Receiver key",
   "size": "Size",
   "checksum": "Checksum",
-  "unknown": "Unknown",
+  "unknown": "unknown",
   "save": "Save",
   "keyNotLongEnough": "Key not big enough",
   "otherIdNotSet": "Contact ID not set (yet)",
@@ -81,12 +81,13 @@
   "unknownErrorWithCode": "Unknown error. Error code: {code}",
   "vapidPublicKeyNotSet": "Public VAPID key not set.",
   "vapidPublicKeyNotInResponse": "Public VAPID key not in response.",
-  "canBeEnabledInSettings": "Can be displayed again via settings.",
   "pushNotifications": "Push notifications",
   "pushNotificationsGrantedMessage": "Permission <b>allowed</b> &ndash; it can be denied via browser notification settings.",
   "pushNotificationsDeniedMessage": "Permission <b>denied</b> &ndash; it can be allowed via browser notification settings.",
-  "notificationPermission": "Notification permission",
   "deleteAllMessagesLocally": "Delete all messages locally",
   "deleteAllMessagesLocallyTitle": "Sure you want to delete all messages in this chat?",
-  "deleteChatHistory": "Delete chat history"
+  "deleteChatHistory": "Delete chat history",
+  "notificationPermissionNotSupported": "Push notifications are not supported by this browser environment.",
+  "notificationPermissionNotSupportedIos": "<b>Safari browser:</b> Select \"Add to Home Screen\" in the sharing sheet to add Vernam to your home screen and open it from there as app.",
+  "notificationPermissionNotSupportedAndroid": "<b>Chrome browser:</b> Select \"Add to Home screen\" in the menu to add Vernam to your home screen and open it from there as app."
 }

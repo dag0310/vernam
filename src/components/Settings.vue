@@ -28,17 +28,19 @@
         <v-ons-list-item>
           <div class="center">{{ $t('totalKeyRefillData') }}:&nbsp;<strong>{{ numQrCodes * bytesPerQrCode }} Bytes</strong></div>
         </v-ons-list-item>
-        <template v-if="notificationPermission != null">
-          <v-ons-list-header>{{ $t('pushNotifications') }}</v-ons-list-header>
-          <v-ons-list-item>
-            <div class="center">
-              <v-ons-button v-if="notificationPermission === 'default'" modifier="large" @click="showAndGoToEnablePushNotificationsButton()">{{ $t('enablePushNotifications') }}</v-ons-button>
-              <span v-else-if="notificationPermission === 'granted'" v-html="$t('pushNotificationsGrantedMessage')"></span>
-              <span v-else-if="notificationPermission === 'denied'" v-html="$t('pushNotificationsDeniedMessage')"></span>
-              <span v-else>{{ $t('notificationPermission') }}: <b>{{ notificationPermission }}</b></span>
-            </div>
-          </v-ons-list-item>
-        </template>
+        <v-ons-list-header>{{ $t('pushNotifications') }}</v-ons-list-header>
+        <v-ons-list-item>
+          <div class="center">
+            <v-ons-button v-if="notificationPermission === 'default'" modifier="large" @click="showAndGoToEnablePushNotificationsButton()">{{ $t('enablePushNotifications') }}</v-ons-button>
+            <span v-else-if="notificationPermission === 'granted'" v-html="$t('pushNotificationsGrantedMessage')"></span>
+            <span v-else-if="notificationPermission === 'denied'" v-html="$t('pushNotificationsDeniedMessage')"></span>
+            <template v-else>
+              {{ $t('notificationPermissionNotSupported') }}
+              <span v-if="isIos" v-html="$t('notificationPermissionNotSupportedIos')"></span>
+              <span v-if="isAndroid" v-html="$t('notificationPermissionNotSupportedAndroid')"></span>
+            </template>
+          </div>
+        </v-ons-list-item>
         <v-ons-list-header>{{ $t('dangerZone') }}</v-ons-list-header>
         <v-ons-list-item>
           <div class="center">
@@ -58,6 +60,8 @@
 </template>
 
 <script>
+import platform from 'platform-detect'
+
 export default {
   name: 'settings',
   data () {
@@ -68,6 +72,8 @@ export default {
   },
   created () {
     this.notificationPermission = ('Notification' in window) ? Notification.permission : null
+    this.isIos = platform.ios
+    this.isAndroid = platform.android
   },
   computed: {
     numQrCodes: {
