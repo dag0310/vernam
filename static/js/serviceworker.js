@@ -6,19 +6,16 @@ const locale = SUPPORTED_LOCALES.includes(browserLanguage) ? browserLanguage : F
 
 const translations = {
   de: {
-    newMessageTitle: 'Neue Nachricht',
-    newMessageBody: 'Ein Kontakt hat dir auf Vernam geschrieben.',
+    newMessageTitle: 'Neue Nachricht eines Vernam-Kontakts',
   },
   en: {
-    newMessageTitle: 'New message',
-    newMessageBody: 'One of your contacts texted you on Vernam.',
+    newMessageTitle: 'New message from a Vernam contact',
   }
 }
 
 self.addEventListener('push', (event) => {
   event.waitUntil(
     self.registration.showNotification(translations[locale].newMessageTitle, {
-      body: translations[locale].newMessageBody,
       icon: '/static/img/favicon-256x256-rounded.png',
     })
   )
