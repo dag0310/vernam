@@ -138,9 +138,15 @@ export default {
         vapidPublicKeyResponse = await this.$http.get('push-key', { timeout: 5000 })
       } catch (error) {
         switch (error.status) {
-          case 0: this.$ons.notification.toast(this.$t('networkError'), { timeout: 3000 }); break
-          case 500: this.$ons.notification.toast(this.$t('vapidPublicKeyNotSet'), { timeout: 3000 }); break
-          default: this.$ons.notification.toast(this.$t('unknownErrorWithCode', { code: error.status }), { timeout: 3000 })
+          case 0:
+            this.$ons.notification.toast(this.$t('networkError'), { timeout: 3000 })
+            break
+          case 500:
+            this.$ons.notification.toast(this.$t('vapidPublicKeyNotSet'), { timeout: 3000 })
+            break
+          default:
+            this.$ons.notification.toast(this.$t('unknownErrorWithCode', { code: error.status }), { timeout: 3000 })
+            console.error(error)
         }
         this.pushNotificationButtonEnabled = true
         return
@@ -169,9 +175,15 @@ export default {
         this.$ons.notification.toast(this.$t('pushNotificationSubscriptionSuccessMessage'), { timeout: 3000 })
       } catch (error) {
         switch (error.status) {
-          case 0: this.$ons.notification.toast(this.$t('networkError'), { timeout: 3000 }); break
-          case 409: this.$ons.notification.toast(this.$t('pushNotificationSubscriptionDuplicateErrorMessage'), { timeout: 3000 }); break
-          default: this.$ons.notification.toast(this.$t('unknownErrorWithCode', { code: error.status }), { timeout: 3000 })
+          case 0:
+            this.$ons.notification.toast(this.$t('networkError'), { timeout: 3000 })
+            break
+          case 409:
+            this.$ons.notification.toast(this.$t('pushNotificationSubscriptionDuplicateErrorMessage'), { timeout: 3000 })
+            break
+          default:
+            this.$ons.notification.toast(this.$t('unknownErrorWithCode', { code: error.status }), { timeout: 3000 })
+            console.error(error)
         }
       } finally {
         this.pushNotificationButtonEnabled = true
