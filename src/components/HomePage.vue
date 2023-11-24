@@ -245,7 +245,7 @@ export default {
     transform: translate(-50%, 50%);
     z-index: 1;
   }
-  .list-item__subtitle {
+  .list-item__title, .list-item__subtitle {
     width: 150px;
   }
   .list-item__label {
