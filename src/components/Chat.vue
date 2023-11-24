@@ -172,7 +172,7 @@ export default {
         }
       })
     },
-    sendMessage () {
+    async sendMessage () {
       if (!this.otpCryptoResult.isKeyLongEnough) {
         this.$ons.notification.toast(this.$t('keyNotLongEnough'), { timeout: 1000 })
         return
@@ -181,26 +181,34 @@ export default {
         this.$ons.notification.toast(this.$t('otherIdNotSet'), { timeout: 1000 })
         return
       }
-      this.sendButtonEnabled = false
-      this.$http.post('messages', {
+      const requestBody = {
         sender: this.$store.state.id,
         receiver: this.chat.otherId,
         payload: this.otpCryptoResult.base64Encrypted
-      }, { timeout: 5000 }).then(response => {
-        const message = response.body
+      }
+      this.sendButtonEnabled = false
+      try {
+        const response = await this.$http.post('messages', requestBody, { timeout: 5000 })
         this.chat.messages.push({
-          id: `${message.sender}${message.timestamp}`,
+          id: `${response.body.sender}${response.body.timestamp}`,
           own: true,
           text: this.message,
-          timestamp: message.timestamp
+          timestamp: response.body.timestamp
         })
         this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(this.otpCryptoResult.remainingKey))
         this.message = ''
-      }, response => {
-        this.$ons.notification.toast(this.$t('messageCouldNotBeSent'), { timeout: 1000 })
-      }).then(() => {
+      } catch (error) {
+        switch (error.status) {
+          case 0:
+            this.$ons.notification.toast(this.$t('networkError'), { timeout: 3000 })
+            break
+          default:
+            this.$ons.notification.toast(this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
+            console.error(error)
+        }
+      } finally {
         this.sendButtonEnabled = true
-      })
+      }
     },
     refillKey () {
       this.$ons.openActionSheet({buttons: [this.$t('iScanTheQrCodes'), this.$t('iShowTheQrCodes'), this.$t('cancel')], title: this.$t('whatIsYourPart'), cancelable: true}).then(response => {
