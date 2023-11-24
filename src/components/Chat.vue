@@ -129,7 +129,7 @@ export default {
       return OtpCrypto.encryptedDataConverter.base64ToBytes(this.chat.otherKey)
     },
     keyAlmostEmpty () {
-      return OtpCrypto.encrypt(this.AUTH_PREAMBLE + 'V'.repeat(keyAlmostEmptyThreshold), this.ownKey).remainingKey.length <= 0
+      return OtpCrypto.encrypt(this.AUTH_PREAMBLE, this.ownKey).remainingKey.length - keyAlmostEmptyThreshold <= 0
     },
     keyEmpty () {
       return OtpCrypto.encrypt(this.AUTH_PREAMBLE, this.ownKey).remainingKey.length <= 0
