@@ -7,7 +7,7 @@
       <div class="center ellipsis" @click="informationDialogVisible = true">{{ chat.name }}</div>
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
-          <template v-if="keyEmpty">{{ $t('refillShort') }} 🔑</template>
+          <template v-if="keyEmpty">{{ $t('refill') }}</template>
           <template v-else>🔑 {{ remainingKeyLength }}</template>
         </v-ons-toolbar-button>
       </div>
