@@ -77,7 +77,6 @@
   "pushNotificationSubscriptionSuccessMessage": "Push-Mitteilungen erfolgreich aktiviert!",
   "pushNotificationSubscriptionDuplicateErrorMessage": "Push-Mitteilungen bereits aktiviert.",
   "networkError": "Verbindungsfehler",
-  "unknownErrorWithCode": "Unbekannter Fehler. Fehlercode: {code}",
   "vapidPublicKeyNotSet": "Öffentlicher VAPID-Schlüssel nicht gesetzt.",
   "vapidPublicKeyNotInResponse": "Öffentlicher VAPID-Schlüssel nicht in Antwort.",
   "pushNotifications": "Push-Mitteilungen",
@@ -89,5 +88,6 @@
   "notificationPermissionNotSupported": "Push-Mitteilungen werden von dieser Browser-Umgebung nicht unterstützt.",
   "notificationPermissionNotSupportedIos": "<b>Öffne Vernam in Safari auf iOS 16.4+</b>, wähle über die Teilen-Schaltfläche \"Zum Home-Bildschirm\" aus und öffne Vernam künftig von dort als App.",
   "notificationPermissionNotSupportedAndroid": "<b>Öffne Vernam in Chrome Version 50+</b>, wähle über das Menü \"Zum Startbildschirm hinzufügen\" aus und öffne Vernam künftig von dort als App.",
-  "notificationPermissionNotSupportedOther": "<b>Öffne Vernam in Safari auf deinem iPhone oder Chrome auf deinem Android-Gerät.</b>"
+  "notificationPermissionNotSupportedOther": "<b>Öffne Vernam in Safari auf deinem iPhone oder Chrome auf deinem Android-Gerät.</b>",
+  "unexpectedErrorWithCode": "Unerwarteter Fehler. Fehlercode: {code}"
 }

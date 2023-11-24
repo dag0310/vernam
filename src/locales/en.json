@@ -77,7 +77,6 @@
   "pushNotificationSubscriptionSuccessMessage": "Push notifications activated successfully!",
   "pushNotificationSubscriptionDuplicateErrorMessage": "Push notifications already activated.",
   "networkError": "Connection error",
-  "unknownErrorWithCode": "Unknown error. Error code: {code}",
   "vapidPublicKeyNotSet": "Public VAPID key not set.",
   "vapidPublicKeyNotInResponse": "Public VAPID key not in response.",
   "pushNotifications": "Push notifications",
@@ -89,5 +88,6 @@
   "notificationPermissionNotSupported": "Push notifications are not supported by this browser environment.",
   "notificationPermissionNotSupportedIos": "<b>Open Vernam in Safari on iOS 16.4+</b>, select \"Add to Home Screen\" in the sharing sheet to add Vernam to your home screen and open it from there as app.",
   "notificationPermissionNotSupportedAndroid": "<b>Open Vernam in Chrome Version 50+</b>, select \"Add to Home screen\" in the menu to add Vernam to your home screen and open it from there as app.",
-  "notificationPermissionNotSupportedOther": "<b>Open Vernam in Safari on your iPhone or Chrome on your Android device.</b>"
+  "notificationPermissionNotSupportedOther": "<b>Open Vernam in Safari on your iPhone or Chrome on your Android device.</b>",
+  "unexpectedErrorWithCode": "Unexpected error. Error code: {code}"
 }
