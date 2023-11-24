@@ -51,7 +51,7 @@
         this.scanStatus = this.$t('scanStatusPreparingToScan')
         try {
           const { capabilities } = await promise
-          console.log({ capabilities })
+          console.info({ capabilities })
           this.scanStatus = this.$t('scanStatusReadyToScan')
         } catch (error) {
           this.scanStatus = this.$t(`scanStatus${error.name}`) || `${this.$t('scanStatusUnknownError')}: "${error.name}"`
