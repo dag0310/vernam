@@ -8,7 +8,7 @@
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
           <template v-if="keyEmpty">{{ $t('refill') }}</template>
-          <template v-else>🔑 {{ otpCryptoResult.isKeyLongEnough ? otpCryptoResult.remainingKey.length : '-' }}</template>
+          <template v-else>🔑 {{ otpCryptoResult.isKeyLongEnough ? otpCryptoResultWithoutPreamble.remainingKey.length : '-' }}</template>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
@@ -136,6 +136,9 @@ export default {
     },
     otpCryptoResult () {
       return OtpCrypto.encrypt(this.AUTH_PREAMBLE + this.message, this.ownKey)
+    },
+    otpCryptoResultWithoutPreamble () {
+      return OtpCrypto.encrypt(this.message, this.ownKey)
     },
   },
   methods: {
