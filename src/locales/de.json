@@ -21,7 +21,6 @@
   "noChatsFound": "Keine Chats gefunden",
   "deleteChatLocally": "Chat lokal löschen",
   "refill": "Aufladen",
-  "refillShort": "Aufladen",
   "deleteMessageLocally": "Nachricht lokal löschen",
   "noOtherIdMessage": "Dein Kontakt muss dir eine Nachricht senden, bevor du eine senden kannst.",
   "noMessagesFoundMessage": "Keine Nachrichten gefunden",
@@ -88,6 +87,7 @@
   "deleteAllMessagesLocallyTitle": "Sicher alle Nachrichten in diesem Chat löschen?",
   "deleteChatHistory": "Chatverlauf löschen",
   "notificationPermissionNotSupported": "Push-Mitteilungen werden von dieser Browser-Umgebung nicht unterstützt.",
-  "notificationPermissionNotSupportedIos": "<b>Safari-Browser:</b> Wähle über die Teilen-Schaltfläche \"Zum Home-Bildschirm\" aus und öffne Vernam künftig von dort als App.",
-  "notificationPermissionNotSupportedAndroid": "<b>Chrome-Browser:</b> Wähle über das Menü \"Zum Startbildschirm hinzufügen\" aus und öffne Vernam künftig von dort als App."
+  "notificationPermissionNotSupportedIos": "<b>Öffne Vernam in Safari auf iOS 16.4+</b>, wähle über die Teilen-Schaltfläche \"Zum Home-Bildschirm\" aus und öffne Vernam künftig von dort als App.",
+  "notificationPermissionNotSupportedAndroid": "<b>Öffne Vernam in Chrome Version 50+</b>, wähle über das Menü \"Zum Startbildschirm hinzufügen\" aus und öffne Vernam künftig von dort als App.",
+  "notificationPermissionNotSupportedOther": "<b>Öffne Vernam in Safari auf deinem iPhone oder Chrome auf deinem Android-Gerät.</b>"
 }

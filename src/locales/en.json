@@ -21,7 +21,6 @@
   "noChatsFound": "No chats found",
   "deleteChatLocally": "Delete chat locally",
   "refill": "Refill",
-  "refillShort": "Refill",
   "deleteMessageLocally": "Delete message locally",
   "noOtherIdMessage": "Your contact needs to message you before you can start messaging.",
   "noMessagesFoundMessage": "No messages found",
@@ -88,6 +87,7 @@
   "deleteAllMessagesLocallyTitle": "Sure you want to delete all messages in this chat?",
   "deleteChatHistory": "Delete chat history",
   "notificationPermissionNotSupported": "Push notifications are not supported by this browser environment.",
-  "notificationPermissionNotSupportedIos": "<b>Safari browser:</b> Select \"Add to Home Screen\" in the sharing sheet to add Vernam to your home screen and open it from there as app.",
-  "notificationPermissionNotSupportedAndroid": "<b>Chrome browser:</b> Select \"Add to Home screen\" in the menu to add Vernam to your home screen and open it from there as app."
+  "notificationPermissionNotSupportedIos": "<b>Open Vernam in Safari on iOS 16.4+</b>, select \"Add to Home Screen\" in the sharing sheet to add Vernam to your home screen and open it from there as app.",
+  "notificationPermissionNotSupportedAndroid": "<b>Open Vernam in Chrome Version 50+</b>, select \"Add to Home screen\" in the menu to add Vernam to your home screen and open it from there as app.",
+  "notificationPermissionNotSupportedOther": "<b>Open Vernam in Safari on your iPhone or Chrome on your Android device.</b>"
 }

@@ -37,7 +37,8 @@
             <template v-else>
               {{ $t('notificationPermissionNotSupported') }}
               <span v-if="isIos" v-html="$t('notificationPermissionNotSupportedIos')"></span>
-              <span v-if="isAndroid" v-html="$t('notificationPermissionNotSupportedAndroid')"></span>
+              <span v-else-if="isAndroid" v-html="$t('notificationPermissionNotSupportedAndroid')"></span>
+              <span v-else v-html="$t('notificationPermissionNotSupportedOther')"></span>
             </template>
           </div>
         </v-ons-list-item>
