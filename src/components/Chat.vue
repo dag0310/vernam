@@ -138,7 +138,7 @@ export default {
       return OtpCrypto.encrypt(this.AUTH_PREAMBLE + this.message, this.ownKey)
     },
     remainingKeyLength () {
-      return this.otpCryptoResult.isKeyLongEnough ? this.otpCryptoResult.remainingKey.length : 'X'
+      return this.otpCryptoResult.isKeyLongEnough ? this.otpCryptoResult.remainingKey.length : '-'
     }
   },
   methods: {
