@@ -16,21 +16,31 @@ const pollMessagesIntervalInMs = 1000
 export default {
   name: 'app',
   created () {
-    const pollMessages = () => {
+    const pollMessages = async () => {
       if (!this.$store.state.id || !this.isPollingActive()) {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
         return
       }
       const lastTimestampQueryString = (this.$store.state.lastTimestamp != null) ? `?timestamp=${this.$store.state.lastTimestamp}` : ''
-      this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 }).then(response => {
-        const messages = response.body
+      try {
+        const response = await this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 })
+        const responseMessages = response.body
         this.chats.forEach(chat => {
-          const chatMessages = messages.filter(message => message.sender === chat.otherId || chat.otherId == null)
+          const chatMessages = responseMessages.filter(message => message.sender === chat.otherId || chat.otherId == null)
           this.pollMessage(chat, chatMessages, 0)
         })
-      }).then(() => {
+      } catch (error) {
+        switch (error.status) {
+          case 0:
+            // TODO: Show offline banner
+            break
+          default:
+            this.$ons.notification.toast(this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 500 })
+            console.error(error)
+        }
+      } finally {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
-      })
+      }
     }
     pollMessages()
   },
