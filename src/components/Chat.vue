@@ -51,7 +51,7 @@
       <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !chat.otherId">{{ $t('send') }}</v-ons-button>
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
-      <p><b>{{chat.name}}</b> <v-ons-icon @click="newChatName = chat.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create" :aria-label="$t('editName')"></v-ons-icon></p>
+      <p><b class="chatName">{{chat.name}}</b> <v-ons-icon @click="newChatName = chat.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create" class="editIcon" :aria-label="$t('editName')"></v-ons-icon></p>
       <p class="selectable">{{ $t('id') }}: <b><i v-if="chat.otherId == null">{{ $t('unknown') }}</i><span v-if="chat.otherId != null">{{chat.otherId}}</span></b></p>
       <p class="selectable">{{ $t('ownKey') }}:<br>{{ $t('size') }}: <b>{{ownKey.length}}</b>, {{ $t('checksum') }}: <b>{{calculateByteArrayChecksum(ownKey)}}</b></p>
       <p class="selectable">{{ $t('otherKey') }}:<br>{{ $t('size') }}: <b>{{otherKey.length}}</b>, {{ $t('checksum') }}: <b>{{calculateByteArrayChecksum(otherKey)}}</b></p>
@@ -283,5 +283,12 @@ export default {
   }
   .dialog-container > * {
     text-align: center;
+    margin: 16px;
+  }
+  .dialog-container .chatName {
+    overflow-wrap: anywhere;
+  }
+  .dialog-container .editIcon {
+    vertical-align: baseline;
   }
 </style>
