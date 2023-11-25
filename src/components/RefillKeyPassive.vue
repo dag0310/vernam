@@ -174,4 +174,7 @@
   .navigationAndCounter ons-button {
     min-width: 100px;
   }
+  .navigationAndCounter ons-button .ons-icon {
+    vertical-align: baseline;
+  }
 </style>
