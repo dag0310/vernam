@@ -7,7 +7,7 @@
   <div class="content">
     <h3 v-if="qrCodeNumbersLeft">{{ $tc('codesLeftToScan', qrCodeNumbersLeft.length) }}:<br><b>{{ qrCodeNumbersLeft.map(code => `#${code}`).join(', ') }}</b></h3>
     <h3 v-else><b>{{ $t('scanQrCodesOfYourContact') }}</b></h3>
-    <qrcode-stream class="qr-stream" @init="onInit" @detect="onDetect" />
+    <qrcode-stream class="qrStream" @init="onInit" @detect="onDetect" />
     <p><b>{{ scanStatus }}</b></p>
   </div>
   </v-ons-page>
@@ -140,7 +140,7 @@
   .content {
     text-align: center;
   }
-  .qr-stream {
+  .qrStream {
     width: 100%;
     height: 300px;
   }
