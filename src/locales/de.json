@@ -26,7 +26,7 @@
   "noMessagesFoundMessage": "Keine Nachrichten gefunden",
   "keyEmptyMessage": "Dein Sende-Schlüssel ist erschöpft",
   "keyAlmostEmptyMessage": "Dein Sende-Schlüssel ist fast erschöpft",
-  "refillKeyMessage": "Lade ihn mit deinem Kontakt auf, um Nachrichten senden zu können.",
+  "refillKeyMessage": "Triff dich mit deinem Kontakt und lade den Schlüssel auf, um Nachrichten senden zu können.",
   "send": "Senden",
   "name": "Name",
   "ownKey": "Sende-Schlüssel",
