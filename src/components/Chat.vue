@@ -7,8 +7,8 @@
       <div class="center ellipsis" @click="informationDialogVisible = true">{{ chat.name }}</div>
       <div class="right">
         <v-ons-toolbar-button @click="refillKey">
-          <template v-if="keyEmpty">{{ $t('refill') }}</template>
-          <template v-else>🔑 {{ otpCryptoResult.isKeyLongEnough ? otpCryptoResultWithoutPreamble.remainingKey.length : '-' }}</template>
+          <span v-if="keyEmpty">{{ $t('refill') }}</span>
+          <span v-else :class="{ negative: otpCryptoResult.bytesLeft < 0 }">🔑 {{ otpCryptoResult.isKeyLongEnough ? otpCryptoResultWithoutPreamble.remainingKey.length : otpCryptoResult.bytesLeft }}</span>
         </v-ons-toolbar-button>
       </div>
     </v-ons-toolbar>
@@ -236,6 +236,9 @@ export default {
 </script>
 
 <style scoped>
+  .negative {
+    color: red;
+  }
   .card {
     max-width: 230px;
     padding: 5px 10px;
