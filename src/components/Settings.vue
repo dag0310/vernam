@@ -51,7 +51,7 @@
         <v-ons-list-header>{{ $t('about') }}</v-ons-list-header>
         <v-ons-list-item>
           <div class="center selectable">
-            © 2018, 2023 Daniel Geymayer<br>
+            © 2018-2023 Daniel Geymayer<br>
             {{ $t('version') }}: {{ buildTimestamp }}
           </div>
         </v-ons-list-item>
