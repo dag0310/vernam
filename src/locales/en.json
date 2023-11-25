@@ -92,5 +92,5 @@
   "alright": "Alright!",
   "readLater": "Read later",
   "introTitle": "What is Vernam?",
-  "introText": "Vernam is no ordinary messenger app.\n\nTo be able to send messages, you have to meet your contact in person and load a shared random key. Every time you send a message, part of the key is used once to encrypt the message.\n\n<b>This guarantees perfect end-to-end encryption, which is even more secure than conventional messengers such as Signal, WhatsApp or Telegram.</b>"
+  "introText": "Vernam is no ordinary messenger app.\n\nTo exchange messages with a contact, you must meet in person and load a shared random key. Each time you send a message, part of the key is used once to encrypt the message.\n\n<b>This guarantees perfect end-to-end encryption, which is even more secure than conventional messengers such as Signal, WhatsApp or Telegram.</b>"
 }
