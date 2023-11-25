@@ -61,6 +61,14 @@
         <div class="alert-dialog-button" @click="createChat(newChatName);"><b>{{ $t('add') }}</b></div>
       </template>
     </v-ons-alert-dialog>
+    <v-ons-alert-dialog modifier="rowfooter" :visible.sync="showIntroDialog">
+      <h3 style="margin-top: 0;">{{ $t('introTitle') }}</h3>
+      <p v-html="$t('introText').replace(/\n/g, '<br>')"></p>
+      <template slot="footer">
+        <div class="alert-dialog-button" @click="showIntroDialog = false">{{ $t('readLater') }}</div>
+        <div class="alert-dialog-button" @click="showIntroDialog = false"><b>{{ $t('alright') }}</b></div>
+      </template>
+    </v-ons-alert-dialog>
   </v-ons-page>
 </template>
 
@@ -76,6 +84,7 @@ export default {
   data () {
     return {
       searchText: '',
+      showIntroDialog: false,
       showCreateChatDialog: false,
       newChatName: '',
       pushNotificationButtonEnabled: true,
@@ -86,6 +95,7 @@ export default {
   created () {
     if (this.$store.state.id == null) {
       this.$store.commit('setId', uuidv4())
+      this.showIntroDialog = true
     }
 
     this.isIos = platform.ios

@@ -55,8 +55,20 @@
             {{ $t('version') }}: {{ buildTimestamp }}
           </div>
         </v-ons-list-item>
+        <v-ons-list-item>
+          <div class="center">
+            <v-ons-button modifier="large" @click="showIntroDialog = true" style="background-color: gray;">{{ $t('introTitle') }}</v-ons-button>
+          </div>
+        </v-ons-list-item>
       </v-ons-list>
     </div>
+    <v-ons-alert-dialog cancelable modifier="rowfooter" :visible.sync="showIntroDialog">
+      <h3 style="margin-top: 0;">{{ $t('introTitle') }}</h3>
+      <p v-html="$t('introText').replace(/\n/g, '<br>')"></p>
+      <template slot="footer">
+        <div class="alert-dialog-button" @click="showIntroDialog = false"><b>{{ $t('alright') }}</b></div>
+      </template>
+    </v-ons-alert-dialog>
   </v-ons-page>
 </template>
 
@@ -67,6 +79,7 @@ export default {
   name: 'settings',
   data () {
     return {
+      showIntroDialog: false,
       // BUILD_TIMESTAMP will be injected during build process, not available during development, which is OK
       buildTimestamp: BUILD_TIMESTAMP, // eslint-disable-line
     }
