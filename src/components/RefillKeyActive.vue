@@ -5,7 +5,7 @@
     <div class="center">{{ $t('refillKey') }}</div>
   </v-ons-toolbar>
   <div class="content">
-    <h3 v-if="qrCodeNumbersLeft">{{ $tc('codesLeftToScan', qrCodeNumbersLeft.length) }}<br><b>{{ qrCodeNumbersLeft.map(code => `#${code}`).join(', ') }}</b></h3>
+    <h3 v-if="qrCodeNumbersLeft">{{ $tc('codesLeftToScan', qrCodeNumbersLeft.length) }}:<br><b>{{ qrCodeNumbersLeft.map(code => `#${code}`).join(', ') }}</b></h3>
     <h3 v-else><b>{{ $t('scanQrCodesOfYourContact') }}</b></h3>
     <qrcode-stream class="qr-stream" @init="onInit" @detect="onDetect" />
     <p><b>{{ scanStatus }}</b></p>
