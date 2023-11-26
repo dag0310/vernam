@@ -16,8 +16,15 @@ const translations = {
 
 self.addEventListener('push', (event) => {
   event.waitUntil(
-    self.registration.showNotification(translations[locale].newMessageTitle, {
-      icon: '/static/img/favicon-256x256-rounded.png',
+    clients.matchAll({ includeUncontrolled: true, type: 'window' }).then((clients) => {
+      for (const client of clients) {
+        if ('focused' in client && client.focused) {
+          return
+        }
+      }
+      self.registration.showNotification(translations[locale].newMessageTitle, {
+        icon: '/static/img/favicon-256x256-rounded.png',
+      })
     })
   )
 })
