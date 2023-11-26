@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-const URL = 'https://vernam.xyz'
-
 const FALLBACK_LOCALE = 'en'
 const SUPPORTED_LOCALES = ['en', 'de']
 
@@ -29,11 +27,11 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
     clients.matchAll({ includeUncontrolled: true, type: 'window' }).then((clients) => {
       for (const client of clients) {
-        if (client.url.includes(URL) && 'focus' in client) {
+        if ('focus' in client) {
           return client.focus()
         }
       }
-      if (clients.openWindow) {
+      if ('openWindow' in clients) {
         return clients.openWindow('/')
       }
     })
