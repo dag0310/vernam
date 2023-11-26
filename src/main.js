@@ -19,6 +19,7 @@ Vue.use(VueResource)
 
 const twentyFourHoursInMs = 24 * 60 * 60 * 1000
 let pollingActive = true
+let online = true
 
 Vue.mixin({
   data () {
@@ -28,10 +29,22 @@ Vue.mixin({
   },
   methods: {
     setPollingActive (isActive) {
+      if (pollingActive === isActive) {
+        return
+      }
       pollingActive = isActive
     },
     isPollingActive () {
       return pollingActive
+    },
+    setOnline (isOnline) {
+      if (online === isOnline) {
+        return
+      }
+      online = isOnline
+    },
+    isOnline () {
+      return online
     },
     humanDate (timestamp) {
       const date = new Date(timestamp)

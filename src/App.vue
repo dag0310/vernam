@@ -24,18 +24,35 @@ export default {
       const lastTimestampQueryString = (this.$store.state.lastTimestamp != null) ? `?timestamp=${this.$store.state.lastTimestamp}` : ''
       try {
         const response = await this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 })
-        const responseMessages = response.body
-        this.chats.forEach(chat => {
-          const chatMessages = responseMessages.filter(message => message.sender === chat.otherId || chat.otherId == null)
-          this.pollMessage(chat, chatMessages, 0)
-        })
+        if (!this.isOnline()) {
+          this.setOnline(true)
+          this.$ons.notification.toast(this.$t('connectedAgain'), { timeout: 2000 })
+        }
+        for (const message of response.body) {
+          let senderChat = this.chats.find(chat => chat.otherId === message.sender)
+          const chatCandidates = (senderChat != null) ? [senderChat] : this.chats.filter(chat => chat.otherId == null)
+          const chat = chatCandidates.find(chatCandidate => this.isAuthenticatedPayload(message.payload, chatCandidate.otherKey))
+          if (chat == null) {
+            this.$store.commit('setLastTimestamp', message.timestamp)
+            continue
+          }
+          const isMessageHandled = await this.deleteMessageOnServerAndSaveLocally(message, chat)
+          if (isMessageHandled) {
+            this.$store.commit('setLastTimestamp', message.timestamp)
+          }
+        }
       } catch (error) {
         switch (error.status) {
           case 0:
-            // TODO: Show offline banner
+            if (this.isOnline()) {
+              this.setOnline(false)
+              this.$ons.notification.toast(this.$t('networkError'), { timeout: 2000 })
+            }
             break
           default:
-            this.$ons.notification.toast(this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 500 })
+            if (error.status != null) {
+              this.$ons.notification.toast('[GET] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 1000 })
+            }
             console.error(error)
         }
       } finally {
@@ -55,28 +72,25 @@ export default {
     }
   },
   methods: {
-    pollMessage (chat, chatMessages, messageIdx) {
-      if (messageIdx >= chatMessages.length) {
-        return
-      }
-      const message = chatMessages[messageIdx]
+    isAuthenticatedPayload (payloadBase64, otherKeyBase64) {
+      const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(otherKeyBase64)
+      const otpCryptoResult = OtpCrypto.decrypt(payloadBase64, otherKeyBytes)
+      const payloadPreamble = otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_PREAMBLE.length)
+      return payloadPreamble === this.AUTH_PREAMBLE
+    },
+    async deleteMessageOnServerAndSaveLocally (message, chat) {
       const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(chat.otherKey)
       const otherKeyBytesPreambleLength = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_PREAMBLE).length)
       const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytesPreambleLength)
-      const polledMessageId = `${message.sender}${message.timestamp}`
 
-      this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${encodeURIComponent(base64Key)}`, { timeout: 5000 }).then(() => {
-        this.$store.commit('setLastTimestamp', message.timestamp)
-        const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
-        if (!otpCryptoResult.isKeyLongEnough || otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_PREAMBLE.length) !== this.AUTH_PREAMBLE) {
-          this.pollMessage(chat, chatMessages, messageIdx + 1)
-          return
+      try {
+        await this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${encodeURIComponent(base64Key)}`, { timeout: 5000 })
+
+        if (!this.isOnline()) {
+          this.setOnline(true)
+          this.$ons.notification.toast(this.$t('connectedAgain'), { timeout: 2000 })
         }
 
-        this.$store.commit('updateOtherKey', {
-          id: chat.id,
-          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
-        })
         if (chat.otherId == null) {
           this.$store.commit('setChatOtherId', {
             id: chat.id,
@@ -84,27 +98,45 @@ export default {
           })
         }
 
-        if (chat.messages.some(message => message.id === polledMessageId)) {
-          this.pollMessage(chat, chatMessages, messageIdx + 1)
-          return
-        }
+        const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
 
-        if (chat.id !== this.$store.state.currentChatId) {
-          this.$store.commit('setNewMessagesTrue', chat.id)
-        }
+        this.$store.commit('updateOtherKey', {
+          id: chat.id,
+          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
+        })
+
         chat.messages.push({
-          id: polledMessageId,
+          id: `${message.sender}${message.timestamp}`,
           own: false,
           text: otpCryptoResult.plaintextDecrypted.substring(this.AUTH_PREAMBLE.length),
           timestamp: message.timestamp
         })
-        this.pollMessage(chat, chatMessages, messageIdx + 1)
-      }, response => {
-        if (response.status >= 400 && response.status < 500) {
-          this.$store.commit('setLastTimestamp', message.timestamp)
-          this.pollMessage(chat, chatMessages, messageIdx + 1)
+
+        if (this.$store.state.currentChatId !== chat.id) {
+          this.$store.commit('setNewMessagesTrue', chat.id)
         }
-      })
+
+        return true
+      } catch (error) {
+        switch (error.status) {
+          case 0:
+            if (this.isOnline()) {
+              this.setOnline(false)
+              this.$ons.notification.toast(this.$t('networkError'), { timeout: 2000 })
+            }
+            return false
+          case 400: // Message validation failed, e.g. invalid base64 string
+          case 401: // Message authentication failed
+          case 404: // Message not found
+            return true
+          default:
+            if (error.status != null) {
+              this.$ons.notification.toast('[DELETE] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 1000 })
+            }
+            console.error(error)
+            return false
+        }
+      }
     }
   }
 }
