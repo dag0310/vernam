@@ -9,10 +9,10 @@ const locale = SUPPORTED_LOCALES.includes(browserLanguage) ? browserLanguage : F
 
 const translations = {
   de: {
-    newMessageTitle: 'Neue Nachricht eines Vernam-Kontakts',
+    newMessageTitle: 'Neue Vernam-Nachricht',
   },
   en: {
-    newMessageTitle: 'New message from a Vernam contact',
+    newMessageTitle: 'New Vernam message',
   }
 }
 
