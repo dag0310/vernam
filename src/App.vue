@@ -76,7 +76,7 @@ export default {
       const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytesPreambleLength)
 
       try {
-        await this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${encodeURIComponent(base64Key)}`, { timeout: 5000 })
+        await this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${encodeURIComponent(base64Key)}`, { timeout: 5000, headers: { 'Content-Type': 'text/plain' } })
 
         if (chat.otherId == null) {
           this.$store.commit('setChatOtherId', {
