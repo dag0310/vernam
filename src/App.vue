@@ -21,9 +21,12 @@ export default {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
         return
       }
-      const lastTimestampQueryString = (this.$store.state.lastTimestamp != null) ? `?timestamp=${this.$store.state.lastTimestamp}` : ''
+      const params = {}
+      if (this.$store.state.lastTimestamp != null) {
+        params.timestamp = this.$store.state.lastTimestamp
+      }
       try {
-        const response = await this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 })
+        const response = await this.$http.get(`messages/${this.$store.state.id}`, { timeout: 5000, params })
         for (const message of response.body) {
           let senderChat = this.chats.find(chat => chat.otherId === message.sender)
           const chatCandidates = (senderChat != null) ? [senderChat] : this.chats.filter(chat => chat.otherId == null)
