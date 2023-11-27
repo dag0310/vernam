@@ -26,7 +26,7 @@ export default {
         const response = await this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 })
         if (!this.isOnline()) {
           this.setOnline(true)
-          this.$ons.notification.toast(this.$t('connectedAgain'), { timeout: 2000 })
+          this.$ons.notification.toast(this.$t('connectionEstablished'), { timeout: 2000 })
         }
         for (const message of response.body) {
           let senderChat = this.chats.find(chat => chat.otherId === message.sender)
@@ -46,7 +46,7 @@ export default {
           case 0:
             if (this.isOnline()) {
               this.setOnline(false)
-              this.$ons.notification.toast(this.$t('networkError'), { timeout: 2000 })
+              this.$ons.notification.toast(this.$t('disconnected'), { timeout: 2000 })
             }
             break
           default:
@@ -88,7 +88,7 @@ export default {
 
         if (!this.isOnline()) {
           this.setOnline(true)
-          this.$ons.notification.toast(this.$t('connectedAgain'), { timeout: 2000 })
+          this.$ons.notification.toast(this.$t('connectionEstablished'), { timeout: 2000 })
         }
 
         if (chat.otherId == null) {
@@ -122,7 +122,7 @@ export default {
           case 0:
             if (this.isOnline()) {
               this.setOnline(false)
-              this.$ons.notification.toast(this.$t('networkError'), { timeout: 2000 })
+              this.$ons.notification.toast(this.$t('disconnected'), { timeout: 2000 })
             }
             return false
           case 400: // Message validation failed, e.g. invalid base64 string
