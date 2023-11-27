@@ -24,10 +24,6 @@ export default {
       const lastTimestampQueryString = (this.$store.state.lastTimestamp != null) ? `?timestamp=${this.$store.state.lastTimestamp}` : ''
       try {
         const response = await this.$http.get(`messages/${this.$store.state.id}${lastTimestampQueryString}`, { timeout: 5000 })
-        if (!this.isOnline()) {
-          this.setOnline(true)
-          this.$ons.notification.toast(this.$t('connectionEstablished'), { timeout: 2000 })
-        }
         for (const message of response.body) {
           let senderChat = this.chats.find(chat => chat.otherId === message.sender)
           const chatCandidates = (senderChat != null) ? [senderChat] : this.chats.filter(chat => chat.otherId == null)
@@ -44,10 +40,6 @@ export default {
       } catch (error) {
         switch (error.status) {
           case 0:
-            if (this.isOnline()) {
-              this.setOnline(false)
-              this.$ons.notification.toast(this.$t('disconnected'), { timeout: 2000 })
-            }
             break
           default:
             if (error.status != null) {
@@ -86,11 +78,6 @@ export default {
       try {
         await this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${encodeURIComponent(base64Key)}`, { timeout: 5000 })
 
-        if (!this.isOnline()) {
-          this.setOnline(true)
-          this.$ons.notification.toast(this.$t('connectionEstablished'), { timeout: 2000 })
-        }
-
         if (chat.otherId == null) {
           this.$store.commit('setChatOtherId', {
             id: chat.id,
@@ -120,10 +107,6 @@ export default {
       } catch (error) {
         switch (error.status) {
           case 0:
-            if (this.isOnline()) {
-              this.setOnline(false)
-              this.$ons.notification.toast(this.$t('disconnected'), { timeout: 2000 })
-            }
             return false
           case 400: // Message validation failed, e.g. invalid base64 string
           case 401: // Message authentication failed
