@@ -89,7 +89,7 @@ export default {
       newChatName: '',
       pushNotificationButtonEnabled: true,
       notificationPermission: ('Notification' in window) ? Notification.permission : null,
-      serviceWorkerRegistration: ('serviceWorker' in navigator) ? navigator.serviceWorker.register('/static/js/serviceworker.js?t=1701126269') : null,
+      serviceWorkerRegistration: ('serviceWorker' in navigator) ? navigator.serviceWorker.register('/static/js/serviceworker.js?t=1701127623') : null,
     }
   },
   created () {

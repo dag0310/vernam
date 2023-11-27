@@ -15,15 +15,12 @@ const translations = {
 
 self.addEventListener('push', (event) => {
   event.waitUntil(
-    self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then((clients) => {
-      for (const client of clients) {
-        if (client.url.includes(self.location.origin) && 'focused' in client && client.focused) {
-          return
-        }
+    self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then(clients => {
+      if (clients.some(client => client.focused)) {
+        return
       }
       self.registration.showNotification(translations[locale].newMessageTitle, {
         icon: '/static/img/favicon-256x256-rounded.png',
-        data: { url: self.location.origin },
       })
     })
   )
@@ -32,12 +29,8 @@ self.addEventListener('push', (event) => {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
   event.waitUntil(
-    self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then((clients) => {
-      const client = clients.find(c => c.url.includes(self.location.origin))
-      if (client != null) {
-        return client.focus()
-      }
-      return self.clients.openWindow(self.location.origin)
+    self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then(clients => {
+      (clients.length > 0) ? clients[0].focus() : self.clients.openWindow(self.location.origin).then(client => client.focus())
     })
   )
 })
