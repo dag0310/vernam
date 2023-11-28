@@ -16,7 +16,7 @@ const translations = {
 self.addEventListener('push', (event) => {
   event.waitUntil(
     self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then(clients => {
-      if (clients.some(client => client.focused)) {
+      if (clients.some(client => client.focused || client.visibilityState === 'visible')) {
         return
       }
       self.registration.showNotification(translations[locale].newMessageTitle, {
