@@ -52,6 +52,7 @@
         <v-ons-list-item>
           <div class="center selectable">
             © 2018-2023 Daniel Geymayer<br>
+            {{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br>
             {{ $t('version') }}: {{ buildTimestamp }}
           </div>
         </v-ons-list-item>

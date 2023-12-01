@@ -95,5 +95,6 @@
   "introText": "Vernam ist keine gewöhnliche Messenger-App.\n\nUm Nachrichten mit einem Kontakt austauschen zu können, müsst ihr euch persönlich treffen und einen gemeinsamen Zufallsschlüssel aufladen. Jedes mal, wenn du eine Nachricht schickst, wird ein Teil des Schlüssels einmalig zum Verschlüsseln der Nachricht verwendet.\n\n<b>Das garantiert eine perfekte Ende-zu-Ende-Verschlüsselung, die noch sicherer ist als herkömmliche Messenger wie Signal, WhatsApp oder Telegram.</b>",
   "connectionEstablished": "Verbindung hergestellt",
   "disconnected": "Verbindung getrennt",
-  "unexpectedError": "Unerwarteter Fehler"
+  "unexpectedError": "Unerwarteter Fehler",
+  "lastTimestamp": "Letzter Zeitstempel"
 }
