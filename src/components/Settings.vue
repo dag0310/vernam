@@ -50,7 +50,7 @@
         <v-ons-list-item>
           <div class="center selectable" @click="showHiddenOptions()">
             © 2018-2023 Daniel Geymayer<br>
-            {{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br>
+            {{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp || $t('unknown') }}<br>
             {{ $t('version') }}: {{ buildTimestamp }}
           </div>
         </v-ons-list-item>
