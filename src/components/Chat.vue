@@ -212,17 +212,20 @@ export default {
     },
     refillKey () {
       this.$ons.openActionSheet({buttons: [this.$t('iShowTheQrCodes'), this.$t('iScanTheQrCodes'), this.$t('cancel')], title: this.$t('whatIsYourPart'), cancelable: true}).then(response => {
-        if (response === 1) {
-          this.$emit('push-page', {
-            extends: RefillKeyActive,
-            onsNavigatorProps: {
-              sendMessageCallback: () => {
-                this.message = this.$t('helloChatMessage', { name: this.chat.name })
+        switch (response) {
+          case 0:
+            this.$emit('push-page', RefillKeyPassive)
+            break
+          case 1:
+            this.$emit('push-page', {
+              extends: RefillKeyActive,
+              onsNavigatorProps: {
+                sendMessageCallback: () => {
+                  this.message = this.$t('helloChatMessage', { name: this.chat.name })
+                },
               },
-            },
-          })
-        } else if (response === 0) {
-          this.$emit('push-page', RefillKeyPassive)
+            })
+            break
         }
       })
     },
