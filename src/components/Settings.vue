@@ -36,9 +36,7 @@
             <span v-else-if="notificationPermission === 'denied'" v-html="$t('pushNotificationsDeniedMessage')"></span>
             <template v-else>
               {{ $t('notificationPermissionNotSupported') }}
-              <span v-if="isIos" v-html="$t('notificationPermissionNotSupportedIos')"></span>
-              <span v-else-if="isAndroid" v-html="$t('notificationPermissionNotSupportedAndroid')"></span>
-              <span v-else v-html="$t('notificationPermissionNotSupportedOther')"></span>
+              <span v-html="buildNotificationPermissionNotSupportedMessage()"></span>
             </template>
           </div>
         </v-ons-list-item>
@@ -74,8 +72,6 @@
 </template>
 
 <script>
-import platform from 'platform-detect'
-
 export default {
   name: 'settings',
   data () {
@@ -87,8 +83,6 @@ export default {
   },
   created () {
     this.notificationPermission = ('Notification' in window) ? Notification.permission : null
-    this.isIos = platform.ios
-    this.isAndroid = platform.android
   },
   computed: {
     numQrCodes: {

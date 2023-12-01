@@ -7,6 +7,7 @@ import Vue from 'vue'
 import VueOnsen from 'vue-onsenui'
 import VueChatScroll from 'vue-chat-scroll'
 import VueResource from 'vue-resource'
+import platform from 'platform-detect'
 import store from './store'
 import App from './App'
 import i18n from './i18n'
@@ -35,6 +36,15 @@ Vue.mixin({
     },
     isPollingActive () {
       return pollingActive
+    },
+    buildNotificationPermissionNotSupportedMessage () {
+      if (platform.ios) {
+        return this.$t('notificationPermissionNotSupportedIos')
+      }
+      if (platform.android) {
+        return this.$t('notificationPermissionNotSupportedAndroid')
+      }
+      return this.$t('notificationPermissionNotSupportedOther')
     },
     humanDate (timestamp) {
       const date = new Date(timestamp)
