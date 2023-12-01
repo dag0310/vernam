@@ -48,9 +48,9 @@ export default {
             break
           default:
             if (error.status != null) {
-              this.$ons.notification.toast('[GET] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 1000 })
+              this.$ons.notification.toast('[GET] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
             } else {
-              this.$ons.notification.toast('[GET] ' + this.$t('unexpectedError', { timeout: 1000 }))
+              this.$ons.notification.toast('[GET] ' + this.$t('unexpectedError', { timeout: 3000 }))
             }
             console.error(error)
         }
@@ -122,9 +122,9 @@ export default {
             return true
           default:
             if (error.status != null) {
-              this.$ons.notification.toast('[DELETE] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 1000 })
+              this.$ons.notification.toast('[DELETE] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
             } else {
-              this.$ons.notification.toast('[DELETE] ' + this.$t('unexpectedError', { timeout: 1000 }))
+              this.$ons.notification.toast('[DELETE] ' + this.$t('unexpectedError', { timeout: 3000 }))
             }
             console.error(error)
             return false
