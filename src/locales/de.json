@@ -98,5 +98,6 @@
   "unexpectedError": "Unerwarteter Fehler",
   "lastTimestamp": "Letzter Zeitstempel",
   "showQrCodes": "QR-Codes zeigen",
-  "resetLastTimestamp": "Letzten Zeitstempel zurücksetzen"
+  "resetLastTimestamp": "Letzten Zeitstempel zurücksetzen",
+  "reloadApp": "App aktualisieren"
 }

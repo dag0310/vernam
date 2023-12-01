@@ -48,7 +48,7 @@
         </v-ons-list-item>
         <v-ons-list-header>{{ $t('about') }}</v-ons-list-header>
         <v-ons-list-item>
-          <div class="center selectable" @click="resetLastTimestamp()">
+          <div class="center selectable" @click="showHiddenOptions()">
             © 2018-2023 Daniel Geymayer<br>
             {{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br>
             {{ $t('version') }}: {{ buildTimestamp }}
@@ -119,14 +119,19 @@ export default {
       this.$ons.openActionSheet({ buttons: [this.$t('resetLocalData'), this.$t('cancel')], title: this.$t('resetLocalDataTitle'), cancelable: true, destructive: 0 }).then(response => {
         if (response === 0) {
           window.localStorage.clear()
-          window.location.reload()
+          window.location.reload(true)
         }
       })
     },
-    resetLastTimestamp () {
-      this.$ons.openActionSheet({ buttons: [this.$t('resetLastTimestamp'), this.$t('cancel')], title: '', cancelable: true, destructive: 0 }).then(response => {
-        if (response === 0) {
-          this.$store.commit('setLastTimestamp', null)
+    showHiddenOptions () {
+      this.$ons.openActionSheet({ buttons: [this.$t('reloadApp'), this.$t('resetLastTimestamp'), this.$t('cancel')], title: '', cancelable: true, destructive: 0 }).then(response => {
+        switch (response) {
+          case 0:
+            window.location.reload(true)
+            break
+          case 1:
+            this.$store.commit('setLastTimestamp', null)
+            break
         }
       })
     },
