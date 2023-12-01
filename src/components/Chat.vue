@@ -162,7 +162,7 @@ export default {
       })
     },
     dateTimeText (timestamp) {
-      const humanDate = this.humanDate(timestamp)
+      const humanDate = this.humanizeDate(timestamp)
       return humanDate.isToday ? humanDate.timeText : `${humanDate.dateText}, ${humanDate.timeText}`
     },
     deleteMessage (message) {

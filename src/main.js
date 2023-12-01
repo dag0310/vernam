@@ -46,7 +46,7 @@ Vue.mixin({
       }
       return this.$t('notificationPermissionNotSupportedOther')
     },
-    humanDate (timestamp) {
+    humanizeDate (timestamp) {
       const date = new Date(timestamp)
       const timeText = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: 'numeric' }).format(date)
       const now = new Date()

@@ -214,7 +214,7 @@ export default {
     lastMessageDateText (chat) {
       const lastMessage = this.lastMessage(chat)
       if (lastMessage !== null) {
-        const humanDate = this.humanDate(lastMessage.timestamp)
+        const humanDate = this.humanizeDate(lastMessage.timestamp)
         return humanDate.isToday ? humanDate.timeText : humanDate.dateText
       }
       return ''
