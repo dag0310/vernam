@@ -96,6 +96,6 @@
   "connectionEstablished": "Connected established",
   "disconnected": "Disconnected",
   "unexpectedError": "Unexpected error",
-  "lastTimestamp": "Last timestamp",
+  "lastTimestamp": "Last messages timestamp",
   "showQrCodes": "Show QR codes"
 }
