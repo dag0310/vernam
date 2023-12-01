@@ -17,7 +17,7 @@ export default {
   name: 'app',
   created () {
     const pollMessages = async () => {
-      if (!this.$store.state.id || !this.isPollingActive()) {
+      if (!this.$store.state.id || this.chats == null || !this.isPollingActive()) {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
         return
       }
