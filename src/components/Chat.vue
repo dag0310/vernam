@@ -211,8 +211,8 @@ export default {
       }
     },
     refillKey () {
-      this.$ons.openActionSheet({buttons: [this.$t('iScanTheQrCodes'), this.$t('iShowTheQrCodes'), this.$t('cancel')], title: this.$t('whatIsYourPart'), cancelable: true}).then(response => {
-        if (response === 0) {
+      this.$ons.openActionSheet({buttons: [this.$t('iShowTheQrCodes'), this.$t('iScanTheQrCodes'), this.$t('cancel')], title: this.$t('whatIsYourPart'), cancelable: true}).then(response => {
+        if (response === 1) {
           this.$emit('push-page', {
             extends: RefillKeyActive,
             onsNavigatorProps: {
@@ -221,7 +221,7 @@ export default {
               },
             },
           })
-        } else if (response === 1) {
+        } else if (response === 0) {
           this.$emit('push-page', RefillKeyPassive)
         }
       })
