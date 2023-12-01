@@ -14,7 +14,7 @@
             {{ $store.state.id }}
           </div>
         </v-ons-list-item>
-        <v-ons-list-header>{{ $t('qrCodes') }}</v-ons-list-header>
+        <v-ons-list-header>{{ $t('showQrCodes') }}</v-ons-list-header>
         <v-ons-list-item>
           <div class="left">{{ $t('amount') }}:</div>
           <v-ons-input class="center" type="number" min="1" max="100" step="1" modifier="underbar" inputmode="numeric" v-model="numQrCodes"></v-ons-input>
