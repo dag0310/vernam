@@ -60,7 +60,11 @@ Vue.mixin({
       } else if (timestamp >= todayAtMidnightTimestamp - twentyFourHoursInMs) {
         dateText = this.$t('yesterday')
       } else if (timestamp >= todayAtMidnightTimestamp - (6 * twentyFourHoursInMs)) {
-        dateText = new Intl.DateTimeFormat(undefined, { weekday: 'long' }).format(date)
+        const formatOptions = { weekday: 'short', month: 'numeric', day: 'numeric' }
+        if (date.getFullYear() !== now.getFullYear()) {
+          formatOptions.year = 'numeric'
+        }
+        dateText = new Intl.DateTimeFormat(undefined, formatOptions).format(date)
       } else {
         dateText = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' }).format(date)
       }
