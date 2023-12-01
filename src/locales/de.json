@@ -96,6 +96,7 @@
   "connectionEstablished": "Verbindung hergestellt",
   "disconnected": "Verbindung getrennt",
   "unexpectedError": "Unerwarteter Fehler",
-  "lastTimestamp": "Letzter Nachrichten-Zeitstempel",
-  "showQrCodes": "QR-Codes zeigen"
+  "lastTimestamp": "Letzter Zeitstempel",
+  "showQrCodes": "QR-Codes zeigen",
+  "resetLastTimestamp": "Letzten Zeitstempel zurücksetzen"
 }

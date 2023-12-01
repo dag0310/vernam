@@ -48,7 +48,7 @@
         </v-ons-list-item>
         <v-ons-list-header>{{ $t('about') }}</v-ons-list-header>
         <v-ons-list-item>
-          <div class="center selectable">
+          <div class="center selectable" @click="resetLastTimestamp()">
             © 2018-2023 Daniel Geymayer<br>
             {{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br>
             {{ $t('version') }}: {{ buildTimestamp }}
@@ -122,7 +122,14 @@ export default {
           window.location.reload()
         }
       })
-    }
+    },
+    resetLastTimestamp () {
+      this.$ons.openActionSheet({ buttons: [this.$t('resetLastTimestamp'), this.$t('cancel')], title: '', cancelable: true, destructive: 0 }).then(response => {
+        if (response === 0) {
+          this.$store.commit('setLastTimestamp', null)
+        }
+      })
+    },
   }
 }
 </script>
