@@ -116,6 +116,7 @@ export default {
           case 0:
             return false
           case 400: // Message validation failed, e.g. invalid base64 string
+            this.$ons.notification.toast('[DELETE] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
           case 401: // Message authentication failed
           case 404: // Message not found
             return true
