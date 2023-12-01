@@ -39,10 +39,10 @@ Vue.mixin({
     },
     buildNotificationPermissionNotSupportedMessage () {
       if (platform.ios) {
-        return this.$t('notificationPermissionNotSupportedIos')
+        return this.$t('notificationPermissionNotSupportedIos') + (platform.pwa ? ' iOS Version 16.4+' : '')
       }
       if (platform.android) {
-        return this.$t('notificationPermissionNotSupportedAndroid')
+        return this.$t('notificationPermissionNotSupportedAndroid') + (platform.pwa ? ' Google Chrome Version 50+' : '')
       }
       return this.$t('notificationPermissionNotSupportedOther')
     },

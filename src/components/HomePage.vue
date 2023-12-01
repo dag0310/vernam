@@ -19,8 +19,7 @@
         <v-ons-button v-if="serviceWorkerRegistration != null && notificationPermission === 'default'" modifier="large" @click="enablePushNotifications()" :disabled="!pushNotificationButtonEnabled">{{ $t('enablePushNotifications') }}</v-ons-button>
         <v-ons-card v-if="serviceWorkerRegistration == null || notificationPermission == null ">
           {{ $t('notificationPermissionNotSupported') }}
-          <span v-if="isIos" v-html="$t('notificationPermissionNotSupportedIos')"></span>
-          <span v-if="isAndroid" v-html="$t('notificationPermissionNotSupportedAndroid')"></span>
+          <span v-html="buildNotificationPermissionNotSupportedMessage()"></span>
         </v-ons-card>
       </p>
       <p class="marginalizedContent" v-if="searchText.length <= 0 && filteredChats.length <= 0">
