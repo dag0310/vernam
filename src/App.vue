@@ -35,10 +35,12 @@ export default {
             this.$store.commit('setLastTimestamp', message.timestamp)
             continue
           }
-          if (!await this.deleteMessageOnServerAndSaveLocally(message, chat)) {
-            break
+          const expectedDeleteMessageResponse = await this.deleteMessageOnServerAndSaveLocally(message, chat)
+          if (expectedDeleteMessageResponse === true) {
+            this.$store.commit('setLastTimestamp', message.timestamp)
+            continue
           }
-          this.$store.commit('setLastTimestamp', message.timestamp)
+          break
         }
       } catch (error) {
         switch (error.status) {
