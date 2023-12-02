@@ -83,12 +83,16 @@ export default {
     return {
       debugString: '',
       showIntroDialog: false,
-      // BUILD_TIMESTAMP will be injected during build process, not available during development, which is OK
-      buildTimestamp: BUILD_TIMESTAMP, // eslint-disable-line
+      notificationPermission: ('Notification' in window) ? Notification.permission : null,
+      buildTimestamp: '',
     }
   },
   created () {
-    this.notificationPermission = ('Notification' in window) ? Notification.permission : null
+    try {
+      this.buildTimestamp = BUILD_TIMESTAMP // eslint-disable-line
+    } catch (error) {
+      this.buildTimestamp = 'ONLY_IN_BUILD_MODE'
+    }
   },
   computed: {
     numQrCodes: {
