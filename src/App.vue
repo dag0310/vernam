@@ -115,7 +115,7 @@ export default {
         switch (error.status) {
           case 0:
             return false
-          case 400: // Message validation failed, e.g. invalid base64 string
+          case 400: // Message validation failed
           case 401: // Message authentication failed
           case 404: // Message not found
             return true
