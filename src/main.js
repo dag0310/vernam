@@ -18,6 +18,7 @@ Vue.use(VueOnsen)
 Vue.use(VueChatScroll)
 Vue.use(VueResource)
 
+const DEBUG_IDS = []
 const twentyFourHoursInMs = 24 * 60 * 60 * 1000
 let pollingActive = true
 
@@ -28,6 +29,9 @@ Vue.mixin({
     }
   },
   methods: {
+    isDebugMode (id) {
+      return DEBUG_IDS.includes(id)
+    },
     setPollingActive (isActive) {
       if (pollingActive === isActive) {
         return

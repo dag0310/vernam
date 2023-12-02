@@ -12,12 +12,10 @@ import HomePage from './components/HomePage'
 import OtpCrypto from 'otp-crypto'
 
 const pollMessagesIntervalInMs = 1000
-const DEBUG_ID = null
 
 export default {
   name: 'app',
   created () {
-    this.isDebugMode = this.$store.state.id != null && this.$store.state.id === DEBUG_ID
     const pollMessages = async () => {
       if (!this.$store.state.id || !this.isPollingActive()) {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
@@ -34,7 +32,7 @@ export default {
           const chatCandidates = (senderChat != null) ? [senderChat] : this.chats.filter(chat => chat.otherId == null)
           const chat = chatCandidates.find(chatCandidate => this.isAuthenticatedPayload(message.payload, chatCandidate.otherKey))
           if (chat == null) {
-            if (this.isDebugMode) {
+            if (this.isDebugMode(this.$store.state.id)) {
               this.$ons.notification.toast('isAuthenticatedPayload() = ' + this.isAuthenticatedPayload(message.payload, senderChat.otherKey), { timeout: 3000 })
               this.$ons.notification.toast('senderChat.otherId = ' + senderChat.otherId, { timeout: 3000 })
               this.$ons.notification.toast('senderChat.otherKey = ' + senderChat.otherKey, { timeout: 3000 })
@@ -69,7 +67,6 @@ export default {
   },
   data () {
     return {
-      isDebugMode: false,
       pageStack: [HomePage],
     }
   },
@@ -126,7 +123,7 @@ export default {
           case 400: // Message validation failed
           case 401: // Message authentication failed
           case 404: // Message not found
-            if (this.isDebugMode) {
+            if (this.isDebugMode(this.$store.state.id)) {
               this.$ons.notification.toast('message.sender = ' + message.sender, { timeout: 3000 })
               this.$ons.notification.toast('message.timestamp = ' + message.timestamp, { timeout: 3000 })
               this.$ons.notification.toast('base64Key = ' + base64Key, { timeout: 3000 })

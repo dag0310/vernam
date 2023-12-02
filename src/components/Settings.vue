@@ -14,6 +14,11 @@
             {{ $store.state.id }}
           </div>
         </v-ons-list-item>
+        <v-ons-list-item v-if="isDebugMode($store.state.id)">
+          <div class="center selectable">
+            <textarea>{{ debugString }}</textarea>
+          </div>
+        </v-ons-list-item>
         <v-ons-list-header>{{ $t('showQrCodes') }}</v-ons-list-header>
         <v-ons-list-item>
           <div class="left">{{ $t('amount') }}:</div>
@@ -48,9 +53,9 @@
         </v-ons-list-item>
         <v-ons-list-header>{{ $t('about') }}</v-ons-list-header>
         <v-ons-list-item>
-          <div class="center selectable" @click="showHiddenOptions()">
+          <div class="center selectable" @click="showDebugActions()">
             © 2018-2023 Daniel Geymayer<br>
-            {{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp || $t('unknown') }}<br>
+            <template v-if="isDebugMode($store.state.id)">{{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br></template>
             {{ $t('version') }}: {{ buildTimestamp }}
           </div>
         </v-ons-list-item>
@@ -76,6 +81,7 @@ export default {
   name: 'settings',
   data () {
     return {
+      debugString: '',
       showIntroDialog: false,
       // BUILD_TIMESTAMP will be injected during build process, not available during development, which is OK
       buildTimestamp: BUILD_TIMESTAMP, // eslint-disable-line
@@ -123,7 +129,10 @@ export default {
         }
       })
     },
-    showHiddenOptions () {
+    showDebugActions () {
+      if (!this.isDebugMode(this.$store.state.id)) {
+        return
+      }
       this.$ons.openActionSheet({ buttons: [this.$t('reloadApp'), this.$t('resetLastTimestamp'), this.$t('cancel')], title: '', cancelable: true, destructive: 0 }).then(response => {
         switch (response) {
           case 0:
