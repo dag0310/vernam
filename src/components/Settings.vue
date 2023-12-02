@@ -14,7 +14,7 @@
             {{ $store.state.id }}
           </div>
         </v-ons-list-item>
-        <v-ons-list-item v-if="isDebugMode($store.state.id)">
+        <v-ons-list-item v-if="isDebugMode($store.state.id) && debugString.length > 0">
           <div class="center selectable">
             <textarea>{{ debugString }}</textarea>
           </div>
