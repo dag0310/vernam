@@ -18,9 +18,9 @@ Vue.use(VueOnsen)
 Vue.use(VueChatScroll)
 Vue.use(VueResource)
 
-const DEBUG_IDS = []
 const twentyFourHoursInMs = 24 * 60 * 60 * 1000
 let pollingActive = true
+let debugMode = false
 
 Vue.mixin({
   data () {
@@ -29,8 +29,14 @@ Vue.mixin({
     }
   },
   methods: {
-    isDebugMode (id) {
-      return DEBUG_IDS.includes(id)
+    setDebugMode (isDebugMode) {
+      if (debugMode === isDebugMode) {
+        return
+      }
+      debugMode = isDebugMode
+    },
+    isDebugMode () {
+      return debugMode
     },
     setPollingActive (isActive) {
       if (pollingActive === isActive) {

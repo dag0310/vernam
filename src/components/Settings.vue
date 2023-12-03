@@ -14,7 +14,7 @@
             {{ $store.state.id }}
           </div>
         </v-ons-list-item>
-        <v-ons-list-item v-if="isDebugMode($store.state.id) && debugString.length > 0">
+        <v-ons-list-item v-if="debugMode && debugString.length > 0">
           <div class="center selectable">
             <textarea>{{ debugString }}</textarea>
           </div>
@@ -55,7 +55,7 @@
         <v-ons-list-item>
           <div class="center selectable" @click="showDebugActions()">
             © 2018-2023 Daniel Geymayer<br>
-            <template v-if="isDebugMode($store.state.id)">{{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br></template>
+            <template v-if="debugMode">{{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br></template>
             {{ $t('version') }}: {{ buildTimestamp }}
           </div>
         </v-ons-list-item>
@@ -81,6 +81,8 @@ export default {
   name: 'settings',
   data () {
     return {
+      debugMode: this.isDebugMode(),
+      debugModeCounter: 0,
       debugString: '',
       showIntroDialog: false,
       notificationPermission: ('Notification' in window) ? Notification.permission : null,
@@ -134,7 +136,12 @@ export default {
       })
     },
     showDebugActions () {
-      if (!this.isDebugMode(this.$store.state.id)) {
+      this.debugModeCounter += 1
+      if (this.debugModeCounter >= 10) {
+        this.setDebugMode(true)
+        this.debugMode = true
+      }
+      if (!this.isDebugMode()) {
         return
       }
       this.$ons.openActionSheet({ buttons: [this.$t('reloadApp'), this.$t('resetLastTimestamp'), this.$t('cancel')], title: '', cancelable: true, destructive: 0 }).then(response => {
