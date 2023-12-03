@@ -35,7 +35,6 @@ export default {
             if (this.isDebugMode(this.$store.state.id)) {
               this.$ons.notification.toast('isAuthenticatedPayload() = ' + this.isAuthenticatedPayload(message.payload, senderChat.otherKey), { timeout: 3000 })
               this.$ons.notification.toast('senderChat.otherId = ' + senderChat.otherId, { timeout: 3000 })
-              this.$ons.notification.toast('senderChat.otherKey = ' + senderChat.otherKey, { timeout: 3000 })
             }
             this.$store.commit('setLastTimestamp', message.timestamp)
             continue
