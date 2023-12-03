@@ -150,12 +150,8 @@ export default {
           case 0:
             this.$ons.notification.toast(this.$t('networkError'), { timeout: 3000 })
             break
-          case 500:
-            this.$ons.notification.toast(this.$t('vapidPublicKeyNotSet'), { timeout: 3000 })
-            break
           default:
-            this.$ons.notification.toast(this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
-            console.error(error)
+            this.handleUnexpectedError(error)
         }
         this.pushNotificationButtonEnabled = true
         return
@@ -191,8 +187,7 @@ export default {
             this.$ons.notification.toast(this.$t('pushNotificationSubscriptionDuplicateErrorMessage'), { timeout: 3000 })
             break
           default:
-            this.$ons.notification.toast(this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
-            console.error(error)
+            this.handleUnexpectedError(error)
         }
       } finally {
         this.pushNotificationButtonEnabled = true

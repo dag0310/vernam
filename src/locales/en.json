@@ -88,16 +88,15 @@
   "notificationPermissionNotSupportedIos": "Select \"Add to Home Screen\" in the Safari sharing sheet to add Vernam to your home screen and open it from there as app from now on.",
   "notificationPermissionNotSupportedAndroid": "Select \"Add to Home screen\" in the Google Chrome menu to add Vernam to your home screen and open it from there as app from now on.",
   "notificationPermissionNotSupportedOther": "<b>Open Vernam in Safari on your iPhone or Chrome on your Android device.</b>",
-  "unexpectedErrorWithCode": "Unexpected error. Error code: {code}",
   "alright": "Alright",
   "readLater": "Read later",
   "introTitle": "What is Vernam?",
   "introText": "Vernam is no ordinary messenger app.\n\nTo exchange messages with a contact, you must meet in person and load a shared random key. Each time you send a message, part of the key is used once to encrypt the message.\n\n<b>This guarantees perfect end-to-end encryption, which is even more secure than conventional messengers such as Signal, WhatsApp or Telegram.</b>",
   "connectionEstablished": "Connected established",
   "disconnected": "Disconnected",
-  "unexpectedError": "Unexpected error",
   "lastTimestamp": "Last timestamp",
   "showQrCodes": "Show QR codes",
   "resetLastTimestamp": "Reset last timestamp",
-  "reloadApp": "Reload page"
+  "reloadApp": "Reload page",
+  "unexpectedError": "Unexpected error: {message} ({code})"
 }

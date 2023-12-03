@@ -203,8 +203,7 @@ export default {
             this.$ons.notification.toast(this.$t('networkError'), { timeout: 3000 })
             break
           default:
-            this.$ons.notification.toast(this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
-            console.error(error)
+            this.handleUnexpectedError(error)
         }
       } finally {
         this.sendButtonEnabled = true

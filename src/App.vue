@@ -51,12 +51,7 @@ export default {
           case 0:
             break
           default:
-            if (error.status != null) {
-              this.$ons.notification.toast('[GET] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
-            } else {
-              this.$ons.notification.toast('[GET] ' + this.$t('unexpectedError', { timeout: 3000 }))
-            }
-            console.error(error)
+            this.handleUnexpectedError(error, '[GET]')
         }
       } finally {
         setTimeout(pollMessages, pollMessagesIntervalInMs)
@@ -126,16 +121,11 @@ export default {
               this.$ons.notification.toast('message.sender = ' + message.sender, { timeout: 3000 })
               this.$ons.notification.toast('message.timestamp = ' + message.timestamp, { timeout: 3000 })
               this.$ons.notification.toast('base64Key = ' + base64Key, { timeout: 3000 })
-              this.$ons.notification.toast('[DELETE][DEBUG] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
+              this.handleUnexpectedError(error, '[DELETE][DEBUG]')
             }
             return true
           default:
-            if (error.status != null) {
-              this.$ons.notification.toast('[DELETE] ' + this.$t('unexpectedErrorWithCode', { code: error.status }), { timeout: 3000 })
-            } else {
-              this.$ons.notification.toast('[DELETE] ' + this.$t('unexpectedError', { timeout: 3000 }))
-            }
-            console.error(error)
+            this.handleUnexpectedError(error, '[DELETE]')
             return false
         }
       }
