@@ -79,7 +79,7 @@
   "vapidPublicKeyNotSet": "Öffentlicher VAPID-Schlüssel nicht gesetzt.",
   "vapidPublicKeyNotInResponse": "Öffentlicher VAPID-Schlüssel nicht in Antwort.",
   "pushNotifications": "Push-Mitteilungen",
-  "pushNotificationsGrantedMessage": "Berechtigung <b>erteilt</b> &ndash; sie kann über die Browser-Einstellungen wieder entzogen werden.",
+  "pushNotificationsGrantedMessage": "Berechtigung <b>erteilt</b> &ndash; sie kann über die System-Einstellungen wieder entzogen werden.",
   "pushNotificationsDeniedMessage": "Berechtigung <b>abgelehnt</b> &ndash; sie kann über die Browser-Einstellungen wieder  gewährt werden.",
   "deleteAllMessagesLocally": "Alle Nachrichten lokal löschen",
   "deleteAllMessagesLocallyTitle": "Sicher alle Nachrichten in diesem Chat löschen?",
