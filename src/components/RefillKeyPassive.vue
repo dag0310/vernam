@@ -46,7 +46,7 @@
       }
     },
     created () {
-      this.setPollingActive(false)
+      this.$global.state.pollingActive = false
       this.numQrCodes = this.$store.state.numQrCodes
       this.bytesPerQrCode = this.$store.state.bytesPerQrCode
       this.initQrCodes()
@@ -127,7 +127,7 @@
             this.saveQrCodeKeys()
             this.refilledAudio.play()
             this.stopAutoplay()
-            this.setPollingActive(true)
+            this.$global.state.pollingActive = true
             this.$emit('pop-page')
           }
         })
@@ -136,7 +136,7 @@
         this.$ons.openActionSheet({ buttons: [this.$t('yesAbort'), this.$t('noContinue')], title: this.$t('sureYouWantToCancel'), cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
             this.stopAutoplay()
-            this.setPollingActive(true)
+            this.$global.state.pollingActive = true
             this.$emit('pop-page')
           }
         })

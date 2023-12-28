@@ -20,7 +20,6 @@ Vue.use(VueChatScroll)
 Vue.use(VueResource)
 
 const twentyFourHoursInMs = 24 * 60 * 60 * 1000
-let pollingActive = true
 
 Vue.mixin({
   data () {
@@ -29,15 +28,6 @@ Vue.mixin({
     }
   },
   methods: {
-    setPollingActive (isActive) {
-      if (pollingActive === isActive) {
-        return
-      }
-      pollingActive = isActive
-    },
-    isPollingActive () {
-      return pollingActive
-    },
     handleUnexpectedError (error, prefix) {
       console.error(error)
       const code = error.status || 'NO_CODE'
@@ -89,6 +79,8 @@ Vue.mixin({
 
 Vue.http.options.root = process.env.API_URL || 'http://localhost:3000'
 
+Vue.prototype.$global = global
+
 new Vue({
   el: '#app',
   i18n,
@@ -96,5 +88,3 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
-
-Vue.prototype.$global = global

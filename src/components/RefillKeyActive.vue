@@ -37,7 +37,7 @@
       }
     },
     created () {
-      this.setPollingActive(false)
+      this.$global.state.pollingActive = false
       this.scanAudio = new Audio('/static/audio/scan.wav')
       this.refilledAudio = new Audio('/static/audio/refilled.wav')
     },
@@ -121,13 +121,13 @@
         if (this.sendMessageCallback != null) {
           this.sendMessageCallback()
         }
-        this.setPollingActive(true)
+        this.$global.state.pollingActive = true
         this.$emit('pop-page')
       },
       cancel () {
         this.$ons.openActionSheet({ buttons: [this.$t('yesAbort'), this.$t('noContinue')], title: this.$t('sureYouWantToCancel'), cancelable: true, destructive: 0 }).then(response => {
           if (response === 0) {
-            this.setPollingActive(true)
+            this.$global.state.pollingActive = true
             this.$emit('pop-page')
           }
         })
