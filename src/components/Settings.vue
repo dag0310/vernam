@@ -8,13 +8,15 @@
     </v-ons-toolbar>
     <div class="content">
       <v-ons-list>
-        <v-ons-list-header>{{ $t('id') }}</v-ons-list-header>
-        <v-ons-list-item>
-          <div class="center selectable">
-            {{ $store.state.id }}
-          </div>
-        </v-ons-list-item>
-        <v-ons-list-item v-if="debugMode && debugString.length > 0">
+        <template v-if="$global.state.debugMode">
+          <v-ons-list-header>{{ $t('id') }}</v-ons-list-header>
+          <v-ons-list-item>
+            <div class="center selectable">
+              {{ $store.state.id }}
+            </div>
+          </v-ons-list-item>
+        </template>
+        <v-ons-list-item v-if="$global.state.debugMode && debugString.length > 0">
           <div class="center selectable">
             <textarea>{{ debugString }}</textarea>
           </div>
@@ -55,7 +57,7 @@
         <v-ons-list-item>
           <div class="center selectable" @click="showDebugActions()">
             © 2018-2023 Daniel Geymayer<br>
-            <template v-if="debugMode">{{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br></template>
+            <template v-if="$global.state.debugMode">{{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br></template>
             {{ $t('version') }}: {{ buildTimestamp }}
           </div>
         </v-ons-list-item>
@@ -81,7 +83,6 @@ export default {
   name: 'settings',
   data () {
     return {
-      debugMode: this.isDebugMode(),
       debugModeCounter: 0,
       debugString: '',
       showIntroDialog: false,
@@ -138,10 +139,9 @@ export default {
     showDebugActions () {
       this.debugModeCounter += 1
       if (this.debugModeCounter >= 10) {
-        this.setDebugMode(true)
-        this.debugMode = true
+        this.$global.state.debugMode = true
       }
-      if (!this.isDebugMode()) {
+      if (!this.$global.state.debugMode) {
         return
       }
       this.$ons.openActionSheet({ buttons: [this.$t('reloadApp'), this.$t('resetLastTimestamp'), this.$t('cancel')], title: '', cancelable: true, destructive: 0 }).then(response => {

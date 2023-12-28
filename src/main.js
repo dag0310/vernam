@@ -9,6 +9,7 @@ import VueChatScroll from 'vue-chat-scroll'
 import VueResource from 'vue-resource'
 import platform from 'platform-detect'
 import store from './store'
+import global from './global'
 import App from './App'
 import i18n from './i18n'
 
@@ -20,24 +21,14 @@ Vue.use(VueResource)
 
 const twentyFourHoursInMs = 24 * 60 * 60 * 1000
 let pollingActive = true
-let debugMode = false
 
 Vue.mixin({
   data () {
     return {
-      AUTH_PREAMBLE: 'VERNAM'
+      AUTH_PREAMBLE: 'VERNAM',
     }
   },
   methods: {
-    setDebugMode (isDebugMode) {
-      if (debugMode === isDebugMode) {
-        return
-      }
-      debugMode = isDebugMode
-    },
-    isDebugMode () {
-      return debugMode
-    },
     setPollingActive (isActive) {
       if (pollingActive === isActive) {
         return
@@ -105,3 +96,5 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+
+Vue.prototype.$global = global
