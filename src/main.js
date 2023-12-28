@@ -30,7 +30,7 @@ Vue.mixin({
   methods: {
     handleUnexpectedError (error, prefix) {
       console.error(error)
-      const code = error.status || 'NO_CODE'
+      const code = (error.status != null) ? error.status : 'NO_CODE'
       let message = (prefix != null) ? prefix + ' ' : ''
       message += error.body ? (error.body.message || 'NO_MESSAGE') : 'NO_BODY'
       this.$ons.notification.toast(this.$t('unexpectedError', { code, message }), { timeout: 3000 })
