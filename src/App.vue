@@ -32,10 +32,6 @@ export default {
           const chatCandidates = (senderChat != null) ? [senderChat] : this.chats.filter(chat => chat.otherId == null)
           const chat = chatCandidates.find(chatCandidate => this.isAuthenticatedPayload(message.payload, chatCandidate.otherKey))
           if (chat == null) {
-            if (this.$global.state.debugMode) {
-              this.$ons.notification.toast('isAuthenticatedPayload() = ' + this.isAuthenticatedPayload(message.payload, senderChat.otherKey), { timeout: 3000 })
-              this.$ons.notification.toast('senderChat.otherId = ' + senderChat.otherId, { timeout: 3000 })
-            }
             this.$store.commit('setLastTimestamp', message.timestamp)
             continue
           }
@@ -126,12 +122,6 @@ export default {
           case 400: // Message validation failed
           case 401: // Message authentication failed
           case 404: // Message not found
-            if (this.$global.state.debugMode) {
-              this.$ons.notification.toast('message.sender = ' + message.sender, { timeout: 3000 })
-              this.$ons.notification.toast('message.timestamp = ' + message.timestamp, { timeout: 3000 })
-              this.$ons.notification.toast('base64Key = ' + message.base64Key, { timeout: 3000 })
-              this.handleUnexpectedError(error, '[DELETE][DEBUG]')
-            }
             return true
           default:
             this.handleUnexpectedError(error, '[DELETE]')
