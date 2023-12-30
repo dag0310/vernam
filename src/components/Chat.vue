@@ -47,7 +47,7 @@
     </div>
     <div class="buffer" v-if="showBuffer"></div>
     <v-ons-bottom-toolbar>
-      <textarea class="textarea" v-model="message" autocomplete="off"></textarea>
+      <textarea class="textarea" v-model="message" autocomplete="off" :disabled="!lastMessageSynced"></textarea>
       <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="message.trim().length <= 0 || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !chat.otherId">{{ $t('send') }}</v-ons-button>
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
@@ -72,9 +72,11 @@
 </template>
 
 <script>
-import OtpCrypto from 'otp-crypto'
 import RefillKeyActive from './RefillKeyActive'
 import RefillKeyPassive from './RefillKeyPassive'
+
+import { v4 as uuidv4 } from 'uuid'
+import OtpCrypto from 'otp-crypto'
 
 const keyAlmostEmptyThreshold = 100
 
@@ -110,7 +112,7 @@ export default {
     },
     filteredMessages () {
       return this.chat.messages
-        .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
+        .filter(message => message.synced && message.text.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((messageA, messageB) => messageA.timestamp - messageB.timestamp)
         .map(message => {
           const tempDiv = document.createElement('div')
@@ -139,6 +141,10 @@ export default {
     },
     otpCryptoResultWithoutPreamble () {
       return OtpCrypto.encrypt(this.message, this.ownKey)
+    },
+    lastMessageSynced () {
+      const lastMessage = this.chat.messages[this.chat.messages.length - 1]
+      return lastMessage == null || lastMessage.synced
     },
   },
   methods: {
@@ -173,29 +179,43 @@ export default {
       })
     },
     async sendMessage () {
-      if (!this.otpCryptoResult.isKeyLongEnough) {
-        this.$ons.notification.toast(this.$t('keyNotLongEnough'), { timeout: 1000 })
-        return
-      }
       if (!this.chat.otherId) {
         this.$ons.notification.toast(this.$t('otherIdNotSet'), { timeout: 1000 })
         return
       }
+      this.sendButtonEnabled = false
       const requestBody = {
         sender: this.$store.state.id,
         receiver: this.chat.otherId,
-        payload: this.otpCryptoResult.base64Encrypted
       }
-      this.sendButtonEnabled = false
-      try {
-        const response = await this.$http.post('messages', requestBody, { timeout: 5000 })
+      if (this.lastMessageSynced) {
+        if (!this.otpCryptoResult.isKeyLongEnough) {
+          this.$ons.notification.toast(this.$t('keyNotLongEnough'), { timeout: 1000 })
+          this.sendButtonEnabled = true
+          return
+        }
+        requestBody.id = uuidv4()
+        requestBody.payload = this.otpCryptoResult.base64Encrypted
         this.chat.messages.push({
-          id: `${response.body.sender}${response.body.timestamp}`,
+          id: requestBody.id,
           own: true,
           text: this.message,
-          timestamp: response.body.timestamp
+          payload: requestBody.payload,
+          timestamp: null,
+          synced: false,
         })
         this.$store.commit('updateOwnKey', OtpCrypto.encryptedDataConverter.bytesToBase64(this.otpCryptoResult.remainingKey))
+      } else {
+        const lastMessage = this.chat.messages[this.chat.messages.length - 1]
+        requestBody.id = lastMessage.id
+        requestBody.payload = lastMessage.payload
+      }
+      try {
+        const response = await this.$http.post('messages', requestBody, { timeout: 5000 })
+        const newMessage = this.chat.messages[this.chat.messages.length - 1]
+        newMessage.synced = true
+        newMessage.timestamp = response.body.timestamp
+        delete newMessage['payload']
         this.message = ''
       } catch (error) {
         switch (error.status) {

@@ -39,12 +39,51 @@ export default {
             this.$store.commit('setLastTimestamp', message.timestamp)
             continue
           }
-          const expectedDeleteMessageResponse = await this.deleteMessageOnServerAndSaveLocally(message, chat)
-          if (expectedDeleteMessageResponse === true) {
+
+          if (chat.otherId == null) {
+            this.$store.commit('setChatOtherId', {
+              id: chat.id,
+              otherId: message.sender,
+            })
+          }
+
+          if (chat.messages.some(m => m.id === message.id)) {
             this.$store.commit('setLastTimestamp', message.timestamp)
             continue
           }
-          break
+
+          const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(chat.otherKey)
+          const otherKeyBytesPreambleLength = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_PREAMBLE).length)
+          const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytesPreambleLength)
+          const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
+
+          this.$store.commit('updateOtherKey', {
+            id: chat.id,
+            otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
+          })
+
+          chat.messages.push({
+            id: message.id,
+            own: false,
+            text: otpCryptoResult.plaintextDecrypted.substring(this.AUTH_PREAMBLE.length),
+            timestamp: message.timestamp,
+            base64Key: base64Key,
+            synced: false,
+          })
+
+          if (this.$store.state.currentChatId !== chat.id) {
+            this.$store.commit('setNewMessagesTrue', chat.id)
+          }
+        }
+        for (const chat of this.chats) {
+          for (const message of chat.messages.filter(m => !m.own && !m.synced)) {
+            const messageHandled = await this.handleMessageOnServer(message)
+            if (messageHandled) {
+              this.$store.commit('setLastTimestamp', message.timestamp)
+              message.synced = true
+              delete message['base64Key']
+            }
+          }
         }
       } catch (error) {
         switch (error.status) {
@@ -76,39 +115,9 @@ export default {
       const payloadPreamble = otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_PREAMBLE.length)
       return payloadPreamble === this.AUTH_PREAMBLE
     },
-    async deleteMessageOnServerAndSaveLocally (message, chat) {
-      const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(chat.otherKey)
-      const otherKeyBytesPreambleLength = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_PREAMBLE).length)
-      const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytesPreambleLength)
-
+    async handleMessageOnServer (message) {
       try {
-        await this.$http.delete(`messages/${encodeURIComponent(message.sender)}/${message.timestamp}/${encodeURIComponent(base64Key)}`, { timeout: 5000, headers: { 'Content-Type': 'text/plain' } })
-
-        if (chat.otherId == null) {
-          this.$store.commit('setChatOtherId', {
-            id: chat.id,
-            otherId: message.sender,
-          })
-        }
-
-        const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
-
-        this.$store.commit('updateOtherKey', {
-          id: chat.id,
-          otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
-        })
-
-        chat.messages.push({
-          id: `${message.sender}${message.timestamp}`,
-          own: false,
-          text: otpCryptoResult.plaintextDecrypted.substring(this.AUTH_PREAMBLE.length),
-          timestamp: message.timestamp
-        })
-
-        if (this.$store.state.currentChatId !== chat.id) {
-          this.$store.commit('setNewMessagesTrue', chat.id)
-        }
-
+        await this.$http.delete(`messages/${message.id}/${encodeURIComponent(message.base64Key)}`, { timeout: 5000, headers: { 'Content-Type': 'text/plain' } })
         return true
       } catch (error) {
         switch (error.status) {
@@ -120,7 +129,7 @@ export default {
             if (this.$global.state.debugMode) {
               this.$ons.notification.toast('message.sender = ' + message.sender, { timeout: 3000 })
               this.$ons.notification.toast('message.timestamp = ' + message.timestamp, { timeout: 3000 })
-              this.$ons.notification.toast('base64Key = ' + base64Key, { timeout: 3000 })
+              this.$ons.notification.toast('base64Key = ' + message.base64Key, { timeout: 3000 })
               this.handleUnexpectedError(error, '[DELETE][DEBUG]')
             }
             return true
