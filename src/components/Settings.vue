@@ -56,7 +56,6 @@
         <v-ons-list-header>{{ $t('about') }}</v-ons-list-header>
         <v-ons-list-item>
           <div class="center selectable" @click="showDebugActions()">
-            © 2018-2023 Daniel Geymayer<br>
             <template v-if="$global.state.debugMode">{{ $t('lastTimestamp') }}: {{ $store.state.lastTimestamp }}<br></template>
             {{ $t('version') }}: {{ buildTimestamp }}
           </div>
