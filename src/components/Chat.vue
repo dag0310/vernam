@@ -119,6 +119,7 @@ export default {
           tempDiv.appendChild(document.createTextNode(message.text))
           message.textHtmlEscaped = tempDiv.innerHTML
           message.html = tempDiv.innerHTML
+            .trim()
             .replace(/\n/g, ' <br> ')
             .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>')
           return message
