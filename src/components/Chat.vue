@@ -48,7 +48,7 @@
     <div class="buffer" v-if="showBuffer"></div>
     <v-ons-bottom-toolbar>
       <textarea class="textarea" v-model="message" autocomplete="off" :disabled="!lastMessageSynced"></textarea>
-      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="message.trim().length <= 0 || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !chat.otherId">{{ $t('send') }}</v-ons-button>
+      <v-ons-button modifier="quiet" class="sendButton" @click="sendMessage" :disabled="!message || !otpCryptoResult.isKeyLongEnough || !sendButtonEnabled || !chat.otherId">{{ $t('send') }}</v-ons-button>
     </v-ons-bottom-toolbar>
     <v-ons-dialog cancelable :visible.sync="informationDialogVisible">
       <p><b class="chatName">{{chat.name}}</b> <v-ons-icon @click="newChatName = chat.name; showEditNameDialog = true" icon="ion-ios-create, material:ion-md-create" class="editIcon" :aria-label="$t('editName')"></v-ons-icon></p>
