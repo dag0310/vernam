@@ -1,50 +1,58 @@
 <template>
-  <v-ons-navigator swipeable
-    :page-stack="pageStack"
-    @push-page="pageStack.push($event)"
-    @pop-page="pageStack.pop($event)"
-    @replace-page="pageStack.pop(); pageStack.push($event)"
-  ></v-ons-navigator>
+  <ion-app>
+    <ion-router-outlet />
+  </ion-app>
 </template>
 
-<script>
-import HomePage from './components/HomePage'
+<script lang="ts">
+import { IonApp, IonRouterOutlet } from '@ionic/vue'
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+import { AxiosError } from 'axios'
 import OtpCrypto from 'otp-crypto'
+
+import mixin from './mixin'
+import { ApiMessageResponseBody, Chat, Message } from './types'
 
 const pollMessagesIntervalInMs = 1000
 
-export default {
-  name: 'app',
-  created () {
+export default defineComponent({
+  components: { IonApp, IonRouterOutlet },
+  props: {
+    $store: Object as PropType<any>,
+    $global: Object as PropType<any>,
+  },
+  mixins: [mixin],
+  mounted() {
     const pollMessages = async () => {
       if (!this.$store.state.id || !this.$global.state.pollingActive) {
-        setTimeout(pollMessages, pollMessagesIntervalInMs)
+        setTimeout(() => { pollMessages() }, pollMessagesIntervalInMs)
         return
       }
-      const params = {}
-      if (this.$store.state.lastTimestamp != null) {
-        params.timestamp = this.$store.state.lastTimestamp
+      const params: { timestamp?: number } = {}
+      if (this.lastTimestamp != null) {
+        params.timestamp = this.lastTimestamp
       }
       try {
         const response = await this.$http.get(`messages/${this.$store.state.id}`, { timeout: 5000, params })
-        for (const message of response.body) {
-          let senderChat = this.chats.find(chat => chat.otherId === message.sender)
+        for (const message of response.data as ApiMessageResponseBody[]) {
+          const senderChat = this.chats.find(chat => chat.otherId === message.sender)
           const chatCandidates = (senderChat != null) ? [senderChat] : this.chats.filter(chat => chat.otherId == null)
           const chat = chatCandidates.find(chatCandidate => this.isAuthenticatedPayload(message.payload, chatCandidate.otherKey))
           if (chat == null) {
-            this.$store.commit('setLastTimestamp', message.timestamp)
+            this.lastTimestamp = message.timestamp
             continue
           }
 
           if (chat.otherId == null) {
             this.$store.commit('setChatOtherId', {
-              id: chat.id,
+              chatId: chat.id,
               otherId: message.sender,
             })
           }
 
           if (chat.messages.some(m => m.id === message.id)) {
-            this.$store.commit('setLastTimestamp', message.timestamp)
+            this.lastTimestamp = message.timestamp
             continue
           }
 
@@ -54,136 +62,106 @@ export default {
           const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
 
           this.$store.commit('updateOtherKey', {
-            id: chat.id,
-            otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey)
+            chatId: chat.id,
+            otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey),
           })
 
-          chat.messages.push({
+          const newMessage: Message = {
             id: message.id,
             own: false,
             text: otpCryptoResult.plaintextDecrypted.substring(this.AUTH_PREAMBLE.length),
             timestamp: message.timestamp,
-            base64Key: base64Key,
             synced: false,
+            base64Key,
+          }
+          this.$store.commit('addMessage', {
+            chatId: chat.id,
+            message: newMessage,
           })
 
           if (this.$store.state.currentChatId !== chat.id) {
-            this.$store.commit('setNewMessagesTrue', chat.id)
+            this.$store.commit('setHasNewMessage', {
+              chatId: chat.id,
+              hasNewMessage: true,
+            })
           }
         }
         for (const chat of this.chats) {
           for (const message of chat.messages.filter(m => !m.own && !m.synced)) {
             const messageHandled = await this.handleMessageOnServer(message)
             if (messageHandled) {
-              this.$store.commit('setLastTimestamp', message.timestamp)
-              message.synced = true
-              delete message['base64Key']
+              this.lastTimestamp = message.timestamp
+              this.$store.commit('syncDeletedMessage', {
+                chatId: chat.id,
+                messageId: message.id,
+              })
             }
           }
         }
       } catch (error) {
-        switch (error.status) {
-          case 0:
-            break
-          default:
-            this.handleUnexpectedError(error, '[GET]')
+        if (!this.$http.isAxiosError(error)) {
+          this.handleUnexpectedError(error as AxiosError, '[GET] ')
         }
       } finally {
-        setTimeout(pollMessages, pollMessagesIntervalInMs)
+        setTimeout(() => { pollMessages() }, pollMessagesIntervalInMs)
       }
     }
     pollMessages()
   },
-  data () {
-    return {
-      pageStack: [HomePage],
-    }
-  },
   computed: {
-    chats () {
+    chats(): Chat[] {
       return this.$store.state.chats
-    }
+    },
+    lastTimestamp: {
+      get(): number {
+        return this.$store.state.lastTimestamp
+      },
+      set(value: number) {
+        return this.$store.commit('setLastTimestamp', value)
+      },
+    },
   },
   methods: {
-    isAuthenticatedPayload (payloadBase64, otherKeyBase64) {
+    isAuthenticatedPayload(payloadBase64: string, otherKeyBase64: string) {
       const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(otherKeyBase64)
       const otpCryptoResult = OtpCrypto.decrypt(payloadBase64, otherKeyBytes)
       const payloadPreamble = otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_PREAMBLE.length)
       return payloadPreamble === this.AUTH_PREAMBLE
     },
-    async handleMessageOnServer (message) {
+    async handleMessageOnServer(message: Message) {
+      if (message.base64Key == null) {
+        return true
+      }
       try {
         await this.$http.delete(`messages/${message.id}/${encodeURIComponent(message.base64Key)}`, { timeout: 5000, headers: { 'Content-Type': 'text/plain' } })
         return true
       } catch (error) {
-        switch (error.status) {
-          case 0:
-            return false
+        if (this.$http.isAxiosError(error)) {
+          return false
+        }
+        switch ((error as AxiosError).status) {
           case 400: // Message validation failed
           case 401: // Message authentication failed
           case 404: // Message not found
             return true
           default:
-            this.handleUnexpectedError(error, '[DELETE]')
+            this.handleUnexpectedError((error as AxiosError), '[DELETE] ')
             return false
         }
       }
-    }
-  }
-}
+    },
+  },
+})
 </script>
 
 <style>
-  body {
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: black;
-  }
-  .searchContainer {
-    position: relative;
-  }
-  .marginalizedContent {
-    padding: 0 15px;
-  }
-  .infoText {
-    text-align: center;
-    font-style: italic;
-    color: gray;
-  }
-  .searchContainer ons-search-input {
-    width: 100%;
-  }
-  .searchContainer ons-search-input .search-input {
-    padding-right: 30px;
-  }
-  .searchContainer .clearSearch {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 5px 10px;
-    cursor: pointer;
-    color: gray;
-  }
-  .selectable, .selectable * {
-    user-select: text;
-  }
-  .ellipsis {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .bold {
-    font-weight: bold;
-  }
-  .clearfix {
-    clear: both;
-  }
-  ons-toolbar.toolbar {
-    padding-top: 0 !important;
-  }
-  .page[status-bar-fill]>.toolbar:not(.toolbar--cover-content)+.page__background+.page__content,
-  .page[status-bar-fill]>.toolbar:not(.toolbar--transparent)+.page__background {
-    top: 44px !important;
-  }
+:root {
+  --message-padding: 10px;
+}
+
+.info-text {
+  text-align: center;
+  font-style: italic;
+  color: var(--ion-color-medium);
+}
 </style>

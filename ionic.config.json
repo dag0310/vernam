@@ -1,0 +1,7 @@
+{
+  "name": "vernam",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}

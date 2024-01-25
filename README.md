@@ -4,7 +4,7 @@ Perfect Secrecy Messaging made simple.
 
 Meet up, exchange your one-time pad (OTP) keys using QR code scanning and start texting with the most secure encryption method known to humanity.
 
-![Vernam app icon](static/img/favicon-256x256.png)
+![Vernam app icon](public/img/favicon-256x256.png)
 
 ## Usage
 - Add your contact
@@ -30,28 +30,16 @@ If you come across any other flaws, please create an issue or pull-request for t
 
 ## Development
 
-Create `.env` file in project root with content:
+Create `.env.development.local` and/or `.env.production.local` file in project root with content:
 ```
-API_URL_DEVELOPMENT=<API_URL_TO_USE_IN_DEVELOPMENT>
-API_URL_PRODUCTION=<API_URL_TO_USE_IN_PRODUCTION>
-```
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
+VITE_API_URL=<API_URL>
 ```
 
-## Compatibility
+## Backend
 
-- [Vernam Backend](https://github.com/dag0310/vernam-backend) Version 1.x.x
+- [Vernam Backend](https://github.com/dag0310/vernam-backend)
 
 ## Tech stack
 
-- [Vue.js](https://vuejs.org/)
-- [OnsenUI](https://onsen.io/)
+- [Vue.js 3](https://vuejs.org/)
+- [Ionic Framework](https://ionicframework.com)
