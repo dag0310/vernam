@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonFooter, IonToolbar, IonRow, IonCol, IonIcon, IonSearchbar, IonList, IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonCard, IonCardContent, IonButtons, IonBackButton, IonTitle, IonContent, IonTextarea, IonButton, actionSheetController, alertController } from '@ionic/vue'
+import { IonPage, IonHeader, IonFooter, IonToolbar, IonRow, IonCol, IonIcon, IonSearchbar, IonList, IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonCard, IonCardContent, IonButtons, IonBackButton, IonTitle, IonContent, IonTextarea, IonButton, actionSheetController, alertController, onIonViewDidEnter } from '@ionic/vue'
 import { close as ionIconClose, trash as ionIconTrash, create as ionIconCreate } from 'ionicons/icons'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
@@ -105,6 +105,9 @@ export default defineComponent({
   },
   mounted() {
     this.scrollToBottom()
+    onIonViewDidEnter(() => {
+      this.scrollToBottom()
+    })
     // DEBUGGING
     // this.$global.state.debugString = JSON.stringify(JSON.parse(localStorage.vuex))
   },
