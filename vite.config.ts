@@ -1,5 +1,6 @@
 import legacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
+import { VitePWA } from 'vite-plugin-pwa'
 import replace from '@rollup/plugin-replace'
 import path from 'path'
 import { defineConfig } from 'vite'
@@ -8,6 +9,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [
     vue(),
+    VitePWA({ registerType: 'autoUpdate' }),
     legacy(),
     replace({
       BUILD_TIMESTAMP: () => JSON.stringify(new Date().toISOString()),
