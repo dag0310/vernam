@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonRow, IonButton, IonIcon, actionSheetController } from '@ionic/vue'
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonRow, IonButton, IonIcon, actionSheetController, onIonViewDidEnter } from '@ionic/vue'
 import { playSkipBack as ionIconSkipBackward, play as ionIconPlay, pause as ionIconPause, playSkipForward as ionIconSkipForward } from 'ionicons/icons'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
@@ -83,11 +83,11 @@ export default defineComponent({
       ionIconSkipForward,
     }
   },
-  created() {
-    this.$global.state.pollingActive = false
-  },
   mounted() {
     this.initQrCodes()
+    onIonViewDidEnter(() => {
+      this.$global.state.pollingActive = false
+    })
   },
   methods: {
     async initQrCodes() {

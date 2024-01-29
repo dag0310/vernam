@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonButton, actionSheetController } from '@ionic/vue'
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonButton, actionSheetController, onIonViewDidEnter } from '@ionic/vue'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
@@ -53,8 +53,10 @@ export default defineComponent({
       refilledAudio: new Audio('/audio/refilled.wav'),
     }
   },
-  created() {
-    this.$global.state.pollingActive = false
+  mounted() {
+    onIonViewDidEnter(() => {
+      this.$global.state.pollingActive = false
+    })
   },
   methods: {
     async onReady(capabilitiesPromise: Promise<MediaTrackCapabilities>) {
