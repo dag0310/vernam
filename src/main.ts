@@ -41,6 +41,7 @@ axios.defaults.baseURL = import.meta.env[API_URL_KEY] || FALLBACK_API_URL
 app.use(VueAxios, axios)
 app.use(IonicVue, {
   mode: isPlatform('android') ? 'md' : 'ios',
+  animated: false,
 })
 app.use(router)
 app.use(store)
