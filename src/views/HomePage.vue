@@ -19,6 +19,9 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <ion-refresher slot="fixed" @ionRefresh="refresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
       <div v-show="showEnablePushNotifications && $store.state.id != null && notificationPermission !== 'granted' && notificationPermission !== 'denied'" class="ion-margin-top ion-margin-bottom">
         <div v-if="serviceWorkerRegistration != null && notificationPermission === 'default'">
           <span @click="showEnablePushNotifications = false" :disabled="!pushNotificationButtonEnabled" style="position: absolute; top: 0; right: 0; padding: 5px;">&times;</span>
@@ -69,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonSearchbar, IonButtons, IonTitle, IonContent, IonList, IonItemSliding, IonItem, IonLabel, IonNote, IonItemOptions, IonItemOption, IonButton, IonIcon, IonCard, IonCardContent, actionSheetController, alertController, onIonViewDidEnter } from '@ionic/vue'
+import { IonPage, IonHeader, IonToolbar, IonSearchbar, IonButtons, IonTitle, IonContent, IonRefresher, IonRefresherContent, IonList, IonItemSliding, IonItem, IonLabel, IonNote, IonItemOptions, IonItemOption, IonButton, IonIcon, IonCard, IonCardContent, actionSheetController, alertController, onIonViewDidEnter } from '@ionic/vue'
 import { cog as ionIconCog, add as ionIconAdd, close as ionIconClose, trash as ionIconTrash } from 'ionicons/icons'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
@@ -80,7 +83,7 @@ import mixin from '../mixin'
 import { Chat } from '../types'
 
 export default defineComponent({
-  components: { IonPage, IonHeader, IonToolbar, IonSearchbar, IonButtons, IonTitle, IonContent, IonList, IonItemSliding, IonItem, IonLabel, IonNote, IonItemOptions, IonItemOption, IonButton, IonIcon, IonCard, IonCardContent },
+  components: { IonPage, IonHeader, IonToolbar, IonSearchbar, IonButtons, IonTitle, IonContent, IonRefresher, IonRefresherContent, IonList, IonItemSliding, IonItem, IonLabel, IonNote, IonItemOptions, IonItemOption, IonButton, IonIcon, IonCard, IonCardContent },
   props: {
     $store: Object as PropType<any>,
     $global: Object as PropType<any>,
@@ -149,6 +152,12 @@ export default defineComponent({
     },
   },
   methods: {
+    refresh(ev: CustomEvent) {
+      setTimeout(() => {
+        ev.detail.complete()
+        window.location.reload()
+      }, 500)
+    },
     lastMessage(chat: Chat) {
       return (chat.messages.length > 0) ? chat.messages.slice().sort((a, b) => b.timestamp - a.timestamp)[0] : null
     },
