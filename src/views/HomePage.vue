@@ -103,7 +103,7 @@ export default defineComponent({
       searchText: '',
       pushNotificationButtonEnabled: true,
       notificationPermission: ('Notification' in window) ? Notification.permission : null,
-      serviceWorkerRegistration: ('serviceWorker' in navigator) ? navigator.serviceWorker.register('/js/serviceworker.js?t=1701130409') : null,
+      serviceWorkerRegistration: ('serviceWorker' in navigator) ? navigator.serviceWorker.register('/js/serviceworker.js?t=1706877454') : null,
       ionIconCog,
       ionIconAdd,
       ionIconClose,
