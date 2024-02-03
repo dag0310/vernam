@@ -112,7 +112,7 @@ export default defineComponent({
     // this.$global.state.debugString = JSON.stringify(JSON.parse(localStorage.vuex))
   },
   watch: {
-    lastMessage: {
+    lastFilteredMessage: {
       async handler() {
         setTimeout(() => { this.scrollToBottom() }, scrollToBottomTimeoutInMs)
       },
@@ -148,7 +148,7 @@ export default defineComponent({
     },
     filteredMessages(): FilteredMessage[] {
       return this.chat.messages
-        .filter(message => message.text.toUpperCase().includes(this.searchText.toUpperCase()))
+        .filter(message => (!message.own || message.synced) && message.text.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((messageA, messageB) => messageA.timestamp - messageB.timestamp)
         .map(message => {
           const tempDiv = document.createElement('div')
@@ -161,7 +161,7 @@ export default defineComponent({
           }
         })
     },
-    lastMessage() {
+    lastFilteredMessage() {
       return this.filteredMessages.at(-1)
     },
     ownKey() {
