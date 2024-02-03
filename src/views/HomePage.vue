@@ -58,8 +58,8 @@
               <ion-note color="medium">{{ lastMessageDateText(chat) }}</ion-note>
             </div>
           </ion-item>
-          <ion-item-options @ion-swipe="deleteChat(chat.id)" side="end">
-            <ion-item-option @click="deleteChat(chat.id)" color="danger" expandable>
+          <ion-item-options @ion-swipe="showDeleteChatDialog(chat)" side="end">
+            <ion-item-option @click="showDeleteChatDialog(chat)" color="danger" expandable>
               <ion-icon slot="top" :icon="ionIconTrash"></ion-icon>
               {{ $t('delete') }}
             </ion-item-option>
@@ -226,9 +226,6 @@ export default defineComponent({
         buttons,
       })).present()
     },
-    deleteChat(chatId: string) {
-      this.$store.commit('deleteChat', chatId)
-    },
     async showDeleteChatDialog(chat: Chat) {
       const actionSheet = await actionSheetController.create({
         header: chat.name,
@@ -237,7 +234,7 @@ export default defineComponent({
             text: this.$t('deleteChatLocally'),
             role: 'destructive',
             handler: () => {
-              this.deleteChat(chat.id)
+              this.$store.commit('deleteChat', chat.id)
             },
           },
           {

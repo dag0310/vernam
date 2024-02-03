@@ -32,6 +32,7 @@ export type Message = {
 export type FilteredMessage = {
   id: string
   own: boolean
+  text: string
   html: string
   timestamp: number
 }

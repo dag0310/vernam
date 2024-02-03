@@ -28,8 +28,8 @@
               </ion-card-content>
             </ion-card>
           </ion-item>
-          <ion-item-options @ion-swipe="deleteMessage(message.id)" side="end">
-            <ion-item-option @click="deleteMessage(message.id)" color="danger" expandable>
+          <ion-item-options @ion-swipe="showDeleteMessageDialog(message.id, message.text)" side="end">
+            <ion-item-option @click="showDeleteMessageDialog(message.id, message.text)" color="danger" expandable>
               <ion-icon slot="top" :icon="ionIconTrash"></ion-icon>
               {{ $t('delete') }}
             </ion-item-option>
@@ -76,7 +76,7 @@ import { v4 as uuidv4 } from 'uuid'
 import OtpCrypto from 'otp-crypto'
 
 import mixin from '../mixin'
-import { ApiMessageRequestBody, ApiMessageResponseBody, Chat, FilteredMessage, Message } from '../types'
+import { ApiMessageRequestBody, ApiMessageResponseBody, Chat, FilteredMessage } from '../types'
 
 const keyAlmostEmptyThreshold = 100
 const scrollToBottomTimeoutInMs = 500 // Small timeout necessary, otherwise much less reliable to update
@@ -156,6 +156,7 @@ export default defineComponent({
           return {
             id: message.id,
             own: message.own,
+            text: message.text,
             html: tempDiv.innerHTML.trim().replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: inherit;">$1</a>'),
             timestamp: message.timestamp,
           }
@@ -353,21 +354,18 @@ export default defineComponent({
         buttons,
       })).present()
     },
-    deleteMessage(messageId: string) {
-      this.$store.commit('deleteMessage', {
-        chatId: this.chat.id,
-        messageId,
-      })
-    },
-    async showDeleteMessageDialog(message: Message) {
+    async showDeleteMessageDialog(messageId: string, header: string) {
       const actionSheet = await actionSheetController.create({
-        header: message.text,
+        header,
         buttons: [
           {
             text: this.$t('deleteMessageLocally'),
             role: 'destructive',
             handler: () => {
-              this.deleteMessage(message.id)
+              this.$store.commit('deleteMessage', {
+                chatId: this.chat.id,
+                messageId,
+              })
             },
           },
           {
