@@ -292,7 +292,7 @@ export default defineComponent({
         this.isSendingMessage = false
       }
     },
-    async deleteAllMessages() {
+    async showDeleteAllMessagesDialog() {
       const actionSheet = await actionSheetController.create({
         header: this.$t('deleteAllMessagesLocallyTitle'),
         buttons: [
@@ -339,7 +339,7 @@ export default defineComponent({
           text: this.$t('deleteChatHistory'),
           role: 'destrutive',
           handler: () => {
-            this.deleteAllMessages()
+            this.showDeleteAllMessagesDialog()
           },
         },
         {
