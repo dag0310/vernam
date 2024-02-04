@@ -99,7 +99,7 @@ export default defineComponent({
           }
         }
       } catch (error) {
-        if (!this.$http.isAxiosError(error)) {
+        if ((error as AxiosError).response) {
           this.handleUnexpectedError(error as AxiosError, '[GET] ')
         }
       } finally {
@@ -136,10 +136,11 @@ export default defineComponent({
         await this.$http.delete(`messages/${message.id}/${encodeURIComponent(message.base64Key)}`, { timeout: 5000, headers: { 'Content-Type': 'text/plain' } })
         return true
       } catch (error) {
-        if (this.$http.isAxiosError(error)) {
+        const { response } = error as AxiosError
+        if (!response) {
           return false
         }
-        switch ((error as AxiosError).status) {
+        switch (response.status) {
           case 400: // Message validation failed
           case 401: // Message authentication failed
           case 404: // Message not found

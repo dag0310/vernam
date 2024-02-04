@@ -94,7 +94,7 @@
   "showQrCodes": "Show QR codes",
   "resetLastTimestamp": "Reset last timestamp",
   "reloadApp": "Reload",
-  "unexpectedError": "Unexpected error: {message} ({code})",
+  "unexpectedError": "Unexpected error: {message} ({status})",
   "restoreDefaults": "Restore defaults",
   "postMessageSyncError": "Cannot sync message without payload.",
   "invalidQrCode": "Invalid QR code.",

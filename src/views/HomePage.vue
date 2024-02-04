@@ -254,10 +254,11 @@ export default defineComponent({
       try {
         vapidPublicKeyResponse = await this.$http.get('push-key', { timeout: 5000 })
       } catch (error) {
-        if (this.$http.isAxiosError(error)) {
-          this.showToast(this.$t('networkError'))
-        } else {
+        const { response } = error as AxiosError
+        if (response) {
           this.handleUnexpectedError((error as AxiosError))
+        } else {
+          this.showToast(this.$t('networkError'))
         }
         this.pushNotificationButtonEnabled = true
         return
@@ -289,16 +290,17 @@ export default defineComponent({
         await this.$http.post('push-subscription', { receiver: this.$store.state.id, endpoint: pushSubscription.endpoint }, { timeout: 5000 })
         this.showToast(this.$t('pushNotificationSubscriptionSuccessMessage'))
       } catch (error) {
-        if (this.$http.isAxiosError(error)) {
-          this.showToast(this.$t('networkError'))
-        } else {
-          switch ((error as AxiosError).status) {
+        const { response } = error as AxiosError
+        if (response) {
+          switch (response.status) {
             case 409:
               this.showToast(this.$t('pushNotificationSubscriptionDuplicateErrorMessage'))
               break
             default:
               this.handleUnexpectedError((error as AxiosError))
           }
+        } else {
+          this.showToast(this.$t('networkError'))
         }
       } finally {
         this.pushNotificationButtonEnabled = true

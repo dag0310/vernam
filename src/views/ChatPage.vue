@@ -282,10 +282,11 @@ export default defineComponent({
         })
         this.message = ''
       } catch (error) {
-        if (this.$http.isAxiosError(error)) {
-          this.showToast(this.$t('networkError'))
-        } else {
+        const { response } = error as AxiosError
+        if (response) {
           this.handleUnexpectedError((error as AxiosError))
+        } else {
+          this.showToast(this.$t('networkError'))
         }
       } finally {
         this.isSendingMessage = false

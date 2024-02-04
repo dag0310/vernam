@@ -18,9 +18,9 @@ export default defineComponent({
     },
     handleUnexpectedError(error: AxiosError, prefix = '') {
       console.error(error)
-      const status = error?.status ?? 'NO_STATUS'
-      const message = prefix + (error?.message ?? 'NO_MESSAGE')
-      this.showToast(this.$t('unexpectedError', { code: status, message }))
+      const status = error.response?.status ?? 'NO_STATUS'
+      const message = prefix + ((error.response?.data as any)?.message ?? 'NO_MESSAGE')
+      this.showToast(this.$t('unexpectedError', { status, message }))
     },
     buildNotificationPermissionNotSupportedMessage() {
       if (isPlatform('ios')) {
