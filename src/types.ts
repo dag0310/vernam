@@ -17,6 +17,7 @@ export type Chat = {
   otherKey: string
   otherId: string | null
   hasNewMessage: boolean
+  timestamp: number
 }
 
 export type Message = {

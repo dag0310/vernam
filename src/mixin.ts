@@ -2,7 +2,7 @@ import { defineComponent } from 'vue'
 import { toastController, alertController, isPlatform } from '@ionic/vue'
 import { AxiosError } from 'axios'
 
-import { ParsedQrCode } from './types'
+import { Message, ParsedQrCode } from './types'
 
 export default defineComponent({
   data(): {
@@ -30,6 +30,9 @@ export default defineComponent({
         return this.$t('notificationPermissionNotSupportedAndroid') + (isPlatform('pwa') ? ' Google Chrome Version 50+' : '')
       }
       return this.$t('notificationPermissionNotSupportedOther')
+    },
+    isMessageVisible(message: Message) {
+      return !message.own || message.synced || message.synced === undefined
     },
     humanizeDate(timestamp: number) {
       const date = new Date(timestamp)

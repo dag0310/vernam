@@ -135,19 +135,12 @@ export default defineComponent({
     filteredChats() {
       return this.chats
         .filter(chat => chat.name.toUpperCase().includes(this.searchText.toUpperCase()))
-        .sort((a, b) => {
-          const lastMessageA = this.lastMessage(a)
-          const lastMessageB = this.lastMessage(b)
-          if (!lastMessageA && !lastMessageB) {
-            return 0
-          }
-          if (!lastMessageA) {
-            return 1
-          }
-          if (!lastMessageB) {
-            return -1
-          }
-          return lastMessageB.timestamp - lastMessageA.timestamp
+        .sort((chatA, chatB) => {
+          const lastMessageChatA = this.lastMessage(chatA)
+          const lastMessageChatB = this.lastMessage(chatB)
+          const timestampA = lastMessageChatA?.timestamp ?? chatA.timestamp ?? 0
+          const timestampB = lastMessageChatB?.timestamp ?? chatB.timestamp ?? 0
+          return timestampB - timestampA
         })
     },
   },
@@ -159,7 +152,10 @@ export default defineComponent({
       }, 500)
     },
     lastMessage(chat: Chat) {
-      return (chat.messages.length > 0) ? chat.messages.slice().sort((a, b) => b.timestamp - a.timestamp)[0] : null
+      const chatMessages = chat.messages
+        .filter(message => this.isMessageVisible(message))
+        .sort((messageA, messageB) => messageB.timestamp - messageA.timestamp)
+      return (chatMessages.length > 0) ? chatMessages[0] : null
     },
     lastMessageText(chat: Chat) {
       return this.lastMessage(chat)?.text?.trim() ?? ''
@@ -212,6 +208,7 @@ export default defineComponent({
               hasNewMessage: false,
               ownKey: '',
               otherKey: '',
+              timestamp: new Date().getTime(),
             }
             this.$store.commit('createChat', newChat)
             this.$store.commit('setCurrentChatId', newChat.id)
