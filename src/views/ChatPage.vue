@@ -148,7 +148,7 @@ export default defineComponent({
     },
     filteredMessages(): FilteredMessage[] {
       return this.chat.messages
-        .filter(message => (!message.own || message.synced) && message.text.toUpperCase().includes(this.searchText.toUpperCase()))
+        .filter(message => (!message.own || message.synced || message.synced === undefined) && message.text.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((messageA, messageB) => messageA.timestamp - messageB.timestamp)
         .map(message => {
           const tempDiv = document.createElement('div')
