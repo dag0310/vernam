@@ -136,6 +136,12 @@ export default defineComponent({
       return this.chats
         .filter(chat => chat.name.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((chatA, chatB) => {
+          if (chatA.message && !chatB.message) {
+            return -1
+          }
+          if (!chatA.message && chatB.message) {
+            return 1
+          }
           const lastMessageChatA = this.lastMessage(chatA)
           const lastMessageChatB = this.lastMessage(chatB)
           const timestampA = lastMessageChatA?.timestamp ?? chatA.timestamp ?? 0
