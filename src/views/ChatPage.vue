@@ -17,7 +17,7 @@
         <ion-searchbar v-model="searchText" :placeholder="$t('searchbarPlaceholder')"></ion-searchbar>
       </ion-toolbar>
     </ion-header>
-    <ion-content ref="content" class="ion-padding-bottom">
+    <ion-content ref="content" class="ion-padding-bottom" :fullscreen="true">
       <ion-list v-show="filteredMessages.length > 0" class="ion-margin-top" lines="none" :detail="false">
         <ion-item-sliding v-for="message in filteredMessages" :key="message.id">
           <ion-item>
