@@ -49,8 +49,7 @@
               <ion-note color="medium" class="ion-text-nowrap" :style="{ 'font-weight': chat.hasNewMessage ? 'bold' : 'normal' }">
                 <template v-if="chat.message.trim().length > 0"><i>{{ $t('draft') }}: </i>{{ chat.message }}</template>
                 <template v-else>
-                  <i v-if="lastMessageIsOwn(chat)">{{ $t('you') }}: </i>
-                  {{ lastMessageText(chat) }}
+                  <i v-if="lastMessage(chat)?.own ?? false">{{ $t('you') }}: </i>{{ lastMessage(chat)?.text.trim() ?? '' }}
                 </template>
               </ion-note>
             </ion-label>
@@ -159,12 +158,6 @@ export default defineComponent({
         .filter(message => this.isMessageVisible(message))
         .sort((messageA, messageB) => messageB.timestamp - messageA.timestamp)
       return (chatMessages.length > 0) ? chatMessages[0] : null
-    },
-    lastMessageText(chat: Chat) {
-      return this.lastMessage(chat)?.text?.trim() ?? ''
-    },
-    lastMessageIsOwn(chat: Chat) {
-      return this.lastMessage(chat)?.own ?? false
     },
     lastMessageDateText(chat: Chat) {
       const lastMessage = this.lastMessage(chat)
