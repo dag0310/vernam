@@ -139,10 +139,10 @@ export default defineComponent({
       get() {
         return this.$store.getters.currentChat.message
       },
-      set(value: string) {
+      set(message: string) {
         this.$store.commit('updateMessage', {
           chatId: this.chat.id,
-          message: value,
+          message,
         })
       },
     },
