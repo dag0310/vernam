@@ -129,11 +129,8 @@ export default defineComponent({
         this.$store.commit('setShowEnablePushNotifications', value)
       },
     },
-    chats() {
-      return this.$store.state.chats as Chat[]
-    },
     filteredChats() {
-      return this.chats
+      return (this.$store.state.chats as Chat[])
         .filter(chat => chat.name.toUpperCase().includes(this.searchText.toUpperCase()))
         .sort((chatA, chatB) => {
           if (chatA.message && !chatB.message) {
