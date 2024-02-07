@@ -8,8 +8,7 @@
         <ion-title @click="showInformationDialog()" style="cursor: pointer">{{ chat.name }}</ion-title>
         <ion-buttons slot="end">
           <ion-button @click="refillKey()">
-            <span v-if="keyEmpty">{{ $t('refill') }}</span>
-            <span v-else :style="{ color: (otpCryptoResult.bytesLeft < 0) ? 'var(--ion-color-danger)' : 'inherit' }">🔑 {{ otpCryptoResult.isKeyLongEnough ? otpCryptoResultWithoutPreamble.remainingKey.length : otpCryptoResult.bytesLeft }}</span>
+            <span :style="{ color: (otpCryptoResult.bytesLeft < 0) ? 'var(--ion-color-danger)' : 'inherit' }">🔑 {{ keyEmpty ? 0 : otpCryptoResult.isKeyLongEnough ? otpCryptoResultWithoutPreamble.remainingKey.length : otpCryptoResult.bytesLeft }}</span>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
