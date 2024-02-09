@@ -64,7 +64,7 @@
   "pause": "Pause",
   "next": "Nächster",
   "add": "Hinzufügen",
-  "chatNamePlaceholder": "Kontaktname ...",
+  "chatNamePlaceholder": "Bezeichnung",
   "editName": "Name ändern",
   "enterChatNameMessage": "Bitte gib den Namen deines Kontakts an.",
   "enablePushNotifications": "Push-Mitteilungen aktivieren",
