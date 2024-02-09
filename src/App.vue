@@ -79,7 +79,7 @@ export default defineComponent({
             message: newMessage,
           })
 
-          if (this.$store.state.currentChatId !== chat.id) {
+          if (this.$global.state.currentChatId !== chat.id) {
             this.$store.commit('setHasNewMessage', {
               chatId: chat.id,
               hasNewMessage: true,

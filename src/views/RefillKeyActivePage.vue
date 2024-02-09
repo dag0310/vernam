@@ -27,7 +27,7 @@ import { QrcodeStream } from 'vue-qrcode-reader'
 import OtpCrypto from 'otp-crypto'
 
 import mixin from '../mixin'
-import { ParsedQrCode, QrCodeData } from '../types'
+import { Chat, ParsedQrCode, QrCodeData } from '../types'
 
 export default defineComponent({
   components: { QrcodeStream, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonButton },
@@ -124,22 +124,23 @@ export default defineComponent({
       const byteArrayTotal = this.buildTotalKeyByteArray(this.qrCodes)
       const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
       this.$store.commit('updateOwnKey', {
-        chatId: this.$store.state.currentChatId,
+        chatId: this.$global.state.currentChatId,
         ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)),
       })
       this.$store.commit('updateOtherKey', {
-        chatId: this.$store.state.currentChatId,
+        chatId: this.$global.state.currentChatId,
         otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf)),
       })
       this.$store.commit('setChatOtherId', {
-        chatId: this.$store.state.currentChatId,
+        chatId: this.$global.state.currentChatId,
         otherId: this.otherId,
       })
       this.refilledAudio.play()
-      if (this.$store.getters.currentChat.message === '') {
+      const currentChat = this.$store.state.chats.find((chat: Chat) => chat.id === this.$global.state.currentChatId)
+      if (currentChat.message === '') {
         this.$store.commit('updateMessage', {
-          chatId: this.$store.state.currentChatId,
-          message: this.$t('helloChatMessage', { name: this.$store.getters.currentChat.name }),
+          chatId: this.$global.state.currentChatId,
+          message: this.$t('helloChatMessage', { name: currentChat.name }),
         })
       }
       this.$global.state.pollingActive = true

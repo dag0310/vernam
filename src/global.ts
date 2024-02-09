@@ -5,5 +5,6 @@ export default new Vuex.Store({
     debugMode: false,
     debugString: '',
     pollingActive: true,
+    currentChatId: null,
   },
 })

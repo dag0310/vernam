@@ -132,11 +132,11 @@ export default defineComponent({
   },
   computed: {
     chat(): Chat {
-      return this.$store.getters.currentChat
+      return this.$store.state.chats.find((chat: Chat) => chat.id === this.$global.state.currentChatId)
     },
     message: {
       get() {
-        return this.$store.getters.currentChat.message
+        return this.chat.message
       },
       set(message: string) {
         this.$store.commit('updateMessage', {

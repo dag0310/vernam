@@ -192,15 +192,15 @@ export default defineComponent({
       const byteArrayTotal = this.buildTotalKeyByteArray(this.qrCodes)
       const keyLengthHalf = Math.ceil(byteArrayTotal.length / 2)
       this.$store.commit('updateOwnKey', {
-        chatId: this.$store.state.currentChatId,
+        chatId: this.$global.state.currentChatId,
         ownKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(keyLengthHalf)),
       })
       this.$store.commit('updateOtherKey', {
-        chatId: this.$store.state.currentChatId,
+        chatId: this.$global.state.currentChatId,
         otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(byteArrayTotal.slice(0, keyLengthHalf)),
       })
       this.$store.commit('setChatOtherId', {
-        chatId: this.$store.state.currentChatId,
+        chatId: this.$global.state.currentChatId,
         otherId: null,
       })
     },

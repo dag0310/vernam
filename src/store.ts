@@ -8,7 +8,6 @@ export const defaultBytesPerQrCode = 400
 const initialState: State = {
   id: null,
   chats: [],
-  currentChatId: null,
   lastTimestamp: null,
   numQrCodes: defaultNumQrCodes,
   bytesPerQrCode: defaultBytesPerQrCode,
@@ -32,9 +31,6 @@ export default new Vuex.Store({
     },
     setLastTimestamp(state, lastTimestamp: number | null) {
       state.lastTimestamp = lastTimestamp
-    },
-    setCurrentChatId(state, chatId: string) {
-      state.currentChatId = chatId
     },
     addMessage(state, payload: { chatId: string, message: Message }) {
       const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
@@ -99,11 +95,6 @@ export default new Vuex.Store({
     setChatOtherId(state, payload: { chatId: string, otherId: string }) {
       const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
       state.chats[chatIdx].otherId = payload.otherId
-    },
-  },
-  getters: {
-    currentChat(state) {
-      return state.chats.find(chat => chat.id === state.currentChatId)
     },
   },
   state: initialState,

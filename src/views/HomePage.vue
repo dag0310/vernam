@@ -115,7 +115,7 @@ export default defineComponent({
       this.showIntroDialog()
     }
     onIonViewDidEnter(() => {
-      this.$store.commit('setCurrentChatId', null)
+      this.$global.state.currentChatId = null
       this.notificationPermission = ('Notification' in window) ? Notification.permission : null
     })
   },
@@ -172,7 +172,7 @@ export default defineComponent({
         chatId: chat.id,
         hasNewMessage: false,
       })
-      this.$store.commit('setCurrentChatId', chat.id)
+      this.$global.state.currentChatId = chat.id
       this.$router.push('/chat')
     },
     async showCreateChatDialog() {
@@ -207,7 +207,7 @@ export default defineComponent({
               timestamp: new Date().getTime(),
             }
             this.$store.commit('createChat', newChat)
-            this.$store.commit('setCurrentChatId', newChat.id)
+            this.$global.state.currentChatId = newChat.id
             this.$router.push('/chat')
             return true
           },

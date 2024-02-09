@@ -2,7 +2,6 @@ export type State = {
   id: string | null
   showEnablePushNotifications: boolean
   chats: Chat[]
-  currentChatId: string | null
   lastTimestamp: number | null
   numQrCodes: number
   bytesPerQrCode: number
