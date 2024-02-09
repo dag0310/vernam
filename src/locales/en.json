@@ -35,9 +35,6 @@
   "save": "Save",
   "keyNotLongEnough": "Key not big enough",
   "otherIdNotSet": "Contact ID not set",
-  "iScanTheQrCodes": "I scan the QR codes",
-  "iShowTheQrCodes": "I show the QR codes",
-  "whatIsYourPart": "What is your part? It doesn't matter who does what.",
   "helloChatMessage": "Hi, {name}!",
   "today": "Today",
   "yesterday": "Yesterday",
@@ -99,5 +96,8 @@
   "postMessageSyncError": "Cannot sync message without payload.",
   "invalidQrCode": "Invalid QR code.",
   "lastOwnMessageNotExistsError": "Last own message does not exist.",
-  "syncingMessages": "Syncing messages ..."
+  "syncingMessages": "Syncing messages ...",
+  "refillKeyActionSheetHeader": "Refill key - what is your part?",
+  "refillKeyActionSheetShowText": "I show the QR codes",
+  "refillKeyActionSheetScanText": "I scan the QR codes"
 }

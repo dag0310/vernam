@@ -193,16 +193,16 @@ export default defineComponent({
   methods: {
     async refillKey() {
       const actionSheet = await actionSheetController.create({
-        header: this.$t('whatIsYourPart'),
+        header: this.$t('refillKeyActionSheetHeader'),
         buttons: [
           {
-            text: this.$t('iShowTheQrCodes'),
+            text: this.$t('refillKeyActionSheetShowText'),
             handler: () => {
               this.$router.push('/show')
             },
           },
           {
-            text: this.$t('iScanTheQrCodes'),
+            text: this.$t('refillKeyActionSheetScanText'),
             handler: () => {
               this.$router.push('/scan')
             },
