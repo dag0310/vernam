@@ -114,7 +114,9 @@ export default defineComponent({
       this.$store.commit('setId', uuidv4())
       this.showIntroDialog()
     }
+    this.$global.state.pollingActive = true
     onIonViewDidEnter(() => {
+      this.$global.state.pollingActive = true
       this.$global.state.currentChatId = null
       this.notificationPermission = ('Notification' in window) ? Notification.permission : null
     })

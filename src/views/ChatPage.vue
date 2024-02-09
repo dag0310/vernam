@@ -104,8 +104,10 @@ export default defineComponent({
   },
   mounted() {
     this.scrollToBottom()
+    this.$global.state.pollingActive = true
     onIonViewDidEnter(() => {
       this.scrollToBottom()
+      this.$global.state.pollingActive = true
     })
     // DEBUGGING
     // this.$global.state.debugString = JSON.stringify(JSON.parse(localStorage.vuex))
