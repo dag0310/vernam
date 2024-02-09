@@ -150,7 +150,7 @@ export default defineComponent({
         buttons: [
           {
             text: this.$t('yesScanningFinished'),
-            role: 'destructive',
+            role: 'confirm',
             handler: () => {
               this.saveQrCodeKeys()
               this.refilledAudio.play()
