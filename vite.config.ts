@@ -9,7 +9,15 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [
     vue(),
-    VitePWA({ registerType: 'autoUpdate' }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'Vernam',
+        short_name: 'Vernam',
+        background_color: '#000000',
+        lang: undefined,
+      },
+    }),
     legacy(),
     replace({
       BUILD_TIMESTAMP: () => JSON.stringify(new Date().toISOString()),
