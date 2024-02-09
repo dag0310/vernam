@@ -16,19 +16,19 @@
       </ion-toolbar>
     </ion-header>
     <ion-content v-if="currentQrCode">
-      <img :src="currentQrCode.dataUrl" @click="stopAutoplay(); setCurrentQrCode(+1)" style="width: 100%; cursor: pointer;">
       <ion-row class="ion-justify-content-center">
         <h2>#{{ currentQrCode.number }} / {{ numQrCodes }}</h2>
       </ion-row>
+      <img :src="currentQrCode.dataUrl" @click="stopAutoplay(); setCurrentQrCode(+1)" style="width: 100%; cursor: pointer;">
       <ion-row class="ion-justify-content-center">
-        <ion-button @click="stopAutoplay(); setCurrentQrCode(-1)" :aria-label="$t('previous')">
-          <ion-icon :icon="ionIconSkipBackward"></ion-icon>
+        <ion-button @click="stopAutoplay(); setCurrentQrCode(-1)" fill="solid" color="dark" size="large">
+          <ion-icon :icon="ionIconSkipBackward" :aria-label="$t('previous')"></ion-icon>
         </ion-button>
-        <ion-button @click="(autoplayInterval == null) ? startAutoplay() : stopAutoplay()">
+        <ion-button @click="(autoplayInterval == null) ? startAutoplay() : stopAutoplay()" fill="solid" color="dark" size="large">
           <ion-icon :icon="ionIconPlay" v-show="autoplayInterval == null" :aria-label="$t('play')"></ion-icon>
           <ion-icon :icon="ionIconPause" v-show="autoplayInterval != null" :aria-label="$t('pause')"></ion-icon>
         </ion-button>
-        <ion-button @click="stopAutoplay(); setCurrentQrCode(+1)">
+        <ion-button @click="stopAutoplay(); setCurrentQrCode(+1)" fill="solid" color="dark" size="large">
           <ion-icon :icon="ionIconSkipForward" :aria-label="$t('next')"></ion-icon>
         </ion-button>
       </ion-row>
