@@ -160,6 +160,11 @@ export default defineComponent({
   --message-padding: 10px;
 }
 
+.ion-page {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
 .info-text {
   text-align: center;
   font-style: italic;
