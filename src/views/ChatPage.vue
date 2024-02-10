@@ -420,7 +420,7 @@ ion-card .time {
 }
 
 ion-textarea {
-  --background: var(--ion-color-light);
+  --background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.07);
   --padding-top: var(--message-padding);
   --padding-bottom: var(--message-padding);
 }
