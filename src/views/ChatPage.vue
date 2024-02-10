@@ -337,6 +337,12 @@ export default defineComponent({
           },
         },
         {
+          text: this.$t('refillKey'),
+          handler: () => {
+            this.refillKey()
+          },
+        },
+        {
           text: this.$t('deleteChatHistory'),
           role: 'destrutive',
           handler: () => {
