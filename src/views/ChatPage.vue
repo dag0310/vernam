@@ -49,7 +49,7 @@
         </div>
       </div>
     </ion-content>
-    <ion-footer>
+    <ion-footer :translucent="true">
       <ion-toolbar>
         <ion-row class="ion-justify-content-between">
           <ion-col size="9">
