@@ -51,22 +51,19 @@
     </ion-content>
     <ion-footer :translucent="true">
       <ion-toolbar>
-        <ion-row class="ion-justify-content-between">
-          <ion-col size="9">
-            <ion-textarea v-model="message" :auto-grow="true" :disabled="!lastOwnMessageSynced" autocomplete="off" wrap="soft" :rows="1" mode="md" fill="outline"></ion-textarea>
-          </ion-col>
-          <ion-col size="3" class="ion-align-self-center">
-            <ion-button @click="sendMessage()" :disabled="(isSendingMessage || !chat.otherId) || (lastOwnMessageSynced && (message.trim().length <= 0 || !otpCryptoResult.isKeyLongEnough))" fill="clear">{{ $t('send') }}</ion-button>
-          </ion-col>
-        </ion-row>
+        <ion-textarea v-model="message" :placeholder="$t('message')" :auto-grow="true" :disabled="!lastOwnMessageSynced" autocomplete="off" wrap="soft" :rows="1" mode="md" fill="outline">
+          <ion-button @click="sendMessage()" :disabled="(isSendingMessage || !chat.otherId) || (lastOwnMessageSynced && (message.trim().length <= 0 || !otpCryptoResult.isKeyLongEnough))" fill="clear" slot="end" :aria-label="$t('send')">
+            <ion-icon slot="icon-only" :icon="ionIconSend"></ion-icon>
+          </ion-button>
+        </ion-textarea>
       </ion-toolbar>
     </ion-footer>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonFooter, IonToolbar, IonRow, IonCol, IonIcon, IonSearchbar, IonList, IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonCard, IonCardContent, IonButtons, IonBackButton, IonTitle, IonContent, IonTextarea, IonButton, actionSheetController, alertController, onIonViewDidEnter } from '@ionic/vue'
-import { close as ionIconClose, trash as ionIconTrash, create as ionIconCreate } from 'ionicons/icons'
+import { IonPage, IonHeader, IonFooter, IonToolbar, IonIcon, IonSearchbar, IonList, IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonCard, IonCardContent, IonButtons, IonBackButton, IonTitle, IonContent, IonTextarea, IonButton, actionSheetController, alertController, onIonViewDidEnter } from '@ionic/vue'
+import { close as ionIconClose, trash as ionIconTrash, create as ionIconCreate, send as ionIconSend } from 'ionicons/icons'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { AxiosError } from 'axios'
@@ -81,7 +78,7 @@ const keyAlmostEmptyThreshold = 100
 const scrollToBottomTimeoutInMs = 500 // Small timeout necessary, otherwise much less reliable to update
 
 export default defineComponent({
-  components: { IonPage, IonHeader, IonFooter, IonToolbar, IonRow, IonCol, IonIcon, IonSearchbar, IonList, IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonCard, IonCardContent, IonButtons, IonBackButton, IonTitle, IonContent, IonTextarea, IonButton },
+  components: { IonPage, IonHeader, IonFooter, IonToolbar, IonIcon, IonSearchbar, IonList, IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonCard, IonCardContent, IonButtons, IonBackButton, IonTitle, IonContent, IonTextarea, IonButton },
   props: {
     $store: Object as PropType<any>,
     $global: Object as PropType<any>,
@@ -93,6 +90,7 @@ export default defineComponent({
     ionIconClose: string,
     ionIconTrash: string,
     ionIconCreate: string,
+    ionIconSend: string,
   } {
     return {
       searchText: '',
@@ -100,6 +98,7 @@ export default defineComponent({
       ionIconClose,
       ionIconTrash,
       ionIconCreate,
+      ionIconSend,
     }
   },
   mounted() {

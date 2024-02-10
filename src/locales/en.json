@@ -98,5 +98,6 @@
   "syncingMessages": "Syncing messages ...",
   "refillKeyActionSheetHeader": "Refill key - what is your part?",
   "refillKeyActionSheetShowText": "I show the QR codes",
-  "refillKeyActionSheetScanText": "I scan the QR codes"
+  "refillKeyActionSheetScanText": "I scan the QR codes",
+  "message": "Message"
 }

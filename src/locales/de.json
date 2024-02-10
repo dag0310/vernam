@@ -98,5 +98,6 @@
   "syncingMessages": "Synchronisiere Nachrichten ...",
   "refillKeyActionSheetHeader": "Schlüssel aufladen - was ist dein Part?",
   "refillKeyActionSheetShowText": "Ich zeige die QR-Codes",
-  "refillKeyActionSheetScanText": "Ich scanne die QR-Codes"
+  "refillKeyActionSheetScanText": "Ich scanne die QR-Codes",
+  "message": "Nachricht"
 }
