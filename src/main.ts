@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import axios from 'axios'
-import { IonicVue, isPlatform } from '@ionic/vue'
+import { IonicVue } from '@ionic/vue'
 import VueAxios from 'vue-axios'
 import App from './App.vue'
 import router from './router'
@@ -40,7 +40,7 @@ axios.defaults.baseURL = import.meta.env[API_URL_KEY] || FALLBACK_API_URL
 
 app.use(VueAxios, axios)
 app.use(IonicVue, {
-  mode: isPlatform('android') ? 'md' : 'ios',
+  mode: 'ios',
 })
 app.use(router)
 app.use(store)
