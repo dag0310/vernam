@@ -10,17 +10,23 @@
         <ion-title>{{ $t('refill') }}</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content style="text-align: center;">
-      <h4 v-if="qrCodeNumbersLeft != null">{{ $tc('codesLeftToScan', qrCodeNumbersLeft.length) }}:<br>{{ qrCodeNumbersLeft.map(code => `#${code}`).join(', ') }}</h4>
-      <h4 v-else>{{ $t('scanQrCodesOfYourContact') }}</h4>
-      <qrcode-stream @camera-on="onReady" @detect="onDetect" @error="onError" :formats="['qr_code']" style="width: 100%; height: auto;" />
-      <div v-show="scanStatus.length > 0" class="info-text ion-margin-top">{{ scanStatus }}</div>
+    <ion-content>
+      <ion-row class="ion-justify-content-center">
+        <h4 v-if="qrCodeNumbersLeft != null">{{ $tc('codesLeftToScan', qrCodeNumbersLeft.length) }}:<br>{{ qrCodeNumbersLeft.map(code => `#${code}`).join(', ') }}</h4>
+        <h4 v-else>{{ $t('scanQrCodesOfYourContact') }}</h4>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <qrcode-stream @camera-on="onReady" @detect="onDetect" @error="onError" :formats="['qr_code']" style="width: 100%; max-width: 640px; height: auto;" />
+      </ion-row>
+      <ion-row v-show="scanStatus" class="ion-justify-content-center info-text ion-margin-top">
+        {{ scanStatus }}
+      </ion-row>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonButton, actionSheetController, onIonViewDidEnter } from '@ionic/vue'
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonRow, IonButton, actionSheetController, onIonViewDidEnter } from '@ionic/vue'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
@@ -30,7 +36,7 @@ import mixin from '../mixin'
 import { Chat, ParsedQrCode, QrCodeData } from '../types'
 
 export default defineComponent({
-  components: { QrcodeStream, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonButton },
+  components: { QrcodeStream, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonRow, IonButton },
   props: {
     $store: Object as PropType<any>,
     $global: Object as PropType<any>,
