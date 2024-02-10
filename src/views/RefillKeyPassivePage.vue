@@ -7,7 +7,7 @@
             {{ $t('cancel') }}
           </ion-button>
         </ion-buttons>
-        <ion-title>{{ $t('refillKey') }}</ion-title>
+        <ion-title>{{ $t('refill') }}</ion-title>
         <ion-buttons slot="end">
           <ion-button @click="done()" :disabled="shownQrCodes.size < numQrCodes">
             {{ $t('done') }}

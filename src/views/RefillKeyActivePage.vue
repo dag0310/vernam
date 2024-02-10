@@ -7,7 +7,7 @@
             {{ $t('cancel') }}
           </ion-button>
         </ion-buttons>
-        <ion-title>{{ $t('refillKey') }}</ion-title>
+        <ion-title>{{ $t('refill') }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content style="text-align: center;">
