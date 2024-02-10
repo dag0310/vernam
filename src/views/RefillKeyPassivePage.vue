@@ -19,7 +19,9 @@
       <ion-row class="ion-justify-content-center">
         <h2>#{{ currentQrCode.number }} / {{ numQrCodes }}</h2>
       </ion-row>
-      <img :src="currentQrCode.dataUrl" @click="stopAutoplay(); setCurrentQrCode(+1)" style="width: 100%; cursor: pointer;">
+      <ion-row class="ion-justify-content-center">
+        <img :src="currentQrCode.dataUrl" @click="stopAutoplay(); setCurrentQrCode(+1)" style="width: 100%; max-width: 640px; cursor: pointer;">
+      </ion-row>
       <ion-row class="ion-justify-content-center">
         <ion-button @click="stopAutoplay(); setCurrentQrCode(-1)" fill="solid" color="dark" size="large">
           <ion-icon :icon="ionIconSkipBackward" :aria-label="$t('previous')"></ion-icon>
