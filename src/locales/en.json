@@ -64,7 +64,7 @@
   "pause": "Pause",
   "next": "Next",
   "add": "Add",
-  "chatNamePlaceholder": "Label",
+  "chatNamePlaceholder": "Name",
   "enterChatNameMessage": "Please give the chat a name.",
   "enablePushNotifications": "Enable push notifications",
   "pushNotificationSubscriptionSuccessMessage": "Push notifications activated",
@@ -99,5 +99,6 @@
   "refillKeyActionSheetHeader": "Refill key - what is your part?",
   "refillKeyActionSheetShowText": "I show the QR codes",
   "refillKeyActionSheetScanText": "I scan the QR codes",
-  "message": "Message"
+  "message": "Message",
+  "newChatSubHeader": "Who do you want to write with?"
 }

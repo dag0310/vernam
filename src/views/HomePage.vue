@@ -37,7 +37,7 @@
           </ion-card-content>
         </ion-card>
       </div>
-      <ion-button @click="showCreateChatDialog()" v-show="searchText.length <= 0 && filteredChats.length <= 0" expand="block" class="ion-margin-horizontal ion-margin-top" :aria-label="$t('newChat')">{{ $t('newChat') }}</ion-button>
+      <ion-button @click="showCreateChatDialog()" v-show="searchText.length <= 0 && filteredChats.length <= 0" expand="block" class="ion-margin-horizontal ion-margin-top">{{ $t('newChat') }}</ion-button>
       <ion-list v-show="filteredChats.length > 0">
         <ion-item-sliding v-for="chat in filteredChats" :key="chat.id">
           <ion-item @click="goToChatPage(chat)" lines="inset" :button="true" :detail="false">
@@ -217,6 +217,7 @@ export default defineComponent({
       ]
       await (await alertController.create({
         header: this.$t('newChat'),
+        subHeader: this.$t('newChatSubHeader'),
         inputs,
         buttons,
       })).present()
