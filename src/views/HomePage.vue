@@ -23,14 +23,14 @@
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
       <div v-show="showEnablePushNotifications && $store.state.id != null && notificationPermission !== 'granted' && notificationPermission !== 'denied'" class="ion-margin-top ion-margin-bottom">
-        <div v-if="serviceWorkerRegistration != null && notificationPermission === 'default'">
-          <span @click="showEnablePushNotifications = false" :disabled="!pushNotificationButtonEnabled" style="position: absolute; top: 0; right: 0; padding: 5px;">&times;</span>
+        <div v-if="serviceWorkerRegistration != null && notificationPermission === 'default'" style="position: relative;">
+          <span @click="showEnablePushNotifications = false" :disabled="!pushNotificationButtonEnabled" style="position: absolute; top: -20px; right: 0; padding: 5px; cursor: pointer;">&times;</span>
           <ion-button @click="enablePushNotifications()" class="ion-margin-horizontal" expand="block">
             {{ $t('enablePushNotifications') }}
           </ion-button>
         </div>
         <ion-card v-if="serviceWorkerRegistration == null || notificationPermission == null">
-          <span @click="showEnablePushNotifications = false" style="position: absolute; top: 5px; right: 9px; z-index: 1;">&times;</span>
+          <span @click="showEnablePushNotifications = false" style="position: absolute; top: 5px; right: 9px; z-index: 1; cursor: pointer;">&times;</span>
           <ion-card-content>
             {{ $t('notificationPermissionNotSupported') }}
             <span v-html="buildNotificationPermissionNotSupportedMessage()"></span>
