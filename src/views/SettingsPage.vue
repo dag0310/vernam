@@ -146,7 +146,7 @@ export default defineComponent({
             role: 'destructive',
             handler: () => {
               localStorage.clear()
-              window.location.href = '/'
+              window.location.reload()
             },
           },
           {
@@ -171,7 +171,7 @@ export default defineComponent({
           {
             text: this.$t('reloadApp'),
             handler: () => {
-              window.location.href = '/'
+              window.location.reload()
             },
           },
           {
