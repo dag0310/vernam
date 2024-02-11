@@ -7,8 +7,7 @@
   "dataPerQrCode": "Bytes pro QR-Code",
   "bytes": "Bytes",
   "totalKeyRefillData": "Gesamtschlüssel",
-  "dangerZone": "Gefahrenzone",
-  "resetLocalData": "Lokale Daten zurücksetzen",
+  "resetLocalData": "Zurücksetzen",
   "about": "Über",
   "version": "Version",
   "cancel": "Abbrechen",
@@ -100,5 +99,9 @@
   "refillKeyActionSheetShowText": "Ich zeige die QR-Codes",
   "refillKeyActionSheetScanText": "Ich scanne die QR-Codes",
   "message": "Nachricht",
-  "newChatSubHeader": "Mit wem willst du schreiben?"
+  "newChatSubHeader": "Mit wem willst du schreiben?",
+  "dataSectionHeader": "Lokale Daten",
+  "importLocalData": "Importieren",
+  "exportLocalData": "Exportieren",
+  "resetLocalDataSheetButton": "Lokale Daten zurücksetzen"
 }

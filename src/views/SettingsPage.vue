@@ -33,8 +33,10 @@
         <p><textarea v-if="$global.state.debugString.length > 0 || true" v-model="$global.state.debugString" style="width: 100%; height: 50px;"></textarea></p>
       </div>
       <ion-button @click="showIntroDialog()" expand="block" color="dark">{{ $t('introTitle') }}</ion-button>
-      <!-- DANGER ZONE -->
-      <h2>{{ $t('dangerZone') }}</h2>
+      <!-- DATA -->
+      <h2>{{ $t('dataSectionHeader') }}</h2>
+      <ion-button @click="exportData()" expand="block" color="dark">{{ $t('exportLocalData') }}</ion-button>
+      <ion-button @click="importData()" expand="block" color="dark">{{ $t('importLocalData') }}</ion-button>
       <ion-button @click="resetData()" expand="block" color="danger">{{ $t('resetLocalData') }}</ion-button>
     </ion-content>
   </ion-page>
@@ -137,12 +139,59 @@ export default defineComponent({
       this.numQrCodes = this.defaultNumQrCodes
       this.bytesPerQrCode = this.defaultBytesPerQrCode
     },
+    exportData() {
+      const blob = new Blob([JSON.stringify(localStorage)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `Vernam_${this.$store.state.id}_${new Date().getTime()}.json`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    },
+    importData() {
+      const fileInput = document.createElement('input')
+      fileInput.type = 'file'
+      fileInput.accept = '.json'
+      fileInput.style.display = 'none'
+      document.body.appendChild(fileInput)
+
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files?.[0]
+        if (!file) {
+          console.error('No file selected')
+          return
+        }
+
+        const reader = new FileReader()
+        reader.onload = (event) => {
+          const localStorageData = event.target?.result as string
+          try {
+            const parsedData: Record<string, string> = JSON.parse(localStorageData)
+            localStorage.clear()
+            for (const key in parsedData) {
+              if (parsedData[key] != null) {
+                localStorage.setItem(key, parsedData[key])
+              }
+            }
+            window.location.reload()
+          } catch (error) {
+            console.error('Error parsing the file:', error)
+          }
+        }
+        reader.readAsText(file)
+        document.body.removeChild(fileInput)
+      })
+
+      fileInput.click()
+    },
     async resetData() {
       const actionSheet = await actionSheetController.create({
         header: this.$t('resetLocalDataTitle'),
         buttons: [
           {
-            text: this.$t('resetLocalData'),
+            text: this.$t('resetLocalDataSheetButton'),
             role: 'destructive',
             handler: () => {
               localStorage.clear()
