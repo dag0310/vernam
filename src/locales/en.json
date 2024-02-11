@@ -63,7 +63,7 @@
   "pause": "Pause",
   "next": "Next",
   "add": "Add",
-  "chatNamePlaceholder": "Name",
+  "chatNamePlaceholder": "Contact name",
   "enterChatNameMessage": "Please give the chat a name.",
   "enablePushNotifications": "Enable push notifications",
   "pushNotificationSubscriptionSuccessMessage": "Push notifications activated",
