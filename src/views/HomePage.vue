@@ -38,7 +38,7 @@
         </ion-card>
       </div>
       <ion-button @click="showCreateChatDialog()" v-show="searchText.length <= 0 && filteredChats.length <= 0" expand="block" class="ion-margin-horizontal ion-margin-top">{{ $t('newChat') }}</ion-button>
-      <ion-list v-show="filteredChats.length > 0">
+      <ion-list v-show="filteredChats.length > 0" ref="chatsList">
         <ion-item-sliding v-for="chat in filteredChats" :key="chat.id">
           <ion-item @click="goToChatPage(chat)" lines="inset" :button="true" :detail="false">
             <div v-if="chat.hasNewMessage" class="unread-indicator-wrapper" slot="start">
@@ -235,6 +235,8 @@ export default defineComponent({
         chatId: chat.id,
         hasNewMessage: true,
       })
+      const { chatsList } = this.$refs as any
+      chatsList?.$el?.closeSlidingItems()
     },
     async showDeleteChatDialog(chat: Chat) {
       const actionSheet = await actionSheetController.create({
@@ -250,6 +252,10 @@ export default defineComponent({
           {
             text: this.$t('cancel'),
             role: 'cancel',
+            handler: () => {
+              const { chatsList } = this.$refs as any
+              chatsList?.$el?.closeSlidingItems()
+            },
           },
         ],
       })

@@ -17,7 +17,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content ref="content" class="ion-padding-bottom" :fullscreen="true">
-      <ion-list v-show="filteredMessages.length > 0" class="ion-margin-top" lines="none" :detail="false">
+      <ion-list v-show="filteredMessages.length > 0" class="ion-margin-top" lines="none" :detail="false" ref="messagesList">
         <ion-item-sliding v-for="message in filteredMessages" :key="message.id">
           <ion-item>
             <ion-card :color="message.own ? 'primary' : 'light'" :slot="message.own ? 'end' : ''">
@@ -378,6 +378,10 @@ export default defineComponent({
           {
             text: this.$t('cancel'),
             role: 'cancel',
+            handler: () => {
+              const { messagesList } = this.$refs as any
+              messagesList?.$el?.closeSlidingItems()
+            },
           },
         ],
       })
