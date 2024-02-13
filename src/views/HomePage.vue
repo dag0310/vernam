@@ -48,9 +48,10 @@
               <strong class="ion-text-nowrap">{{ chat.name }}</strong>
               <ion-note color="medium" class="ion-text-nowrap" :style="{ 'font-weight': chat.hasNewMessage ? 'bold' : 'normal' }">
                 <template v-if="chat.message.trim().length > 0"><i>{{ $t('draft') }}: </i>{{ chat.message }}</template>
-                <template v-else>
-                  <i v-if="lastMessage(chat)?.own ?? false">{{ $t('you') }}: </i>{{ lastMessage(chat)?.text.trim() ?? '' }}
+                <template v-else-if="lastMessage(chat)">
+                  <i v-if="lastMessage(chat)?.own">{{ $t('you') }}: </i>{{ lastMessage(chat)?.text.trim() }}
                 </template>
+                <template v-else>&nbsp;</template>
               </ion-note>
             </ion-label>
             <div class="metadata-end-wrapper" slot="end">
