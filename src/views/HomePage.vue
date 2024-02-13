@@ -190,6 +190,7 @@ export default defineComponent({
       const inputs = [
         {
           placeholder: this.$t('chatNamePlaceholder'),
+          attributes: { autocapitalize: 'on' },
         },
       ]
       const buttons = [

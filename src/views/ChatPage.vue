@@ -314,8 +314,9 @@ export default defineComponent({
     async showInformationDialog() {
       const inputs = [
         {
-          placeholder: this.$t('chatNamePlaceholder'),
           value: this.chat.name,
+          placeholder: this.$t('chatNamePlaceholder'),
+          attributes: { autocapitalize: 'on' },
         },
       ]
       const buttons = [
