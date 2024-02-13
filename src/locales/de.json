@@ -103,5 +103,6 @@
   "dataSectionHeader": "Lokale Daten",
   "importLocalData": "Importieren",
   "exportLocalData": "Exportieren",
-  "resetLocalDataSheetButton": "Lokale Daten zurücksetzen"
+  "resetLocalDataSheetButton": "Lokale Daten zurücksetzen",
+  "unread": "Ungelesen"
 }

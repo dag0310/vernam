@@ -57,6 +57,12 @@
               <ion-note color="medium">{{ lastMessageDateText(chat) }}</ion-note>
             </div>
           </ion-item>
+          <ion-item-options @ion-swipe="setHasNewMessageTrue(chat)" side="start">
+            <ion-item-option @click="setHasNewMessageTrue(chat)" color="primary" expandable>
+              <ion-icon slot="top" :icon="ionIconMailUnread"></ion-icon>
+              {{ $t('unread') }}
+            </ion-item-option>
+          </ion-item-options>
           <ion-item-options @ion-swipe="showDeleteChatDialog(chat)" side="end">
             <ion-item-option @click="showDeleteChatDialog(chat)" color="danger" expandable>
               <ion-icon slot="top" :icon="ionIconTrash"></ion-icon>
@@ -72,7 +78,7 @@
 
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonSearchbar, IonButtons, IonTitle, IonContent, IonRefresher, IonRefresherContent, IonList, IonItemSliding, IonItem, IonLabel, IonNote, IonItemOptions, IonItemOption, IonButton, IonIcon, IonCard, IonCardContent, actionSheetController, alertController, onIonViewDidEnter } from '@ionic/vue'
-import { cog as ionIconCog, add as ionIconAdd, close as ionIconClose, trash as ionIconTrash } from 'ionicons/icons'
+import { cog as ionIconCog, add as ionIconAdd, close as ionIconClose, mailUnread as ionIconMailUnread, trash as ionIconTrash } from 'ionicons/icons'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { AxiosError } from 'axios'
@@ -96,6 +102,7 @@ export default defineComponent({
     ionIconCog: string,
     ionIconAdd: string,
     ionIconClose: string,
+    ionIconMailUnread: string,
     ionIconTrash: string,
   } {
     return {
@@ -106,6 +113,7 @@ export default defineComponent({
       ionIconCog,
       ionIconAdd,
       ionIconClose,
+      ionIconMailUnread,
       ionIconTrash,
     }
   },
@@ -221,6 +229,12 @@ export default defineComponent({
         inputs,
         buttons,
       })).present()
+    },
+    setHasNewMessageTrue(chat: Chat) {
+      this.$store.commit('setHasNewMessage', {
+        chatId: chat.id,
+        hasNewMessage: true,
+      })
     },
     async showDeleteChatDialog(chat: Chat) {
       const actionSheet = await actionSheetController.create({
