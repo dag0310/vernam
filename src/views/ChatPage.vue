@@ -22,7 +22,7 @@
           <ion-item>
             <ion-card :color="message.own ? 'primary' : 'light'" :slot="message.own ? 'end' : ''">
               <ion-card-content style="display: flex; flex-direction: row; flex-wrap: wrap; row-gap: 3px; column-gap: 10px;">
-                <div v-html="message.html" style="user-select: text; overflow-wrap: anywhere; white-space: pre-wrap; font-family: monospace; font-size: 6px;"></div>
+                <div v-html="message.html" style="user-select: text; overflow-wrap: anywhere; white-space: pre-wrap;"></div>
                 <div class="time ion-text-nowrap">{{ dateTimeText(message.timestamp) }}</div>
               </ion-card-content>
             </ion-card>
@@ -51,7 +51,7 @@
     </ion-content>
     <ion-footer :translucent="true">
       <ion-toolbar>
-        <ion-textarea v-model="message" :placeholder="$t('message')" :auto-grow="true" :disabled="!lastOwnMessageSynced" autocomplete="off" wrap="soft" :rows="1" mode="md" fill="outline" style="font-family: monospace; font-size: 6px;">
+        <ion-textarea v-model="message" :placeholder="$t('message')" :auto-grow="true" :disabled="!lastOwnMessageSynced" autocomplete="off" wrap="soft" :rows="1" mode="md" fill="outline">
           <ion-button @click="sendMessage()" :disabled="(isSendingMessage || !chat.otherId) || (lastOwnMessageSynced && (message.trim().length <= 0 || !otpCryptoResult.isKeyLongEnough))" fill="clear" slot="end" :aria-label="$t('send')">
             <ion-icon slot="icon-only" :icon="ionIconSend"></ion-icon>
           </ion-button>
@@ -73,7 +73,6 @@ import OtpCrypto from 'otp-crypto'
 
 import mixin from '../mixin'
 import { ApiMessageRequestBody, ApiMessageResponseBody, Chat, FilteredMessage } from '../types'
-import ImageToAscii from '../image-to-ascii'
 
 const keyAlmostEmptyThreshold = 100
 const scrollToBottomTimeoutInMs = 500 // Small timeout necessary, otherwise much less reliable to update
@@ -341,37 +340,6 @@ export default defineComponent({
           text: this.$t('refillKey'),
           handler: () => {
             this.refillKey()
-          },
-        },
-        {
-          text: this.$t('insertAsciiImage'),
-          handler: () => {
-            const fileInput = document.createElement('input')
-            fileInput.type = 'file'
-            fileInput.style.display = 'none'
-            document.body.appendChild(fileInput)
-            fileInput.addEventListener('change', () => {
-              const file = fileInput.files?.[0]
-              if (!file) {
-                console.error('No file selected.')
-                return
-              }
-              const reader = new FileReader()
-              reader.onload = event => {
-                if (event.target == null) {
-                  throw Error('File event target is null.')
-                }
-                ImageToAscii.convertImageToASCII(event.target.result as string, 40, (asciiString: string) => {
-                  if (typeof asciiString === 'string') {
-                    console.log(asciiString)
-                    this.message = asciiString
-                  }
-                })
-              }
-              reader.readAsDataURL(file)
-              document.body.removeChild(fileInput)
-            })
-            fileInput.click()
           },
         },
         {

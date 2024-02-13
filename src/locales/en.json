@@ -104,6 +104,5 @@
   "importLocalData": "Import",
   "exportLocalData": "Export",
   "resetLocalDataSheetButton": "Reset local data",
-  "unread": "Unread",
-  "insertAsciiImage": "Insert ASCII image"
+  "unread": "Unread"
 }
