@@ -38,14 +38,11 @@
       <div class="ion-padding-horizontal" style="display: flex; flex-direction: column; flex-wrap: nowrap; gap: 1rem;">
         <div class="ion-margin-top info-text" v-if="filteredMessages.length <= 0 && searchText.length > 0">{{ $t('noMessagesFoundMessage') }}</div>
         <div class="ion-margin-top info-text" v-if="chat.otherId == null && !keyEmpty">{{ $t('noOtherIdMessage') }}</div>
-        <div class="ion-margin-top" style="text-align: center;" v-if="keyAlmostEmpty">
-          <div class="info-text">
-            <span v-if="keyEmpty">{{ $t('keyEmptyMessage') }}</span>
-            <span v-else>{{ $t('keyAlmostEmptyMessage') }}</span>
-            &ndash;<br>
-            {{ $t('refillKeyMessage') }}
-          </div>
-          <ion-button @click="refillKey()" class="ion-margin-top">{{ $t('refill') }} 🔑</ion-button>
+        <div class="ion-margin-top" style="text-align: center;" v-if="keyAlmostEmpty || otherKeyAlmostEmpty">
+          <div class="info-text" v-if="keyAlmostEmpty">{{ keyEmpty ? $t('keyEmptyMessage') : $t('keyAlmostEmptyMessage') }}</div>
+          <div class="info-text" v-if="otherKeyAlmostEmpty">{{ otherKeyEmpty ? $t('otherKeyEmptyMessage') : $t('otherKeyAlmostEmptyMessage') }}</div>
+          <div class="info-text">{{ $t('refillKeyMessage') }}</div>
+          <ion-button @click="refillKey()" class="ion-margin-top">{{ $t('refillKey') }} 🔑</ion-button>
         </div>
       </div>
     </ion-content>
@@ -175,8 +172,15 @@ export default defineComponent({
       // Empty string necessary, otherwise key almost empty too soon (e.g. 106 if threshold is 100)
       return OtpCrypto.encrypt('', this.ownKey).remainingKey.length - keyAlmostEmptyThreshold < 0
     },
+    otherKeyAlmostEmpty() {
+      // Empty string necessary, otherwise key almost empty too soon (e.g. 106 if threshold is 100)
+      return OtpCrypto.encrypt('', this.otherKey).remainingKey.length - keyAlmostEmptyThreshold < 0
+    },
     keyEmpty() {
       return OtpCrypto.encrypt(this.AUTH_PREAMBLE, this.ownKey).remainingKey.length <= 0
+    },
+    otherKeyEmpty() {
+      return OtpCrypto.encrypt(this.AUTH_PREAMBLE, this.otherKey).remainingKey.length <= 0
     },
     otpCryptoResult() {
       return OtpCrypto.encrypt(this.AUTH_PREAMBLE + this.message, this.ownKey)

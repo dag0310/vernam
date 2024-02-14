@@ -25,9 +25,9 @@
   "deleteMessageLocally": "Nachricht lokal löschen",
   "noOtherIdMessage": "Dein Kontakt muss dir eine Nachricht senden, bevor du eine senden kannst.",
   "noMessagesFoundMessage": "Keine Nachrichten gefunden",
-  "keyEmptyMessage": "Dein Sende-Schlüssel ist erschöpft",
-  "keyAlmostEmptyMessage": "Dein Sende-Schlüssel ist fast erschöpft",
-  "refillKeyMessage": "Triff dich mit deinem Kontakt und lade den Schlüssel auf, um Nachrichten senden zu können.",
+  "keyEmptyMessage": "Dein Sende-Schlüssel ist erschöpft.",
+  "keyAlmostEmptyMessage": "Dein Sende-Schlüssel ist fast erschöpft.",
+  "refillKeyMessage": "Triff dich mit deinem Kontakt und lade den Schlüssel auf, um weiterhin Nachrichten austauschen zu können.",
   "send": "Senden",
   "ownKey": "Sende-Schlüssel",
   "otherKey": "Empfangs-Schlüssel",
@@ -104,5 +104,7 @@
   "importLocalData": "Importieren",
   "exportLocalData": "Exportieren",
   "resetLocalDataSheetButton": "Lokale Daten zurücksetzen",
-  "unread": "Ungelesen"
+  "unread": "Ungelesen",
+  "otherKeyAlmostEmptyMessage": "Der Sende-Schlüssel deines Kontakts ist fast erschöpft.",
+  "otherKeyEmptyMessage": "Der Sende-Schlüssel deines Kontakts ist erschöpft."
 }

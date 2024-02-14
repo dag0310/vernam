@@ -25,9 +25,9 @@
   "deleteMessageLocally": "Delete message locally",
   "noOtherIdMessage": "Your contact needs to message you before you can start messaging.",
   "noMessagesFoundMessage": "No messages found",
-  "keyEmptyMessage": "Your sending key is exhausted",
-  "keyAlmostEmptyMessage": "Your sending key is almost exhausted",
-  "refillKeyMessage": "Refill it in person with your contact to send messages.",
+  "keyEmptyMessage": "Your sending key is exhausted.",
+  "keyAlmostEmptyMessage": "Your sending key is almost exhausted.",
+  "refillKeyMessage": "Meet up with your contact and refill the key so that you can continue exchanging messages.",
   "send": "Send",
   "ownKey": "Sending key",
   "otherKey": "Receiver key",
@@ -104,5 +104,7 @@
   "importLocalData": "Import",
   "exportLocalData": "Export",
   "resetLocalDataSheetButton": "Reset local data",
-  "unread": "Unread"
+  "unread": "Unread",
+  "otherKeyAlmostEmptyMessage": "The sending key of your contact is almost exhausted.",
+  "otherKeyEmptyMessage": "The sending key of your contact is exhausted."
 }
