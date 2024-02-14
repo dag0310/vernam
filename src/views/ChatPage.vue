@@ -99,6 +99,11 @@ export default defineComponent({
     }
   },
   mounted() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.scrollToBottom()
+      }
+    })
     this.scrollToBottom()
     this.$global.state.pollingActive = true
     onIonViewDidEnter(() => {
