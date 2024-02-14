@@ -115,8 +115,10 @@ export default defineComponent({
   },
   watch: {
     lastFilteredMessage: {
-      async handler() {
-        setTimeout(() => { this.scrollToBottom() }, scrollToBottomTimeoutInMs)
+      async handler(newMessage: FilteredMessage, oldMessage: FilteredMessage) {
+        if (newMessage?.id !== oldMessage?.id) {
+          setTimeout(() => { this.scrollToBottom() }, scrollToBottomTimeoutInMs)
+        }
       },
       flush: 'post',
     },
