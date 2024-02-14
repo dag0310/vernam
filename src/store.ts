@@ -3,7 +3,7 @@ import createPersistedState from 'vuex-persistedstate'
 import { Chat, Message, State } from './types'
 
 export const defaultNumQrCodes = 10
-export const defaultBytesPerQrCode = 400
+export const defaultBytesPerQrCode = 500
 
 const initialState: State = {
   id: null,
