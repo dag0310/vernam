@@ -11,7 +11,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-row class="ion-justify-content-center">
+      <ion-row class="ion-justify-content-center" style="text-align: center;">
         <h4 v-if="qrCodeNumbersLeft != null">{{ $tc('codesLeftToScan', qrCodeNumbersLeft.length) }}:<br>{{ qrCodeNumbersLeft.map(code => `#${code}`).join(', ') }}</h4>
         <h4 v-else>{{ $t('scanQrCodesOfYourContact') }}</h4>
       </ion-row>
