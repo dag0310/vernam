@@ -371,9 +371,9 @@ export default defineComponent({
         buttons,
       })).present()
     },
-    async showDeleteMessageDialog(messageId: string, header: string) {
+    async showDeleteMessageDialog(messageId: string, headerText: string) {
       const actionSheet = await actionSheetController.create({
-        header,
+        header: headerText.substring(0, 100),
         buttons: [
           {
             text: this.$t('deleteMessageLocally'),
