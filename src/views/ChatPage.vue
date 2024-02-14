@@ -132,6 +132,12 @@ export default defineComponent({
       },
       flush: 'post',
     },
+    otherKeyAlmostEmpty: {
+      handler() {
+        setTimeout(() => { this.scrollToBottom() }, scrollToBottomTimeoutInMs)
+      },
+      flush: 'post',
+    },
   },
   computed: {
     chat(): Chat {
