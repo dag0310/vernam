@@ -106,5 +106,6 @@
   "resetLocalDataSheetButton": "Reset local data",
   "unread": "Unread",
   "otherKeyAlmostEmptyMessage": "The sending key of your contact is almost exhausted.",
-  "otherKeyEmptyMessage": "The sending key of your contact is exhausted."
+  "otherKeyEmptyMessage": "The sending key of your contact is exhausted.",
+  "read": "Read"
 }
