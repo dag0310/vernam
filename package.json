@@ -1,7 +1,7 @@
 {
   "name": "vernam",
   "version": "2.0.0",
-  "description": "Perfect Secrecy Messenger",
+  "description": "Near Perfect Secrecy Messenger",
   "private": true,
   "author": "Daniel Geymayer <dag0310@gmail.com>",
   "type": "module",
