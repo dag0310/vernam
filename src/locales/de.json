@@ -83,7 +83,7 @@
   "notificationPermissionNotSupportedOther": "<b>Öffne Vernam in Safari auf deinem iPhone oder Chrome auf deinem Android-Gerät.</b>",
   "alright": "Alles klar!",
   "introTitle": "Was ist Vernam?",
-  "introText": "Vernam ist keine gewöhnliche Messenger-App.\n\nUm Nachrichten mit einem Kontakt austauschen zu können, müsst ihr euch persönlich treffen und einen gemeinsamen Zufallsschlüssel aufladen. Jedes Mal, wenn du eine Nachricht schickst, wird ein Teil des Schlüssels einmalig zum Verschlüsseln der Nachricht verwendet.\n\nDas garantiert eine perfekte Ende-zu-Ende-Verschlüsselung, die noch sicherer ist als herkömmliche Messenger wie Signal, WhatsApp oder Telegram.",
+  "introText": "Vernam ist keine gewöhnliche Messenger-App.\n\nUm Nachrichten mit einem Kontakt austauschen zu können, müsst ihr euch persönlich treffen und einen gemeinsamen Zufallsschlüssel aufladen. Jedes Mal, wenn du eine Nachricht schickst, wird ein Teil des Schlüssels einmalig zum Verschlüsseln der Nachricht verwendet.\n\nDas garantiert eine nahezu perfekte Ende-zu-Ende-Verschlüsselung.",
   "connectionEstablished": "Verbindung hergestellt",
   "lastTimestamp": "Letzter Zeitstempel",
   "showQrCodes": "QR-Codes zeigen",

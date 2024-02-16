@@ -83,7 +83,7 @@
   "notificationPermissionNotSupportedOther": "<b>Open Vernam in Safari on your iPhone or Chrome on your Android device.</b>",
   "alright": "Alright!",
   "introTitle": "What is Vernam?",
-  "introText": "Vernam is no ordinary messenger app.\n\nTo exchange messages with a contact, you must meet in person and load a shared random key. Each time you send a message, part of the key is used once to encrypt the message.\n\nThis guarantees perfect end-to-end encryption, which is even more secure than conventional messengers such as Signal, WhatsApp or Telegram.",
+  "introText": "Vernam is no ordinary messenger app.\n\nTo exchange messages with a contact, you must meet in person and load a shared random key. Each time you send a message, part of the key is used once to encrypt the message.\n\nThis guarantees near perfect end-to-end encryption.",
   "connectionEstablished": "Connected established",
   "lastTimestamp": "Last timestamp",
   "showQrCodes": "Show QR codes",
