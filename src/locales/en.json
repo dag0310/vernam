@@ -31,7 +31,7 @@
   "send": "Send",
   "ownKey": "Sending key",
   "otherKey": "Receiver key",
-  "save": "Save",
+  "saveChatName": "Save name",
   "keyNotLongEnough": "Key not big enough",
   "otherIdNotSet": "Contact ID not set",
   "helloChatMessage": "Hi, {name}!",

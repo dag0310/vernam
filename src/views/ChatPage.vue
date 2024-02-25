@@ -338,7 +338,7 @@ export default defineComponent({
       ]
       const buttons = [
         {
-          text: this.$t('save'),
+          text: this.$t('saveChatName'),
           role: 'confirm',
           handler: (value: any): boolean => {
             const name = value[0]

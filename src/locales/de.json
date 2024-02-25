@@ -31,7 +31,7 @@
   "send": "Senden",
   "ownKey": "Sende-Schlüssel",
   "otherKey": "Empfangs-Schlüssel",
-  "save": "Speichern",
+  "saveChatName": "Name speichern",
   "keyNotLongEnough": "Schlüssel nicht groß genug",
   "otherIdNotSet": "Kontakt-ID nicht gesetzt",
   "helloChatMessage": "Hi, {name}!",
