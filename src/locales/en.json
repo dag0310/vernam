@@ -7,7 +7,7 @@
   "dataPerQrCode": "Bytes per QR code",
   "bytes": "Bytes",
   "totalKeyRefillData": "Total key",
-  "resetLocalData": "Data",
+  "resetLocalData": "Delete",
   "about": "About",
   "version": "Version",
   "cancel": "Cancel",
