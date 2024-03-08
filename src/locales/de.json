@@ -42,7 +42,7 @@
   "codesLeftToScan": "Alle Codes gescanned | 1 Code übrig | {n} Codes übrig",
   "scanStatusPreparingToScan": "Zum Scannen vorbereiten ...",
   "scanStatusReadyToScan": "Bereit zum Scannen",
-  "scanStatusNotAllowedError": "Benutzer verweigert Kamerazugriffsberechtigung.",
+  "scanStatusNotAllowedError": "Kamerazugriff verweigert - Überprüfe die Zugriffsberechtigungen deines Web-Browsers.",
   "scanStatusNotFoundError": "Keine geeignete Kamera vorhanden.",
   "scanStatusNotSupportedError": "Funktion wird nicht unterstützt",
   "scanStatusInsecureContextError": "Kamerazugriff nur über HTTPS oder localhost.",

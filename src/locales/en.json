@@ -42,7 +42,7 @@
   "codesLeftToScan": "All codes scanned | 1 code left | {n} codes left",
   "scanStatusPreparingToScan": "Preparing to scan ...",
   "scanStatusReadyToScan": "Ready to scan",
-  "scanStatusNotAllowedError": "User denied camera access permisson.",
+  "scanStatusNotAllowedError": "Camera access denied - Check the permission settings of your web browser.",
   "scanStatusNotFoundError": "No suitable camera device installed.",
   "scanStatusNotSupportedError": "Functionality not supported",
   "scanStatusInsecureContextError": "Camera access only over HTTPS or localhost.",
