@@ -52,7 +52,9 @@
                 <template v-else-if="lastMessage(chat)">
                   <i v-if="lastMessage(chat)?.own">{{ $t('you') }}: </i>{{ lastMessage(chat)?.text.trim() }}
                 </template>
-                <template v-else>&nbsp;</template>
+                <template v-else>
+                  <i>{{ $t('noMessagesPreviewText') }}</i>
+                </template>
               </ion-note>
             </ion-label>
             <div class="metadata-end-wrapper" slot="end">

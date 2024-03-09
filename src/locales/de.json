@@ -108,5 +108,6 @@
   "otherKeyAlmostEmptyMessage": "Der Sende-Schlüssel deines Kontakts ist fast erschöpft.",
   "otherKeyEmptyMessage": "Der Sende-Schlüssel deines Kontakts ist erschöpft.",
   "read": "Gelesen",
-  "attention": "Achtung"
+  "attention": "Achtung",
+  "noMessagesPreviewText": "*zirp zirp* - noch keine Nachrichten"
 }
