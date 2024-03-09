@@ -29,7 +29,7 @@
             {{ $t('enablePushNotifications') }}
           </ion-button>
         </div>
-        <ion-card v-if="serviceWorkerRegistration == null || notificationPermission == null">
+        <ion-card v-if="serviceWorkerRegistration == null || notificationPermission == null" color="warning">
           <span @click="showEnablePushNotifications = false" style="position: absolute; top: 5px; right: 9px; z-index: 1; cursor: pointer;">&times;</span>
           <ion-card-content>
             <h1>{{ $t('attention') }}</h1>
