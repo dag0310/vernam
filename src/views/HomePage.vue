@@ -204,7 +204,7 @@ export default defineComponent({
           role: 'cancel',
         },
         {
-          text: this.$t('add'),
+          text: this.$t('newChatConfirm'),
           role: 'confirm',
           handler: (value: any): boolean => {
             const name = value[0]

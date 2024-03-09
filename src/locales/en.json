@@ -62,9 +62,8 @@
   "play": "Play",
   "pause": "Pause",
   "next": "Next",
-  "add": "Add",
-  "chatNamePlaceholder": "Contact name",
-  "enterChatNameMessage": "Please give the chat a name.",
+  "chatNamePlaceholder": "Label",
+  "enterChatNameMessage": "Give the chat a name.",
   "enablePushNotifications": "Enable push notifications",
   "pushNotificationSubscriptionSuccessMessage": "Push notifications activated",
   "pushNotificationSubscriptionDuplicateErrorMessage": "Push notifications already activated.",
@@ -109,5 +108,6 @@
   "otherKeyEmptyMessage": "The sending key of your contact is exhausted.",
   "read": "Read",
   "attention": "Attention",
-  "noMessagesPreviewText": "*crickets* - No messages yet"
+  "noMessagesPreviewText": "*crickets* - No messages yet",
+  "newChatConfirm": "Create"
 }

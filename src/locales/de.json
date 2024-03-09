@@ -62,9 +62,8 @@
   "play": "Abspielen",
   "pause": "Pause",
   "next": "Nächster",
-  "add": "Hinzufügen",
-  "chatNamePlaceholder": "Name des Kontakts",
-  "enterChatNameMessage": "Bitte gib dem Chat einen Namen.",
+  "chatNamePlaceholder": "Bezeichnung",
+  "enterChatNameMessage": "Gib dem Chat einen Namen.",
   "enablePushNotifications": "Push-Mitteilungen aktivieren",
   "pushNotificationSubscriptionSuccessMessage": "Push-Mitteilungen aktiviert",
   "pushNotificationSubscriptionDuplicateErrorMessage": "Push-Mitteilungen bereits aktiviert.",
@@ -109,5 +108,6 @@
   "otherKeyEmptyMessage": "Der Sende-Schlüssel deines Kontakts ist erschöpft.",
   "read": "Gelesen",
   "attention": "Achtung",
-  "noMessagesPreviewText": "*zirp zirp* - noch keine Nachrichten"
+  "noMessagesPreviewText": "*zirp zirp* - noch keine Nachrichten",
+  "newChatConfirm": "Erstellen"
 }
