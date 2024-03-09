@@ -107,5 +107,6 @@
   "unread": "Ungelesen",
   "otherKeyAlmostEmptyMessage": "Der Sende-Schlüssel deines Kontakts ist fast erschöpft.",
   "otherKeyEmptyMessage": "Der Sende-Schlüssel deines Kontakts ist erschöpft.",
-  "read": "Gelesen"
+  "read": "Gelesen",
+  "attention": "Achtung"
 }

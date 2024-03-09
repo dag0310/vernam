@@ -32,7 +32,8 @@
         <ion-card v-if="serviceWorkerRegistration == null || notificationPermission == null">
           <span @click="showEnablePushNotifications = false" style="position: absolute; top: 5px; right: 9px; z-index: 1; cursor: pointer;">&times;</span>
           <ion-card-content>
-            {{ $t('notificationPermissionNotSupported') }}
+            <h1>{{ $t('attention') }}</h1>
+            <span>{{ $t('notificationPermissionNotSupported') }}</span>
             <span v-html="buildNotificationPermissionNotSupportedMessage()"></span>
           </ion-card-content>
         </ion-card>

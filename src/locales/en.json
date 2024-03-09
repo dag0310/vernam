@@ -107,5 +107,6 @@
   "unread": "Unread",
   "otherKeyAlmostEmptyMessage": "The sending key of your contact is almost exhausted.",
   "otherKeyEmptyMessage": "The sending key of your contact is exhausted.",
-  "read": "Read"
+  "read": "Read",
+  "attention": "Attention"
 }
