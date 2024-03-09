@@ -22,7 +22,7 @@
       <h2>{{ $t('showQrCodes') }}</h2>
       <ion-input @ionChange="changeNumericSetting($event, 'setNumQrCodes',     1,   60)" v-model="numQrCodes"     :label="$t('amount')"        label-placement="start" type="number" step="1"  inputmode="numeric" autocomplete="off" required></ion-input>
       <ion-input @ionChange="changeNumericSetting($event, 'setBytesPerQrCode', 1, 1000)" v-model="bytesPerQrCode" :label="$t('dataPerQrCode')" label-placement="start" type="number" step="50" inputmode="numeric" autocomplete="off" required></ion-input>
-      <ion-input :label="$t('totalKeyRefillData')" label-placement="start" readonly :value="totalKeySize + ' Bytes'"></ion-input>
+      <ion-input :label="$t('totalKeyRefillData')" label-placement="start" readonly :value="totalKeySize + ' ' + $t('bytes')"></ion-input>
       <ion-button @click="restoreQrCodeDefaults()" v-show="numQrCodes !== defaultNumQrCodes || bytesPerQrCode !== defaultBytesPerQrCode" size="small" color="light" class="ion-margin-top">{{ $t('restoreDefaults') }}</ion-button>
       <!-- ABOUT -->
       <h2 @click="showDebugActions()">{{ $t('about') }}</h2>
