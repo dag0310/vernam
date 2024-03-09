@@ -22,7 +22,7 @@
       <ion-refresher slot="fixed" @ionRefresh="refresh($event)">
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
-      <div v-show="showEnablePushNotifications && $store.state.id != null && notificationPermission !== 'granted' && notificationPermission !== 'denied'" class="ion-margin-top ion-margin-bottom">
+      <div v-show="showPushNotificationsElements" class="ion-margin-top ion-margin-bottom">
         <div v-if="serviceWorkerRegistration != null && notificationPermission === 'default'" style="position: relative;">
           <span @click="showEnablePushNotifications = false" :disabled="!pushNotificationButtonEnabled" style="position: absolute; top: -20px; right: 0; padding: 5px; cursor: pointer;">&times;</span>
           <ion-button @click="enablePushNotifications()" class="ion-margin-horizontal" expand="block">
@@ -37,7 +37,7 @@
           </ion-card-content>
         </ion-card>
       </div>
-      <ion-button @click="showCreateChatDialog()" v-show="searchText.length <= 0 && filteredChats.length <= 0" expand="block" class="ion-margin-horizontal ion-margin-top">{{ $t('newChat') }}</ion-button>
+      <ion-button @click="showCreateChatDialog()" v-show="searchText.length <= 0 && filteredChats.length <= 0 && !showPushNotificationsElements" expand="block" class="ion-margin-horizontal ion-margin-top">{{ $t('newChat') }}</ion-button>
       <ion-list v-show="filteredChats.length > 0" ref="chatsList">
         <ion-item-sliding v-for="chat in filteredChats" :key="chat.id">
           <ion-item @click="goToChatPage(chat)" lines="inset" :button="true" :detail="false">
@@ -142,6 +142,9 @@ export default defineComponent({
       set(value: boolean) {
         this.$store.commit('setShowEnablePushNotifications', value)
       },
+    },
+    showPushNotificationsElements() {
+      return this.showEnablePushNotifications && this.$store.state.id != null && this.notificationPermission !== 'granted' && this.notificationPermission !== 'denied'
     },
     filteredChats() {
       return (this.$store.state.chats as Chat[])
