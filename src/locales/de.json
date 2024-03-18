@@ -6,7 +6,6 @@
   "amount": "Anzahl",
   "dataPerQrCode": "Zeichen pro QR-Code",
   "bytes": "Zeichen",
-  "totalKeyRefillData": "Gesamtschlüssel",
   "resetLocalData": "Zurücksetzen",
   "about": "Über",
   "version": "Version",
@@ -109,5 +108,6 @@
   "read": "Gelesen",
   "attention": "Achtung",
   "noMessagesPreviewText": "*zirp zirp* - noch keine Nachrichten",
-  "newChatConfirm": "Erstellen"
+  "newChatConfirm": "Erstellen",
+  "keyRefillData": "Schlüssel pro Kontakt"
 }

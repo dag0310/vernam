@@ -6,7 +6,6 @@
   "amount": "Amount",
   "dataPerQrCode": "Characters per QR code",
   "bytes": "Characters",
-  "totalKeyRefillData": "Total key",
   "resetLocalData": "Delete",
   "about": "About",
   "version": "Version",
@@ -109,5 +108,6 @@
   "read": "Read",
   "attention": "Attention",
   "noMessagesPreviewText": "*crickets* - No messages yet",
-  "newChatConfirm": "Create"
+  "newChatConfirm": "Create",
+  "keyRefillData": "Key size per contact"
 }
