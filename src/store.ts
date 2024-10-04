@@ -1,101 +1,77 @@
-import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+import { defineStore } from 'pinia'
+import { v4 as uuidv4 } from 'uuid'
+
 import { Chat, Message, State } from './types'
 
 export const defaultNumQrCodes = 10
 export const defaultBytesPerQrCode = 500
 
-const initialState: State = {
-  id: null,
-  chats: [],
-  lastTimestamp: null,
-  numQrCodes: defaultNumQrCodes,
-  bytesPerQrCode: defaultBytesPerQrCode,
-  showEnablePushNotifications: true,
+export function getChat(state: State, chatId: string): Chat {
+  const chat = state.chats.find((c: Chat) => c.id === chatId)
+  if (chat == null) {
+    throw Error(`Chat with ID '${chatId}' does not exist.`)
+  }
+  return chat
 }
 
-export default new Vuex.Store({
-  plugins: [createPersistedState()],
-  mutations: {
-    setId(state, id: string | null) {
-      state.id = id
+export default defineStore({
+  id: 'vuex',
+  persist: true,
+  state: (): State => ({
+    id: uuidv4(),
+    chats: [],
+    lastTimestamp: null,
+    numQrCodes: defaultNumQrCodes,
+    bytesPerQrCode: defaultBytesPerQrCode,
+    showEnablePushNotifications: true,
+  }),
+  actions: {
+    addMessage(chatId: string, message: Message) {
+      getChat(this, chatId).messages.push(message)
     },
-    setShowEnablePushNotifications(state, showEnablePushNotifications: boolean) {
-      state.showEnablePushNotifications = showEnablePushNotifications
-    },
-    setNumQrCodes(state, numQrCodes: number) {
-      state.numQrCodes = numQrCodes
-    },
-    setBytesPerQrCode(state, bytesPerQrCode: number) {
-      state.bytesPerQrCode = bytesPerQrCode
-    },
-    setLastTimestamp(state, lastTimestamp: number | null) {
-      state.lastTimestamp = lastTimestamp
-    },
-    addMessage(state, payload: { chatId: string, message: Message }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      const newMessages = state.chats[chatIdx].messages.slice()
-      newMessages.push(payload.message)
-      state.chats[chatIdx].messages = newMessages
-    },
-    syncDeletedMessage(state, payload: { chatId: string, messageId: string }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      const messageIdx = state.chats[chatIdx].messages.findIndex(message => message.id === payload.messageId)
-      const newMessage = { ...state.chats[chatIdx].messages[messageIdx] }
+    syncDeletedMessage(chatId: string, messageId: string) {
+      const chatIdx = this.chats.findIndex(chat => chat.id === chatId)
+      const messageIdx = this.chats[chatIdx].messages.findIndex(message => message.id === messageId)
+      const newMessage = { ...this.chats[chatIdx].messages[messageIdx] }
       newMessage.synced = true
       delete newMessage.base64Key
-      state.chats[chatIdx].messages[messageIdx] = newMessage
+      this.chats[chatIdx].messages[messageIdx] = newMessage
     },
-    syncSentMessage(state, payload: { chatId: string, messageId: string, timestamp: number }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      const messageIdx = state.chats[chatIdx].messages.findIndex(message => message.id === payload.messageId)
-      const newMessage = { ...state.chats[chatIdx].messages[messageIdx] }
+    syncSentMessage(chatId: string, messageId: string, timestamp: number) {
+      const chatIdx = this.chats.findIndex(chat => chat.id === chatId)
+      const messageIdx = this.chats[chatIdx].messages.findIndex(message => message.id === messageId)
+      const newMessage = { ...this.chats[chatIdx].messages[messageIdx] }
       newMessage.synced = true
-      newMessage.timestamp = payload.timestamp
+      newMessage.timestamp = timestamp
       delete newMessage.payload
-      state.chats[chatIdx].messages[messageIdx] = newMessage
+      this.chats[chatIdx].messages[messageIdx] = newMessage
     },
-    deleteChat(state, chatId: string) {
-      state.chats = state.chats.filter(chat => chat.id !== chatId)
+    deleteChat(chatId: string) {
+      this.chats = this.chats.filter(chat => chat.id !== chatId)
     },
-    deleteMessage(state, payload: { chatId: string, messageId: string }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      const newMessages = state.chats[chatIdx].messages.filter(message => message.id !== payload.messageId)
-      state.chats[chatIdx].messages = newMessages
+    deleteMessage(chatId: string, messageId: string) {
+      const chat = getChat(this, chatId)
+      chat.messages = chat.messages.filter(message => message.id !== messageId)
     },
-    deleteAllMessages(state, chatId: string) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === chatId)
-      state.chats[chatIdx].messages = []
+    deleteAllMessages(chatId: string) {
+      const chatIdx = this.chats.findIndex(chat => chat.id === chatId)
+      this.chats[chatIdx].messages = []
     },
-    updateMessage(state, payload: { chatId: string, message: string }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      state.chats[chatIdx].message = payload.message
+    updateMessage(chatId: string, message: string) {
+      const chatIdx = this.chats.findIndex(chat => chat.id === chatId)
+      this.chats[chatIdx].message = message
     },
-    updateOwnKey(state, payload: { chatId: string, ownKey: string }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      state.chats[chatIdx].ownKey = payload.ownKey
+    updateOwnKey(chatId: string, ownKey: string) {
+      getChat(this, chatId).ownKey = ownKey
     },
-    updateOtherKey(state, payload: { chatId: string, otherKey: string }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      state.chats[chatIdx].otherKey = payload.otherKey
+    updateOtherKey(chatId: string, otherKey: string) {
+      getChat(this, chatId).otherKey = otherKey
     },
-    setHasNewMessage(state, payload: { chatId: string, hasNewMessage: boolean }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      state.chats[chatIdx].hasNewMessage = payload.hasNewMessage
+    setHasNewMessage(chatId: string, hasNewMessage: boolean) {
+      getChat(this, chatId).hasNewMessage = hasNewMessage
     },
-    createChat(state, chat: Chat) {
-      const newChats = state.chats.slice()
-      newChats.push(chat)
-      state.chats = newChats
-    },
-    setChatName(state, payload: { chatId: string, name: string }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      state.chats[chatIdx].name = payload.name
-    },
-    setChatOtherId(state, payload: { chatId: string, otherId: string }) {
-      const chatIdx = state.chats.findIndex(chat => chat.id === payload.chatId)
-      state.chats[chatIdx].otherId = payload.otherId
+    setChatOtherId(chatId: string, otherId: string | null) {
+      getChat(this, chatId).otherId = otherId
     },
   },
-  state: initialState,
 })

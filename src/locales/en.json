@@ -107,7 +107,7 @@
   "otherKeyEmptyMessage": "The sending key of your contact is exhausted.",
   "read": "Read",
   "attention": "Attention",
-  "noMessagesPreviewText": "*crickets* - No messages yet",
+  "noMessagesPreviewText": "No messages yet",
   "newChatConfirm": "Create",
   "keyRefillData": "Key size per contact"
 }

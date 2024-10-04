@@ -39,9 +39,9 @@
   "refillKey": "Schlüssel aufladen",
   "scanQrCodesOfYourContact": "Scanne QR-Codes deines Kontakts:",
   "codesLeftToScan": "Alle Codes gescanned | 1 Code übrig | {n} Codes übrig",
-  "scanStatusPreparingToScan": "Zum Scannen vorbereiten ...",
+  "scanStatusPreparingToScan": "Scannen vorbereiten ...",
   "scanStatusReadyToScan": "Bereit zum Scannen",
-  "scanStatusNotAllowedError": "Kamerazugriff verweigert - Überprüfe die Zugriffsberechtigungen deines Web-Browsers.",
+  "scanStatusNotAllowedError": "Benutzer:in verweigert Kamerazugriff - Web-App neu laden oder Zugriff erlauben in den Browser-Einstellungen.",
   "scanStatusNotFoundError": "Keine geeignete Kamera vorhanden.",
   "scanStatusNotSupportedError": "Funktion wird nicht unterstützt",
   "scanStatusInsecureContextError": "Kamerazugriff nur über HTTPS oder localhost.",
@@ -107,7 +107,7 @@
   "otherKeyEmptyMessage": "Der Sende-Schlüssel deines Kontakts ist erschöpft.",
   "read": "Gelesen",
   "attention": "Achtung",
-  "noMessagesPreviewText": "*zirp zirp* - noch keine Nachrichten",
+  "noMessagesPreviewText": "noch keine Nachrichten",
   "newChatConfirm": "Erstellen",
   "keyRefillData": "Schlüssel pro Kontakt"
 }

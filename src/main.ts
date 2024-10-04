@@ -1,12 +1,13 @@
-import { createApp } from 'vue'
-import axios from 'axios'
 import { IonicVue } from '@ionic/vue'
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import axios from 'axios'
 import VueAxios from 'vue-axios'
-import App from './App.vue'
+
 import router from './router'
-import store from './store'
-import global from './global'
 import i18n from './i18n'
+import App from './App.vue'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css'
@@ -24,28 +25,25 @@ import '@ionic/vue/css/text-alignment.css'
 import '@ionic/vue/css/flex-utils.css'
 // import '@ionic/vue/css/display.css'
 
-/* Theme variables */
-import './theme/variables.css'
+import '@ionic/vue/css/palettes/dark.system.css'
 
-const app = createApp(App)
-
-app.config.globalProperties.$global = global
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 
 const API_URL_KEY = 'VITE_API_URL'
 const FALLBACK_API_URL = 'http://localhost:3000'
 if (import.meta.env[API_URL_KEY] == null) {
-  console.warn(`Please specify ${API_URL_KEY} in the environment file. Defaulting to ${FALLBACK_API_URL}`)
+  console.info(`You can specify your own ${API_URL_KEY} in the environment file. Defaulting to: ${FALLBACK_API_URL}`)
 }
 axios.defaults.baseURL = import.meta.env[API_URL_KEY] || FALLBACK_API_URL
 
-app.use(VueAxios, axios)
-app.use(IonicVue, {
-  mode: 'ios',
-})
-app.use(router)
-app.use(store)
-app.use(i18n)
+const app = createApp(App)
 
-router.isReady().then(() => {
-  app.mount('#app')
-})
+app.use(IonicVue, { mode: 'ios' })
+app.use(router)
+app.use(pinia)
+app.use(i18n)
+app.use(VueAxios, axios)
+app.provide('axios', app.config.globalProperties.axios)
+
+router.isReady().then(() => { app.mount('#app') })

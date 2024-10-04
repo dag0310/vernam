@@ -1,10 +1,11 @@
 import { createRouter, createMemoryHistory } from '@ionic/vue-router'
 import { RouteRecordRaw } from 'vue-router'
-import HomePage from '../views/HomePage.vue'
-import SettingsPage from '../views/SettingsPage.vue'
+
 import RefillKeyPassivePage from '@/views/RefillKeyPassivePage.vue'
 import RefillKeyActivePage from '@/views/RefillKeyActivePage.vue'
-import ChatPage from '@/views/ChatPage.vue'
+import HomePage from './views/HomePage.vue'
+import SettingsPage from './views/SettingsPage.vue'
+import ChatPage from './views/ChatPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -29,9 +30,7 @@ const routes: Array<RouteRecordRaw> = [
   },
 ]
 
-const router = createRouter({
+export default createRouter({
   history: createMemoryHistory(import.meta.env.BASE_URL),
   routes,
 })
-
-export default router

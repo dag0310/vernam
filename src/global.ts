@@ -1,10 +1,12 @@
-import Vuex from 'vuex'
+import { defineStore } from 'pinia'
 
-export default new Vuex.Store({
-  state: {
+export default defineStore({
+  id: 'global',
+  persist: false,
+  state: () => ({
     debugMode: false,
     debugString: '',
     pollingActive: true,
-    currentChatId: null,
-  },
+    currentChatId: null as string | null,
+  }),
 })

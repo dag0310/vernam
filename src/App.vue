@@ -4,160 +4,135 @@
   </ion-app>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { IonApp, IonRouterOutlet } from '@ionic/vue'
-import { defineComponent } from 'vue'
-import type { PropType } from 'vue'
 import { AxiosError } from 'axios'
 import OtpCrypto from 'otp-crypto'
+import { inject, onMounted } from 'vue'
 
-import mixin from './mixin'
-import { ApiMessageResponseBody, Chat, Message } from './types'
+import { ApiMessageResponseBody, Message } from './types'
+import { AUTH_PREAMBLE, handleUnexpectedError } from './mixin'
+import useStore from './store'
+import useGlobalStore from './global'
+
+const store = useStore()
+const global = useGlobalStore()
+const axios: any = inject('axios')
 
 const pollMessagesIntervalInMs = 1000
 
-export default defineComponent({
-  components: { IonApp, IonRouterOutlet },
-  props: {
-    $store: Object as PropType<any>,
-    $global: Object as PropType<any>,
-  },
-  mixins: [mixin],
-  mounted() {
-    const pollMessages = async () => {
-      if (!this.$store.state.id || !this.$global.state.pollingActive) {
-        setTimeout(() => { pollMessages() }, pollMessagesIntervalInMs)
-        return
-      }
-      const params: { timestamp?: number } = {}
-      if (this.lastTimestamp != null) {
-        params.timestamp = this.lastTimestamp
-      }
-      try {
-        const response = await this.$http.get(`messages/${this.$store.state.id}`, { timeout: 5000, params })
-        for (const message of response.data as ApiMessageResponseBody[]) {
-          const senderChat = this.chats.find(chat => chat.otherId === message.sender)
-          const chatCandidates = (senderChat != null) ? [senderChat] : this.chats.filter(chat => chat.otherId == null)
-          const chat = chatCandidates.find(chatCandidate => this.isAuthenticatedPayload(message.payload, chatCandidate.otherKey))
-          if (chat == null) {
-            this.lastTimestamp = message.timestamp
-            continue
-          }
+function isAuthenticatedPayload(payloadBase64: string, otherKeyBase64: string): boolean {
+  const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(otherKeyBase64)
+  const otpCryptoResult = OtpCrypto.decrypt(payloadBase64, otherKeyBytes)
+  const payloadPreamble = otpCryptoResult.plaintextDecrypted.substring(0, AUTH_PREAMBLE.length)
+  return payloadPreamble === AUTH_PREAMBLE
+}
 
-          if (chat.otherId == null) {
-            this.$store.commit('setChatOtherId', {
-              chatId: chat.id,
-              otherId: message.sender,
-            })
-          }
-
-          if (chat.messages.some(m => m.id === message.id)) {
-            this.lastTimestamp = message.timestamp
-            continue
-          }
-
-          const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(chat.otherKey)
-          const otherKeyBytesPreambleLength = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(this.AUTH_PREAMBLE).length)
-          const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytesPreambleLength)
-          const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
-
-          this.$store.commit('updateOtherKey', {
-            chatId: chat.id,
-            otherKey: OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey),
-          })
-
-          const newMessage: Message = {
-            id: message.id,
-            own: false,
-            text: otpCryptoResult.plaintextDecrypted.substring(this.AUTH_PREAMBLE.length),
-            timestamp: message.timestamp,
-            synced: false,
-            base64Key,
-          }
-          this.$store.commit('addMessage', {
-            chatId: chat.id,
-            message: newMessage,
-          })
-
-          if (this.$global.state.currentChatId !== chat.id) {
-            this.$store.commit('setHasNewMessage', {
-              chatId: chat.id,
-              hasNewMessage: true,
-            })
-          }
-        }
-        for (const chat of this.chats) {
-          for (const message of chat.messages.filter(m => !m.own && !m.synced)) {
-            const messageHandled = await this.handleMessageOnServer(message)
-            if (messageHandled) {
-              this.lastTimestamp = message.timestamp
-              this.$store.commit('syncDeletedMessage', {
-                chatId: chat.id,
-                messageId: message.id,
-              })
-            }
-          }
-        }
-      } catch (error) {
-        if ((error as AxiosError).response) {
-          this.handleUnexpectedError(error as AxiosError, '[GET] ')
-        }
-      } finally {
-        setTimeout(() => { pollMessages() }, pollMessagesIntervalInMs)
-      }
+async function handleMessageOnServer(message: Message): Promise<boolean> {
+  if (message.base64Key == null) {
+    return true
+  }
+  try {
+    await axios.delete(`messages/${message.id}/${encodeURIComponent(message.base64Key)}`, { timeout: 5000, headers: { 'Content-Type': 'text/plain' } })
+    return true
+  } catch (error) {
+    const { response } = error as AxiosError
+    if (!response) {
+      return false
     }
-    pollMessages()
-  },
-  computed: {
-    chats(): Chat[] {
-      return this.$store.state.chats
-    },
-    lastTimestamp: {
-      get(): number {
-        return this.$store.state.lastTimestamp
-      },
-      set(value: number) {
-        return this.$store.commit('setLastTimestamp', value)
-      },
-    },
-  },
-  methods: {
-    isAuthenticatedPayload(payloadBase64: string, otherKeyBase64: string) {
-      const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(otherKeyBase64)
-      const otpCryptoResult = OtpCrypto.decrypt(payloadBase64, otherKeyBytes)
-      const payloadPreamble = otpCryptoResult.plaintextDecrypted.substring(0, this.AUTH_PREAMBLE.length)
-      return payloadPreamble === this.AUTH_PREAMBLE
-    },
-    async handleMessageOnServer(message: Message) {
-      if (message.base64Key == null) {
+    switch (response.status) {
+      case 400: // Message validation failed
+      case 401: // Message authentication failed
+      case 404: // Message not found
         return true
-      }
-      try {
-        await this.$http.delete(`messages/${message.id}/${encodeURIComponent(message.base64Key)}`, { timeout: 5000, headers: { 'Content-Type': 'text/plain' } })
-        return true
-      } catch (error) {
-        const { response } = error as AxiosError
-        if (!response) {
-          return false
+      default:
+        handleUnexpectedError((error as AxiosError), '[DELETE] ')
+        return false
+    }
+  }
+}
+
+onMounted(() => {
+  const pollMessages = async (): Promise<void> => {
+    if (!store.id || !global.pollingActive) {
+      setTimeout(() => { pollMessages() }, pollMessagesIntervalInMs)
+      return
+    }
+    const params: { timestamp?: number } = {}
+    if (store.lastTimestamp != null) {
+      params.timestamp = store.lastTimestamp
+    }
+    try {
+      const response = await axios.get(`messages/${store.id}`, { timeout: 5000, params })
+      for (const message of response.data as ApiMessageResponseBody[]) {
+        const senderChat = store.chats.find(chat => chat.otherId === message.sender)
+        const chatCandidates = (senderChat != null) ? [senderChat] : store.chats.filter(chat => chat.otherId == null)
+        const chat = chatCandidates.find(chatCandidate => isAuthenticatedPayload(message.payload, chatCandidate.otherKey))
+        if (chat == null) {
+          store.lastTimestamp = message.timestamp
+          continue
         }
-        switch (response.status) {
-          case 400: // Message validation failed
-          case 401: // Message authentication failed
-          case 404: // Message not found
-            return true
-          default:
-            this.handleUnexpectedError((error as AxiosError), '[DELETE] ')
-            return false
+
+        if (chat.otherId == null) {
+          store.setChatOtherId(chat.id, message.sender)
+        }
+
+        if (chat.messages.some(m => m.id === message.id)) {
+          store.lastTimestamp = message.timestamp
+          continue
+        }
+
+        const otherKeyBytes = OtpCrypto.encryptedDataConverter.base64ToBytes(chat.otherKey)
+        const otherKeyBytesPreambleLength = otherKeyBytes.slice(0, OtpCrypto.decryptedDataConverter.strToBytes(AUTH_PREAMBLE).length)
+        const base64Key = OtpCrypto.encryptedDataConverter.bytesToBase64(otherKeyBytesPreambleLength)
+        const otpCryptoResult = OtpCrypto.decrypt(message.payload, otherKeyBytes)
+
+        store.updateOtherKey(chat.id, OtpCrypto.encryptedDataConverter.bytesToBase64(otpCryptoResult.remainingKey))
+
+        const newMessage: Message = {
+          id: message.id,
+          own: false,
+          text: otpCryptoResult.plaintextDecrypted.substring(AUTH_PREAMBLE.length),
+          timestamp: message.timestamp,
+          synced: false,
+          base64Key,
+        }
+        store.addMessage(chat.id, newMessage)
+
+        if (global.currentChatId !== chat.id) {
+          store.setHasNewMessage(chat.id, true)
         }
       }
-    },
-  },
+      for (const chat of store.chats) {
+        for (const message of chat.messages.filter(m => !m.own && !m.synced)) {
+          // eslint-disable-next-line no-await-in-loop
+          const messageHandled = await handleMessageOnServer(message)
+          if (messageHandled) {
+            store.lastTimestamp = message.timestamp
+            store.syncDeletedMessage(chat.id, message.id)
+          }
+        }
+      }
+    } catch (error) {
+      if ((error as AxiosError).response) {
+        handleUnexpectedError(error as AxiosError, '[GET] ')
+      }
+    } finally {
+      setTimeout(() => { pollMessages() }, pollMessagesIntervalInMs)
+    }
+  }
+  pollMessages()
 })
 </script>
 
 <style>
 :root {
   --message-padding: 10px;
+}
+
+.ion-page {
+  --ion-color-primary-contrast: white;
+  --ion-color-danger-contrast: white;
 }
 
 .info-text {

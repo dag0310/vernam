@@ -9,19 +9,20 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [
     vue(),
+    legacy(),
+    replace({
+      BUILD_TIMESTAMP: () => JSON.stringify(new Date().toISOString()),
+      preventAssignment: true,
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
         name: 'Vernam',
         short_name: 'Vernam',
         background_color: '#000000',
+        theme_color: '#000000',
         lang: undefined,
       },
-    }),
-    legacy(),
-    replace({
-      BUILD_TIMESTAMP: () => JSON.stringify(new Date().toISOString()),
-      preventAssignment: true,
     }),
   ],
   resolve: {
@@ -29,10 +30,6 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  // test: {
-  //   globals: true,
-  //   environment: 'jsdom',
-  // },
   build: {
     chunkSizeWarningLimit: 1024,
   },
