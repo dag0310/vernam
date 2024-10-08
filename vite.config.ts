@@ -24,30 +24,47 @@ export default defineConfig({
         lang: undefined,
         icons: [
           {
-            "src": "/img/favicon-16x16.png",
-            "sizes": "16x16",
+            "purpose": "maskable",
+            "sizes": "48x48",
+            "src": "/img/maskable/maskable_icon_x48.png",
             "type": "image/png"
           },
           {
-            "src": "/img/favicon-32x32.png",
-            "sizes": "32x32",
+            "purpose": "maskable",
+            "sizes": "72x72",
+            "src": "/img/maskable/maskable_icon_x72.png",
             "type": "image/png"
           },
           {
-            "src": "/img/favicon-192x192.png",
+            "purpose": "maskable",
+            "sizes": "96x96",
+            "src": "/img/maskable/maskable_icon_x96.png",
+            "type": "image/png"
+          },
+          {
+            "purpose": "maskable",
+            "sizes": "128x128",
+            "src": "/img/maskable/maskable_icon_x128.png",
+            "type": "image/png"
+          },
+          {
+            "purpose": "maskable",
             "sizes": "192x192",
+            "src": "/img/maskable/maskable_icon_x192.png",
             "type": "image/png"
           },
           {
-            "src": "/img/favicon-256x256.png",
-            "sizes": "256x256",
+            "purpose": "maskable",
+            "sizes": "384x384",
+            "src": "/img/maskable/maskable_icon_x384.png",
             "type": "image/png"
           },
           {
-            "src": "/img/favicon-512x512.png",
+            "purpose": "maskable",
             "sizes": "512x512",
+            "src": "/img/maskable/maskable_icon_x512.png",
             "type": "image/png"
-          },
+          }
         ],
       },
     }),
